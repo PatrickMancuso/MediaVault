@@ -16,6 +16,7 @@ import CollectionDashboard from './components/CollectionDashboard'
 import WelcomePage from './components/WelcomePage'
 import EmptyCollection from './components/EmptyCollection'
 import ResetPassword from './components/ResetPassword'
+import ProfilePage from './components/ProfilePage'
 
 import {
   gameGenres,
@@ -1545,20 +1546,12 @@ if (!user) {
     Loading your collection...
   </div>
 ) : activeView === 'profile' ? (
-  <div className="profile-placeholder">
-    <h1>Your Profile</h1>
-
-    <p>
-      Profile customization is coming next.
-    </p>
-
-    <button
-      type="button"
-      onClick={() => void handleSignOut()}
-    >
-      Sign Out
-    </button>
-  </div>
+  <ProfilePage
+    userEmail={user.email ?? ''}
+    collection={collection}
+    onSignOut={() => void handleSignOut()}
+    onSelectMedia={handleSelect}
+  />
 ) : activeView === 'collection' ? (
   collection.length === 0 ? (
     <EmptyCollection
