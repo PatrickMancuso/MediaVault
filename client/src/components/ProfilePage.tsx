@@ -502,7 +502,7 @@ if (type === 'movie') {
 
           <p>
             {bio ||
-              'Your personal collection of movies, games, and entertainment.'}
+              'Add a Bio for your friends and enemies'}
           </p>
 
           <span className="profile-email">
