@@ -288,7 +288,7 @@ app.get(
 
   where version_parent = null;
 
-  limit 17;
+  limit 30;
 `;
 
       const response =
