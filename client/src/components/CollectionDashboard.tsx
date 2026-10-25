@@ -125,8 +125,11 @@ const favoritePreview = useMemo(
             
 {/* GAME POSTER COLLAGE */}
 
+
+{/* MOVIE POSTER COLLAGE */}
+
 <div className="category-art">
-  {randomGames.map((item) => {
+  {randomMovies.map((item) => {
     const artwork = getArtwork(item)
 
     return (
@@ -138,7 +141,7 @@ const favoritePreview = useMemo(
           <img
             src={artwork}
             alt=""
-            className="category-game-poster"
+            className="category-movie-poster"
             loading="lazy"
           />
         ) : (
@@ -148,6 +151,7 @@ const favoritePreview = useMemo(
     )
   })}
 </div>
+
 
 
             <div className="category-overlay" />
@@ -173,32 +177,32 @@ const favoritePreview = useMemo(
               onViewChange('games')
             }
           >
-            <div className="category-art">
-             {randomGames.map((item) => {
-                  const artwork =
-                    getArtwork(item)
+            
+{/* GAME POSTER COLLAGE */}
 
-                  return (
-                    <div
-                      key={item.id}
-                      className="category-art-item"
-                      style={
-                        artwork
-                          ? {
-                              backgroundImage:
-                                `url("${artwork}")`,
-                            }
-                          : undefined
-                      }
-                    >
-                      {!artwork && (
-                        <span>
-                          {item.title}
-                        </span>
-                      )}
-                    </div>
-                  )
-                })}
+<div className="category-art">
+  {randomGames.map((item) => {
+    const artwork = getArtwork(item)
+
+    return (
+      <div
+        key={item.id}
+        className="category-art-item"
+      >
+        {artwork ? (
+          <img
+            src={artwork}
+            alt=""
+            className="category-game-poster"
+            loading="lazy"
+          />
+        ) : (
+          <span>{item.title}</span>
+        )}
+      </div>
+    )
+  })}
+
             </div>
 
             <div className="category-overlay" />
