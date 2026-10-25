@@ -134,6 +134,61 @@ function isMovieDetails(
 }
 
 
+
+/* =========================================================
+   GAME SEARCH - RESULT RANKING
+   ========================================================= */
+
+function rankGameSearchResults(
+  results: ApiSearchResult[],
+  searchTerm: string,
+): ApiSearchResult[] {
+  const normalize = (value: string) =>
+    value
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, ' ')
+
+  const query = normalize(searchTerm)
+
+  const getScore = (result: ApiSearchResult) => {
+    const title = normalize(result.title)
+
+    // Exact title matches always appear first.
+    if (title === query) return 0
+
+    // Titles beginning with the search phrase.
+    if (title.startsWith(`${query}:`)) return 1
+    if (title.startsWith(`${query} `)) return 2
+
+    // Titles containing the phrase elsewhere.
+    if (title.includes(query)) return 3
+
+    return 4
+  }
+
+  return [...results].sort((a, b) => {
+    const scoreDifference =
+      getScore(a) - getScore(b)
+
+    if (scoreDifference !== 0) {
+      return scoreDifference
+    }
+
+    // For equally relevant titles, show older
+    // releases first.
+    const yearA = a.year ?? 9999
+    const yearB = b.year ?? 9999
+
+    if (yearA !== yearB) {
+      return yearA - yearB
+    }
+
+    return a.title.localeCompare(b.title)
+  })
+}
+
+
 type AddMode =
   | 'automatic'
   | 'manual'
@@ -623,11 +678,18 @@ const handleAutomaticSearch =
       const data =
         await response.json()
 
-      setSearchResults(
-        Array.isArray(data.results)
-          ? data.results
-          : [],
-      )
+     
+const results: ApiSearchResult[] =
+  Array.isArray(data.results)
+    ? data.results
+    : []
+
+setSearchResults(
+  mediaType === 'game'
+    ? rankGameSearchResults(results, query)
+    : results
+)
+
     } catch (error) {
       console.error(
         'Automatic media search failed:',
