@@ -14510,3 +14510,222 @@ background: rgba(34, 35, 33, 0.88);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+
+
+
+/* =========================================================
+   PROFILE - EDIT TOP FIVE BUTTON
+   ========================================================= */
+
+.profile-edit-top-five {
+  padding: 9px 16px;
+  border: 1px solid rgba(196, 148, 222, 0.35);
+  border-radius: 5px;
+
+  background: linear-gradient(
+    180deg,
+    #432b4d,
+    #241a2a
+  );
+
+  color: #f3eae6;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.profile-edit-top-five:hover {
+  border-color: #c494de;
+}
+
+/* =========================================================
+   TOP FIVE EDITOR MODAL
+   ========================================================= */
+
+.top-five-editor {
+  width: min(620px, calc(100vw - 32px));
+  max-height: min(85dvh, 850px);
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.top-five-selected {
+  margin-bottom: 24px;
+}
+
+.top-five-editor-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.top-five-editor-heading strong {
+  color: #f3eae6;
+  font-size: 13px;
+}
+
+.top-five-editor-heading span {
+  color: #c494de;
+  font-size: 11px;
+}
+
+.top-five-editor-empty {
+  color: #aaa0ac;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.top-five-ranked-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px 12px;
+  margin-bottom: 7px;
+
+  border: 1px solid rgba(196, 148, 222, 0.18);
+  border-radius: 5px;
+
+  background: rgba(25, 22, 29, 0.8);
+}
+
+.top-five-rank {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 4px;
+  background: #392740;
+
+  color: #e9a46d;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.top-five-ranked-title {
+  flex: 1;
+  min-width: 0;
+
+  color: #f3eae6;
+  font-size: 12px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top-five-rank-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.top-five-rank-actions button {
+  width: 28px;
+  height: 28px;
+
+  border: 1px solid rgba(196, 148, 222, 0.25);
+  border-radius: 4px;
+
+  background: #302338;
+  color: #f3eae6;
+
+  cursor: pointer;
+}
+
+.top-five-rank-actions button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.top-five-search {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.top-five-search label {
+  color: #c7bac8;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.top-five-search input {
+  width: 100%;
+  height: 42px;
+  box-sizing: border-box;
+  padding: 0 12px;
+
+  border: 1px solid rgba(196, 148, 222, 0.25);
+  border-radius: 5px;
+
+  background: #121016;
+  color: #f3eae6;
+  font: inherit;
+  font-size: 12px;
+}
+
+.top-five-available {
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 18px;
+}
+
+.top-five-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  width: 100%;
+  padding: 11px 12px;
+  margin-bottom: 5px;
+
+  border: 1px solid rgba(196, 148, 222, 0.12);
+  border-radius: 5px;
+
+  background: rgba(28, 24, 32, 0.9);
+  color: #f3eae6;
+
+  text-align: left;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.top-five-option:hover:not(:disabled) {
+  border-color: rgba(196, 148, 222, 0.4);
+}
+
+.top-five-option.selected {
+  border-color: rgba(196, 148, 222, 0.55);
+  background: rgba(79, 48, 91, 0.45);
+}
+
+.top-five-option:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.top-five-option span {
+  flex: 1;
+  min-width: 0;
+}
+
+.top-five-option small {
+  color: #aaa0ac;
+}
+
+.top-five-option strong {
+  color: #c494de;
+  font-size: 17px;
+}
+
+.top-five-editor > .auth-submit {
+  width: 100%;
+}

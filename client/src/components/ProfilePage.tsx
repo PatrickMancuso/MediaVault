@@ -4,6 +4,7 @@ import type { MediaItem } from '../data/sampleMedia'
 import { supabase } from '../lib/supabase'
 import EditProfileModal from './EditProfileModal'
 import type { ProfileChanges } from './EditProfileModal'
+import TopFiveEditor from './TopFiveEditor'
 
 interface ProfilePageProps {
   userId: string
@@ -42,6 +43,15 @@ function ProfilePage({
   const [profileError, setProfileError] =
     useState('')
 
+    const [topMovieIds, setTopMovieIds] =
+  useState<string[]>([])
+
+const [topGameIds, setTopGameIds] =
+  useState<string[]>([])
+
+const [editingTopFive, setEditingTopFive] =
+  useState<'movie' | 'game' | null>(null)
+
   /* =====================================================
      LOAD PROFILE FROM SUPABASE
      ===================================================== */
@@ -55,7 +65,9 @@ function ProfilePage({
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('display_name, bio, avatar_path')
+.select(
+  'display_name, bio, avatar_path, top_movies, top_games'
+)
         .eq('user_id', userId)
         .maybeSingle()
 
@@ -78,6 +90,8 @@ function ProfilePage({
       setProfileName(data?.display_name ?? '')
       setBio(data?.bio ?? '')
       setAvatarPath(data?.avatar_path ?? null)
+      setTopMovieIds(data?.top_movies ?? [])
+setTopGameIds(data?.top_games ?? [])
 
       setProfileLoading(false)
     }
@@ -187,21 +201,29 @@ function ProfilePage({
   // Temporary: uses favorited titles until manual
   // Top 5 selection and ranking are implemented.
 
-  const topMovies = useMemo(
-    () =>
-      movies
-        .filter((item) => item.favorite)
-        .slice(0, 5),
-    [movies],
-  )
+ const topMovies = useMemo(
+  () =>
+    topMovieIds
+      .map((id) =>
+        movies.find((item) => item.id === id)
+      )
+      .filter(
+        (item): item is MediaItem => Boolean(item)
+      ),
+  [topMovieIds, movies],
+)
 
-  const topGames = useMemo(
-    () =>
-      games
-        .filter((item) => item.favorite)
-        .slice(0, 5),
-    [games],
-  )
+const topGames = useMemo(
+  () =>
+    topGameIds
+      .map((id) =>
+        games.find((item) => item.id === id)
+      )
+      .filter(
+        (item): item is MediaItem => Boolean(item)
+      ),
+  [topGameIds, games],
+)
 
   /* =====================================================
      DISPLAY NAME
@@ -385,6 +407,71 @@ function ProfilePage({
      PROFILE PAGE
      ===================================================== */
 
+
+/* =====================================================
+   SAVE TOP FIVE RANKINGS
+   ===================================================== */
+
+const handleSaveTopFive = async (
+  type: 'movie' | 'game',
+  ids: string[],
+): Promise<void> => {
+  const eligibleIds = new Set(
+    collection
+      .filter((item) => item.type === type)
+      .map((item) => item.id)
+  )
+
+  if (
+    ids.length > 5 ||
+    new Set(ids).size !== ids.length ||
+    ids.some((id) => !eligibleIds.has(id))
+  ) {
+    throw new Error(
+      'Please select up to five unique titles from your collection.'
+    )
+  }
+
+
+const column =
+  type === 'movie'
+    ? 'top_movies'
+    : 'top_games'
+
+const { data, error } = await supabase
+  .from('profiles')
+  .upsert(
+    {
+      user_id: userId,
+      [column]: ids,
+    },
+    {
+      onConflict: 'user_id',
+    }
+  )
+  .select('top_movies, top_games')
+  .single()
+
+if (error) {
+  console.error(
+    'Failed to save Top 5:',
+    error
+  )
+
+  throw new Error(
+    'Unable to save your Top 5.'
+  )
+}
+
+if (type === 'movie') {
+  setTopMovieIds(data.top_movies ?? [])
+} else {
+  setTopGameIds(data.top_games ?? [])
+}
+}
+
+
+
   return (
     <section className="profile-page">
 
@@ -480,8 +567,16 @@ function ProfilePage({
 
       <div className="profile-favorites-section">
         <div className="profile-section-heading">
-          <h2>Top 5 Movies</h2>
-        </div>
+  <h2>Top 5 Movies</h2>
+
+  <button
+    type="button"
+    className="profile-edit-top-five"
+    onClick={() => setEditingTopFive('movie')}
+  >
+    Edit Top 5
+  </button>
+</div>
 
         {renderTopFive(
           topMovies,
@@ -492,9 +587,17 @@ function ProfilePage({
       {/* TOP FIVE GAMES */}
 
       <div className="profile-favorites-section">
-        <div className="profile-section-heading">
-          <h2>Top 5 Games</h2>
-        </div>
+              <div className="profile-section-heading">
+  <h2>Top 5 Games</h2>
+
+  <button
+    type="button"
+    className="profile-edit-top-five"
+    onClick={() => setEditingTopFive('game')}
+  >
+    Edit Top 5
+  </button>
+</div>
 
         {renderTopFive(
           topGames,
@@ -525,6 +628,24 @@ function ProfilePage({
           onSave={handleSaveProfile}
         />
       )}
+
+
+{editingTopFive && (
+  <TopFiveEditor
+    type={editingTopFive}
+    items={collection}
+    selectedIds={
+      editingTopFive === 'movie'
+        ? topMovieIds
+        : topGameIds
+    }
+    onClose={() => setEditingTopFive(null)}
+    onSave={(ids: string[]) =>
+  handleSaveTopFive(editingTopFive, ids)
+}
+  />
+)}
+
 
     </section>
   )
