@@ -12463,7 +12463,7 @@ background: rgba(34, 35, 33, 0.88);
    ========================================================= */
 
 .dashboard-recent-reviews {
-  margin: 24px 0 32px;
+  margin: 8px 0 32px;
 }
 
 .recent-reviews-header {
@@ -14800,5 +14800,5 @@ background: rgba(34, 35, 33, 0.88);
 
 .dashboard-archives-section {
   margin-top: -10px;
-  margin-bottom: 35px;
+  margin-bottom: 30px;
 }
