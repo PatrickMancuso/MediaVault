@@ -18,11 +18,7 @@ import EmptyCollection from './components/EmptyCollection'
 import ResetPassword from './components/ResetPassword'
 import ProfilePage from './components/ProfilePage'
 
-import {
-  gameGenres,
-  movieGenres,
-  type MediaItem,
-} from './data/sampleMedia'
+import type { MediaItem } from './data/sampleMedia'
 import './App.css'
 
 type View =
@@ -340,6 +336,9 @@ const [libraryGenre, setLibraryGenre] =
 const [libraryFormat, setLibraryFormat] =
   useState('all')
 
+  const [libraryDecade, setLibraryDecade] =
+  useState('all')
+
 const [librarySort, setLibrarySort] =
   useState<'title-asc' | 'title-desc' | 'year-new' | 'year-old'>(
     'title-asc',
@@ -611,76 +610,7 @@ useEffect(() => {
     [collection],
   )
 
-  /* =========================================================
-     GENRE CATALOGS
-     ========================================================= */
-
-  /*
-   * A genre can come from:
-   *
-   * 1. Built-in genres
-   * 2. User-created genres
-   * 3. A media item that already contains a genre
-   *
-   * The Set prevents duplicates.
-   */
-const allMovieGenres = useMemo(() => {
-  const values = new Set([
-    ...movieGenres,
-    ...customMovieGenres.map((item) => item.label),
-    ...movies.flatMap((item) =>
-      item.genres?.length
-        ? item.genres
-        : [item.genre],
-    ),
-  ])
-
-  return Array.from(values)
-}, [movies, customMovieGenres])
-
-const allGameGenres = useMemo(() => {
-  const values = new Set([
-    ...gameGenres,
-    ...customGameGenres.map((item) => item.label),
-    ...games.flatMap((item) =>
-      item.genres?.length
-        ? item.genres
-        : [item.genre],
-    ),
-  ])
-
-  return Array.from(values)
-}, [games, customGameGenres])
-
-  /* =========================================================
-     GENRE ROWS
-     ========================================================= */
-
- const movieGenreRows = allMovieGenres
-  .map((genre) => ({
-    title: genre,
-    items: movies.filter((item) =>
-      (item.genres?.length
-        ? item.genres
-        : [item.genre]
-      ).includes(genre),
-    ),
-  }))
-  .filter((row) => row.items.length > 0)
-    
-
-const gameGenreRows = allGameGenres
-  .map((genre) => ({
-    title: genre,
-    items: games.filter((item) =>
-      (item.genres?.length
-        ? item.genres
-        : [item.genre]
-      ).includes(genre),
-    ),
-  }))
-  .filter((row) => row.items.length > 0)
-
+  
 
     /* =========================================================
    LIBRARY SEARCH AND FILTERS
@@ -713,50 +643,85 @@ const libraryFormatOptions = Array.from(
   ),
 ).sort((a, b) => a.localeCompare(b))
 
+
+
+/* =====================================================
+   LIBRARY - AVAILABLE DECADES
+   ===================================================== */
+
+const libraryDecadeOptions = Array.from(
+  new Set(
+    libraryItems
+      .filter(
+        (item) =>
+          Number.isFinite(item.year) &&
+          item.year > 0
+      )
+      .map(
+        (item) =>
+          Math.floor(item.year / 10) * 10
+      )
+  )
+).sort((a, b) => b - a)
+
+
+
+/* =====================================================
+   LIBRARY - FILTER AND SORT
+   ===================================================== */
+
 const isLibraryFiltered =
   librarySearch.trim() !== '' ||
   libraryGenre !== 'all' ||
-  libraryFormat !== 'all'
+  libraryFormat !== 'all' ||
+  libraryDecade !== 'all'
 
 const filteredLibraryItems = libraryItems
   .filter((item) => {
-    const search = librarySearch.trim().toLowerCase()
+    const search =
+      librarySearch.trim().toLowerCase()
 
     const itemGenres =
-  item.genres?.length
-    ? item.genres
-    : [item.genre]
+      item.genres?.length
+        ? item.genres
+        : [item.genre]
 
-const itemFormats =
-  item.formats?.length
-    ? item.formats
-    : [item.format]
+    const itemFormats =
+      item.formats?.length
+        ? item.formats
+        : [item.format]
 
-const searchableValues = [
-  item.title,
-  String(item.year),
-  ...itemGenres,
-  ...itemFormats,
-]
+    const searchableValues = [
+      item.title,
+      String(item.year),
+      ...itemGenres,
+      ...itemFormats,
+    ]
 
-const matchesSearch =
-  search === '' ||
-  searchableValues.some((value) =>
-    value.toLowerCase().includes(search),
-  )
+    const matchesSearch =
+      search === '' ||
+      searchableValues.some((value) =>
+        value.toLowerCase().includes(search)
+      )
 
-const matchesGenre =
-  libraryGenre === 'all' ||
-  itemGenres.includes(libraryGenre)
+    const matchesGenre =
+      libraryGenre === 'all' ||
+      itemGenres.includes(libraryGenre)
 
-const matchesFormat =
-  libraryFormat === 'all' ||
-  itemFormats.includes(libraryFormat)
+    const matchesFormat =
+      libraryFormat === 'all' ||
+      itemFormats.includes(libraryFormat)
+
+    const matchesDecade =
+      libraryDecade === 'all' ||
+      Math.floor(item.year / 10) * 10 ===
+        Number(libraryDecade)
 
     return (
       matchesSearch &&
       matchesGenre &&
-      matchesFormat
+      matchesFormat &&
+      matchesDecade
     )
   })
   .sort((a, b) => {
@@ -765,20 +730,28 @@ const matchesFormat =
         return b.title.localeCompare(a.title)
 
       case 'year-new':
-        return b.year - a.year
+        return (
+          b.year - a.year ||
+          a.title.localeCompare(b.title)
+        )
 
       case 'year-old':
-        return a.year - b.year
+        return (
+          a.year - b.year ||
+          a.title.localeCompare(b.title)
+        )
 
       default:
         return a.title.localeCompare(b.title)
     }
   })
 
+
 const clearLibraryFilters = () => {
   setLibrarySearch('')
   setLibraryGenre('all')
   setLibraryFormat('all')
+  setLibraryDecade('all')
   setLibrarySort('title-asc')
 }
 
@@ -1288,6 +1261,32 @@ const renderLibrarySearch = () => {
           </select>
         </label>
 
+{/* DECADE FILTER */}
+
+<label>
+  <span>Decade</span>
+
+  <select
+    value={libraryDecade}
+    onChange={(event) =>
+      setLibraryDecade(event.target.value)
+    }
+  >
+    <option value="all">
+      All Decades
+    </option>
+
+    {libraryDecadeOptions.map((decade) => (
+      <option
+        key={decade}
+        value={String(decade)}
+      >
+        {decade}s
+      </option>
+    ))}
+  </select>
+</label>
+
         <label>
           <span>Sort By</span>
 
@@ -1329,128 +1328,126 @@ const renderLibrarySearch = () => {
   )
 }
 
-  /* =========================================================
-     RENDER ROWS
-     ========================================================= */
+  
+/* =========================================================
+   RENDER ROWS - FILTERED AND SORTED
+   ========================================================= */
 
-  const renderRows = () => {
+const renderRows = () => {
+  if (
+    activeView === 'movies' ||
+    activeView === 'games'
+  ) {
+    const currentType =
+      activeView === 'movies'
+        ? 'movie'
+        : 'game'
 
-    if (
-  (activeView === 'movies' ||
-    activeView === 'games') &&
-  isLibraryFiltered
-) {
-  if (filteredLibraryItems.length === 0) {
+    const items = filteredLibraryItems.filter(
+      (item) => item.type === currentType
+    )
+
+    if (items.length === 0) {
+      return (
+        <div className="library-no-results">
+          <h3>No matching titles found</h3>
+          <p>
+            Try another search or adjust your filters.
+          </p>
+        </div>
+      )
+    }
+
+    // Keep Recently Added separate from genre shelves.
+    // Only show it when no search/filter is active.
+
+    const showRecentlyAdded = !isLibraryFiltered
+
+    // Build genre shelves from the already
+    // filtered and sorted library items.
+
+    const genreMap = new Map<
+      string,
+      typeof items
+    >()
+
+    items.forEach((item) => {
+      const genres =
+        item.genres?.length
+          ? item.genres
+          : [item.genre]
+
+      genres.forEach((genre) => {
+        if (!genre) return
+
+        const existing =
+          genreMap.get(genre) ?? []
+
+        existing.push(item)
+        genreMap.set(genre, existing)
+      })
+    })
+
+    const genreRows = [...genreMap.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+
     return (
-      <div className="library-no-results">
-        <h3>No matching titles found</h3>
-        <p>
-          Try another search or adjust your filters.
-        </p>
-      </div>
+      <>
+        {showRecentlyAdded && (
+          <MediaRow
+            title="Recently Added"
+            items={recentlyAdded.filter(
+              (item) => item.type === currentType
+            )}
+            onSelect={handleSelect}
+            displayMode={libraryDisplayMode}
+          />
+        )}
+
+        {genreRows.map(([genre, genreItems]) => (
+          <MediaRow
+            key={genre}
+            title={genre}
+            items={genreItems}
+            onSelect={handleSelect}
+            displayMode={libraryDisplayMode}
+          />
+        ))}
+      </>
     )
   }
 
-  return (
-   <MediaRow
-  title="Search Results"
-  items={filteredLibraryItems}
-  onSelect={handleSelect}
-  displayMode={libraryDisplayMode}
-/>
-  )
-}
-    switch (activeView) {
-      case 'movies':
-        return (
-          <>
-            <MediaRow
-              title="Recently Added"
-              items={recentlyAdded.filter(
-                (item) =>
-                  item.type === 'movie',
-              )}
-              onSelect={handleSelect}
-                displayMode={libraryDisplayMode}
+  if (activeView === 'favorites') {
+    return (
+      <>
+        <MediaRow
+          title="Favorites"
+          items={favorites}
+          onSelect={handleSelect}
+        />
 
-            />
+        <MediaRow
+          title="Favorite Movies"
+          items={favorites.filter(
+            (item) => item.type === 'movie'
+          )}
+          onSelect={handleSelect}
+        />
 
-            {movieGenreRows.map(
-              (row) => (
-                <MediaRow
-                  key={row.title}
-                  title={row.title}
-                  items={row.items}
-                  onSelect={handleSelect}
-                    displayMode={libraryDisplayMode}
-
-                />
-              ),
-            )}
-          </>
-        )
-
-      case 'games':
-        return (
-          <>
-            <MediaRow
-              title="Recently Added"
-              items={recentlyAdded.filter(
-                (item) =>
-                  item.type === 'game',
-              )}
-              onSelect={handleSelect}
-                displayMode={libraryDisplayMode}
-
-            />
-
-            {gameGenreRows.map(
-              (row) => (
-                <MediaRow
-                  key={row.title}
-                  title={row.title}
-                  items={row.items}
-                  onSelect={handleSelect}
-                    displayMode={libraryDisplayMode}
-
-                />
-              ),
-            )}
-          </>
-        )
-
-      case 'favorites':
-        return (
-          <>
-            <MediaRow
-              title="Favorites"
-              items={favorites}
-              onSelect={handleSelect}
-            />
-
-            <MediaRow
-              title="Favorite Movies"
-              items={favorites.filter(
-                (item) =>
-                  item.type === 'movie',
-              )}
-              onSelect={handleSelect}
-            />
-
-            <MediaRow
-              title="Favorite Games"
-              items={favorites.filter(
-                (item) =>
-                  item.type === 'game',
-              )}
-              onSelect={handleSelect}
-            />
-          </>
-        )
-
-      
-    }
+        <MediaRow
+          title="Favorite Games"
+          items={favorites.filter(
+            (item) => item.type === 'game'
+          )}
+          onSelect={handleSelect}
+        />
+      </>
+    )
   }
+
+  return null
+}
+
 
 const renderCollectionDashboard = () => (
   <CollectionDashboard
