@@ -14802,3 +14802,42 @@ background: rgba(34, 35, 33, 0.88);
   margin-top: -10px;
   margin-bottom: 30px;
 }
+
+
+
+
+/* =========================================================
+   BROWSE ARCHIVES - MATCH MOVIE AND GAME ARTWORK
+   ========================================================= */
+
+.dashboard-category-movies .category-movie-poster,
+.dashboard-category-games .category-game-poster {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center center;
+
+  transform: scale(1.02);
+}
+
+
+
+
+.dashboard-category-movies .category-art,
+.dashboard-category-games .category-art {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  overflow: hidden;
+}
+
+.dashboard-category-movies .category-art-item,
+.dashboard-category-games .category-art-item {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+}

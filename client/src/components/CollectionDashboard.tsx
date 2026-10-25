@@ -122,30 +122,33 @@ const favoritePreview = useMemo(
               onViewChange('movies')
             }
           >
-            <div className="category-art">
-              {randomMovies.map((item) => {
-                  const artwork =
-                    getArtwork(item)
+            
+{/* GAME POSTER COLLAGE */}
 
-                  return (
-                  <div
-  key={item.id}
-  className="category-art-item"
->
-  {artwork ? (
-    <img
-      src={artwork}
-      alt=""
-      className="category-movie-poster"
-      loading="lazy"
-    />
-  ) : (
-    <span>{item.title}</span>
-  )}
+<div className="category-art">
+  {randomGames.map((item) => {
+    const artwork = getArtwork(item)
+
+    return (
+      <div
+        key={item.id}
+        className="category-art-item"
+      >
+        {artwork ? (
+          <img
+            src={artwork}
+            alt=""
+            className="category-game-poster"
+            loading="lazy"
+          />
+        ) : (
+          <span>{item.title}</span>
+        )}
+      </div>
+    )
+  })}
 </div>
-                  )
-                })}
-            </div>
+
 
             <div className="category-overlay" />
 
