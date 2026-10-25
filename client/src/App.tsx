@@ -1141,6 +1141,50 @@ const handleAddCustomFormat = async (
   return savedOption
 }
 
+
+
+/* =====================================================
+   LIBRARY - FORMAT DISPLAY LABELS
+   ===================================================== */
+
+const getFormatDisplayName = (format: string) => {
+  const labels: Record<string, string> = {
+    nes: 'NES',
+    snes: 'SNES',
+    n64: 'Nintendo 64',
+    gamecube: 'GameCube',
+    wii: 'Wii',
+    wiiu: 'Wii U',
+    switch: 'Nintendo Switch',
+
+    ps1: 'PS1',
+    ps2: 'PS2',
+    ps3: 'PS3',
+    ps4: 'PS4',
+    ps5: 'PS5',
+
+    xbox: 'Xbox',
+    xbox360: 'Xbox 360',
+    xboxone: 'Xbox One',
+    xboxseries: 'Xbox Series X/S',
+
+    pc: 'PC',
+    steam: 'Steam',
+
+    vhs: 'VHS',
+    dvd: 'DVD',
+    bluray: 'Blu-ray',
+    'blu-ray': 'Blu-ray',
+    laserdisc: 'LaserDisc',
+  }
+
+  return (
+    labels[format.toLowerCase()] ??
+    format
+  )
+}
+
+
   /* =========================================================
    LIBRARY SEARCH CONTROLS
    ========================================================= */
@@ -1253,11 +1297,16 @@ const renderLibrarySearch = () => {
           >
             <option value="all">All Formats</option>
 
-            {libraryFormatOptions.map((format) => (
-              <option key={format} value={format}>
-                {format}
-              </option>
-            ))}
+          
+{libraryFormatOptions.map((format) => (
+  <option
+    key={format}
+    value={format}
+  >
+    {getFormatDisplayName(format)}
+  </option>
+))}
+
           </select>
         </label>
 
