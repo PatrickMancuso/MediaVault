@@ -1547,11 +1547,12 @@ if (!user) {
   </div>
 ) : activeView === 'profile' ? (
   <ProfilePage
-    userEmail={user.email ?? ''}
-    collection={collection}
-    onSignOut={() => void handleSignOut()}
-    onSelectMedia={handleSelect}
-  />
+  userId={user.id}
+  userEmail={user.email ?? ''}
+  collection={collection}
+  onSignOut={() => void handleSignOut()}
+  onSelectMedia={handleSelect}
+/>
 ) : activeView === 'collection' ? (
   collection.length === 0 ? (
     <EmptyCollection
