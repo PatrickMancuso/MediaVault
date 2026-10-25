@@ -20,7 +20,7 @@ function RecentReviews({
       new Date(b.reviewUpdatedAt ?? 0).getTime() -
       new Date(a.reviewUpdatedAt ?? 0).getTime()
     )
-    .slice(0, 3)
+    .slice(0, 12)
 
   return (
     <section className="dashboard-recent-reviews">

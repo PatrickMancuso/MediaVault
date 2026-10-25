@@ -12484,21 +12484,63 @@ background: rgba(34, 35, 33, 0.88);
   font-size: 11px;
 }
 
+
+/* =========================================================
+   RECENT REVIEWS - HORIZONTAL CAROUSEL
+   ========================================================= */
+
+
 .recent-reviews-grid {
-  display: grid;
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  display: flex;
+  gap: 18px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 4px 2px 16px;
+
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(196, 148, 222, 0.45)
+    rgba(20, 18, 24, 0.5);
 }
+
+.recent-reviews-grid::-webkit-scrollbar {
+  height: 7px;
+}
+
+.recent-reviews-grid::-webkit-scrollbar-track {
+  background: rgba(20, 18, 24, 0.5);
+  border-radius: 10px;
+}
+
+.recent-reviews-grid::-webkit-scrollbar-thumb {
+  background: rgba(196, 148, 222, 0.45);
+  border-radius: 10px;
+}
+
+
+
+
+/* =========================================================
+   RECENT REVIEWS - LARGER SCROLLABLE CARDS
+   ========================================================= */
 
 .recent-review-card {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
 
+  /* Card sizing for horizontal scrolling */
+  flex: 0 0 clamp(390px, 38vw, 560px);
+  box-sizing: border-box;
+
+  gap: 18px;
   min-width: 0;
-  min-height: 180px;
-  padding: 14px;
+  min-height: 220px;
+  padding: 20px;
 
   border: 1px solid rgba(196, 148, 222, 0.18);
   border-radius: 7px;
@@ -12514,6 +12556,8 @@ background: rgba(34, 35, 33, 0.88);
   font: inherit;
   cursor: pointer;
 
+  scroll-snap-align: start;
+
   transition:
     border-color 160ms ease,
     transform 160ms ease;
@@ -12524,9 +12568,10 @@ background: rgba(34, 35, 33, 0.88);
   transform: translateY(-2px);
 }
 
+
 .recent-review-cover {
-  flex: 0 0 86px;
-  height: 130px;
+  flex: 0 0 105px;
+  height: 158px;
   overflow: hidden;
 
   border-radius: 4px;
@@ -12538,6 +12583,7 @@ background: rgba(34, 35, 33, 0.88);
   height: 100%;
   object-fit: cover;
 }
+
 
 .recent-review-content {
   display: flex;
@@ -12578,16 +12624,17 @@ background: rgba(34, 35, 33, 0.88);
   font-size: 11px;
 }
 
+
 .recent-review-content p {
   margin: 0;
 
   color: #d8d0cb;
   font-size: 14px;
-  line-height: 1.55;
+  line-height: 1.65;
 
   display: -webkit-box;
-  line-clamp: 3;
-  -webkit-line-clamp: 3;
+  line-clamp: 4;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -12607,16 +12654,20 @@ background: rgba(34, 35, 33, 0.88);
   font-size: 13px;
 }
 
-@media (max-width: 1000px) {
-  .recent-reviews-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 650px) {
-  .recent-reviews-grid {
-    grid-template-columns: 1fr;
+  .recent-review-card {
+    flex-basis: min(88vw, 420px);
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .recent-review-cover {
+    flex-basis: 82px;
+    height: 125px;
+  }
+
+  .recent-review-content p {
+    font-size: 13px;
   }
 }
 
@@ -14734,3 +14785,7 @@ background: rgba(34, 35, 33, 0.88);
 .top-five-editor > .auth-submit {
   width: 100%;
 }
+
+
+
+
