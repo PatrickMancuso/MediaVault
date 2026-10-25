@@ -45,7 +45,12 @@ function ProfilePage({
       (a, b) => b[1] - a[1],
     )
 
-    return sorted[0]?.[0] ?? 'None yet'
+    const topFormat = sorted[0]?.[0]
+
+return topFormat
+  ? topFormat.toUpperCase()
+  : 'None yet'
+  
   }, [collection])
 
   // Temporary previews until manual Top 5 selection is added.
@@ -130,14 +135,26 @@ function ProfilePage({
           </span>
         </div>
 
-        <button
-          type="button"
-          className="profile-edit-button"
-          disabled
-          title="Profile editing will be added next"
-        >
-          Edit Profile
-        </button>
+        
+<div className="profile-header-actions">
+  <button
+    type="button"
+    className="profile-edit-button"
+    disabled
+    title="Profile editing will be added next"
+  >
+    Edit Profile
+  </button>
+
+  <button
+    type="button"
+    className="profile-signout"
+    onClick={onSignOut}
+  >
+    Sign Out
+  </button>
+</div>
+
       </div>
 
       <div className="profile-stats">
@@ -165,7 +182,6 @@ function ProfilePage({
       <div className="profile-favorites-section">
         <div className="profile-section-heading">
           <h2>Top 5 Movies</h2>
-          <span>Your personal picks</span>
         </div>
 
         {renderTopFive(topMovies, 'movies')}
@@ -174,25 +190,12 @@ function ProfilePage({
       <div className="profile-favorites-section">
         <div className="profile-section-heading">
           <h2>Top 5 Games</h2>
-          <span>Your personal picks</span>
         </div>
 
         {renderTopFive(topGames, 'games')}
       </div>
 
-      <div className="profile-footer">
-        <span>
-          Signed in as {userEmail}
-        </span>
-
-        <button
-          type="button"
-          className="profile-signout"
-          onClick={onSignOut}
-        >
-          Sign Out
-        </button>
-      </div>
+      
     </section>
   )
 }
