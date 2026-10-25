@@ -12556,7 +12556,7 @@ background: rgba(34, 35, 33, 0.88);
 
 .recent-review-content small {
   color: #a9a4a2;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .recent-review-stars {
@@ -12566,7 +12566,7 @@ background: rgba(34, 35, 33, 0.88);
 
 .recent-review-stars span {
   color: #62575e;
-  font-size: 17px;
+  font-size: 18px;
 }
 
 .recent-review-stars span.active {
@@ -12595,7 +12595,7 @@ background: rgba(34, 35, 33, 0.88);
 .recent-review-content time {
   margin-top: auto;
   color: #8f8589;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .recent-reviews-empty {
