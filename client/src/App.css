@@ -11169,6 +11169,7 @@ background: rgba(34, 35, 33, 0.88);
   gap: 15px;
 }
 
+
 .dashboard-category-card {
   min-width: 0;
   overflow: hidden;
@@ -14792,3 +14793,12 @@ background: rgba(34, 35, 33, 0.88);
 
 
 
+
+/* =========================================================
+   DASHBOARD - BROWSE ARCHIVES SPACING
+   ========================================================= */
+
+.dashboard-archives-section {
+  margin-top: -10px;
+  margin-bottom: 35px;
+}

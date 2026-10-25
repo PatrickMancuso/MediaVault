@@ -107,12 +107,12 @@ const favoritePreview = useMemo(
           MOVIES / GAMES
           ================================================= */}
 
-      <section className="dashboard-section">
-        <div className="dashboard-section-header">
-          <div>
-            <h2>Browse the Archives</h2>
-          </div>
-        </div>
+      <section className="dashboard-section dashboard-archives-section">
+  <div className="dashboard-section-header">
+    <div>
+      <h2>Browse the Archives</h2>
+    </div>
+  </div>
 
         <div className="dashboard-category-grid">
           <button
