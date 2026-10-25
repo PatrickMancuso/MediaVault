@@ -14173,7 +14173,7 @@ background: rgba(34, 35, 33, 0.88);
 
 .profile-stats {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 14px;
   margin: 20px 0 38px;
 }
@@ -14198,10 +14198,12 @@ background: rgba(34, 35, 33, 0.88);
   letter-spacing: 0.8px;
 }
 
+
 .profile-stat strong {
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.2;
   color: #f3eae6;
-  font-size: 27px;
-  font-weight: 750;
 }
 
 /* TOP FIVE */

@@ -163,6 +163,21 @@ setTopGameIds(data?.top_games ?? [])
     [collection],
   )
 
+
+  /* =====================================================
+   PROFILE - REVIEW STATISTICS
+   ===================================================== */
+
+const totalReviews = useMemo(
+  () =>
+    collection.filter(
+      (item) =>
+        typeof item.personalReview === 'string' &&
+        item.personalReview.trim().length > 0
+    ).length,
+  [collection],
+)
+
   const mostOwnedFormat = useMemo(() => {
     const counts = new Map<string, number>()
 
@@ -560,6 +575,11 @@ if (type === 'movie') {
           <span>MOST OWNED FORMAT</span>
           <strong>{mostOwnedFormat}</strong>
         </div>
+
+          <div className="profile-stat">
+    <span>TOTAL REVIEWS</span>
+    <strong>{totalReviews}</strong>
+  </div>
 
       </div>
 
