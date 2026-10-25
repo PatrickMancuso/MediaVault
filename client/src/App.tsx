@@ -29,6 +29,7 @@ type View =
   | 'movies'
   | 'games'
   | 'favorites'
+  | 'profile'
 
 interface CustomOption {
   id: string
@@ -1528,9 +1529,7 @@ if (!user) {
       setIsAuthModalOpen(true)
     }
   }}
-  onSignOut={() => {
-    void handleSignOut()
-  }}
+
   userEmail={
     user?.email ?? null
   }
@@ -1540,21 +1539,39 @@ if (!user) {
 <div className="room-glow room-glow-left" />
 <div className="room-glow room-glow-right" />
 
+
 {collectionLoading ? (
   <div className="collection-loading">
     Loading your collection...
   </div>
+) : activeView === 'profile' ? (
+  <div className="profile-placeholder">
+    <h1>Your Profile</h1>
+
+    <p>
+      Profile customization is coming next.
+    </p>
+
+    <button
+      type="button"
+      onClick={() => void handleSignOut()}
+    >
+      Sign Out
+    </button>
+  </div>
 ) : activeView === 'collection' ? (
   collection.length === 0 ? (
     <EmptyCollection
-      onAddMedia={() => setIsAddMediaOpen(true)}
+      onAddMedia={() =>
+        setIsAddMediaOpen(true)
+      }
     />
   ) : (
     renderCollectionDashboard()
   )
 ) : (
   <div className="library">
-      {renderLibrarySearch()}
+    {renderLibrarySearch()}
 
     <div className="bookcase">
       <div className="bookcase-top" />
@@ -1571,6 +1588,7 @@ if (!user) {
     </div>
   </div>
 )}
+
       </main>
 
       {/* =======================================================

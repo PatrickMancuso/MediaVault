@@ -1,26 +1,18 @@
+
 import { useEffect, useRef, useState } from 'react'
 
+type View =
+  | 'collection'
+  | 'movies'
+  | 'games'
+  | 'favorites'
+  | 'profile'
+
 interface HeaderProps {
-  activeView:
-    | 'collection'
-    | 'movies'
-    | 'games'
-    | 'favorites'
-
-  onViewChange: (
-    view:
-      | 'collection'
-      | 'movies'
-      | 'games'
-      | 'favorites',
-  ) => void
-
+  activeView: View
+  onViewChange: (view: View) => void
   onAddMedia: () => void
-
   onAccount: () => void
-
-  onSignOut: () => void
-
   userEmail?: string | null
 }
 
@@ -29,7 +21,6 @@ function Header({
   onViewChange,
   onAddMedia,
   onAccount,
-  onSignOut,
   userEmail,
 }: HeaderProps) {
   const [
@@ -59,6 +50,10 @@ function Header({
     },
   ]
 
+  /* =====================================================
+     CLOSE DROPDOWN WHEN CLICKING OUTSIDE
+     ===================================================== */
+
   useEffect(() => {
     const handleOutsideClick = (
       event: MouseEvent,
@@ -73,9 +68,22 @@ function Header({
       }
     }
 
+    const handleEscape = (
+      event: KeyboardEvent,
+    ) => {
+      if (event.key === 'Escape') {
+        setIsAccountMenuOpen(false)
+      }
+    }
+
     document.addEventListener(
       'mousedown',
       handleOutsideClick,
+    )
+
+    document.addEventListener(
+      'keydown',
+      handleEscape,
     )
 
     return () => {
@@ -83,8 +91,17 @@ function Header({
         'mousedown',
         handleOutsideClick,
       )
+
+      document.removeEventListener(
+        'keydown',
+        handleEscape,
+      )
     }
   }, [])
+
+  /* =====================================================
+     ACCOUNT MENU
+     ===================================================== */
 
   const handleAccountClick = () => {
     if (!userEmail) {
@@ -97,14 +114,21 @@ function Header({
     )
   }
 
-  const handleSignOut = () => {
+  const handleProfileClick = () => {
     setIsAccountMenuOpen(false)
-    onSignOut()
+    onViewChange('profile')
   }
+
+  /* =====================================================
+     HEADER
+     ===================================================== */
 
   return (
     <header className="site-header">
       <div className="header-inner">
+
+        {/* MEDIAVAULT LOGO */}
+
         <button
           type="button"
           className="brand-console"
@@ -123,6 +147,8 @@ function Header({
             PERSONAL MEDIA ARCHIVE
           </span>
         </button>
+
+        {/* MAIN NAVIGATION */}
 
         <nav
           className="main-nav"
@@ -150,7 +176,12 @@ function Header({
           ))}
         </nav>
 
+        {/* HEADER ACTIONS */}
+
         <div className="header-actions">
+
+          {/* ADD MEDIA */}
+
           <button
             type="button"
             className="header-add-media"
@@ -163,102 +194,57 @@ function Header({
             <span>Add Media</span>
           </button>
 
-        
+          {/* HAMBURGER DROPDOWN */}
+
           <div
             className="header-account-wrapper"
             ref={accountMenuRef}
           >
             <button
               type="button"
-              className="header-account"
-              onClick={
-                handleAccountClick
-              }
+              className="header-account header-menu-trigger"
+              onClick={handleAccountClick}
+              aria-label="Open account menu"
               aria-expanded={
                 userEmail
                   ? isAccountMenuOpen
                   : undefined
               }
-              aria-haspopup={
-                userEmail
-                  ? 'menu'
-                  : undefined
-              }
+              aria-haspopup="menu"
             >
-              <span className="header-account-icon">
-                {userEmail
-                  ? userEmail
-                      .charAt(0)
-                      .toUpperCase()
-                  : '○'}
+              <span
+                className="header-hamburger"
+                aria-hidden="true"
+              >
+                <span />
+                <span />
+                <span />
               </span>
-
-              <span className="header-account-label">
-                {userEmail ??
-                  'Account'}
-              </span>
-
-              {userEmail && (
-                <span
-                  className={
-                    isAccountMenuOpen
-                      ? 'header-account-arrow open'
-                      : 'header-account-arrow'
-                  }
-                >
-                  ▾
-                </span>
-              )}
             </button>
 
-            {userEmail &&
-              isAccountMenuOpen && (
-                <div
-                  className="account-menu"
-                  role="menu"
+            {/* PROFILE DROPDOWN */}
+
+            {userEmail && isAccountMenuOpen && (
+              <div
+                className="account-menu"
+                role="menu"
+              >
+                <button
+                  type="button"
+                  className="account-menu-item"
+                  role="menuitem"
+                  onClick={handleProfileClick}
                 >
-                  <div className="account-menu-email">
-                    {userEmail}
-                  </div>
+                  <span>Profile</span>
 
-                  <div className="account-menu-divider" />
-
-                  <button
-                    type="button"
-                    className="account-menu-item"
-                    role="menuitem"
-                    onClick={() => {
-                      setIsAccountMenuOpen(
-                        false,
-                      )
-
-                      onAccount()
-                    }}
-                  >
-                    <span>
-                      Account Settings
-                    </span>
-
-                    <span>›</span>
-                  </button>
-
-                  <div className="account-menu-divider" />
-
-                  <button
-                    type="button"
-                    className="account-menu-item account-menu-signout"
-                    role="menuitem"
-                    onClick={
-                      handleSignOut
-                    }
-                  >
-                    <span>
-                      Sign Out
-                    </span>
-                  </button>
-                </div>
-              )}
+                  <span aria-hidden="true">
+                    ›
+                  </span>
+                </button>
+              </div>
+            )}
           </div>
+
         </div>
       </div>
     </header>
