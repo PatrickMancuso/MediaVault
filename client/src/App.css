@@ -7693,14 +7693,14 @@ background: linear-gradient(
    --------------------------------------------------------- */
 
 .collection-dashboard {
-  width: 85vw;
+  width: 87vw;
   max-width: none;
 
   margin:
     0 auto;
 
   padding:
-    30px 55px;
+    30px 60px;
 
   box-sizing:
     border-box;
