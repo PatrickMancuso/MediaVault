@@ -15022,3 +15022,75 @@ background: rgba(34, 35, 33, 0.88);
   min-width: 0;
   box-sizing: border-box;
 }
+
+
+
+
+
+
+
+
+/* =========================================================
+   RECENTLY ADDED - UNIFORM MEDIA CARD LAYOUT
+   ========================================================= */
+
+.recent-media-card {
+  flex: 0 0 160px;
+  width: 160px;
+  min-width: 160px;
+
+  box-sizing: border-box;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Same artwork area for all media */
+
+.recent-media-art {
+  position: relative;
+
+  width: 100%;
+  height: 240px;
+  aspect-ratio: auto;
+
+  box-sizing: border-box;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(214, 220, 211, 0.16);
+  border-radius: 5px;
+
+  background: #101311;
+}
+
+/* Full image without cropping */
+
+.recent-media-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  transform: none;
+  border-radius: 4px;
+}
+
+/* Keep information aligned */
+
+.recent-media-info {
+  width: 100%;
+  min-width: 0;
+  margin-top: 10px;
+  box-sizing: border-box;
+}
