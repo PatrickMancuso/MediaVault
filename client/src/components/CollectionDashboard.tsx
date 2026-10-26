@@ -71,8 +71,8 @@ function CollectionDashboard({
    DASHBOARD - ROTATING ARTWORK
    ===================================================== */
 
-const ROTATION_INTERVAL = 20000
-const FADE_DURATION = 500
+const ROTATION_INTERVAL = 12000
+const FADE_DURATION = 650
 
 const [rotationIndex, setRotationIndex] = useState(0)
 
@@ -112,12 +112,19 @@ useEffect(() => {
    ROTATE ARTWORK WITH FADE
    ===================================================== */
 
+
+/* =====================================================
+   ROTATE ARTWORK WITH SMOOTH FADE
+   ===================================================== */
+
 useEffect(() => {
   if (rotationIndex === 0) return
 
+  // Stage 1: Fade out existing artwork
   setIsTransitioning(true)
 
-  const timeout = window.setTimeout(() => {
+  const swapTimeout = window.setTimeout(() => {
+    // Stage 2: Replace the artwork
     setRandomMovies(
       shuffleMedia(movies).slice(0, 4)
     )
@@ -130,13 +137,20 @@ useEffect(() => {
       shuffleMedia(favorites).slice(0, 6)
     )
 
-    setIsTransitioning(false)
+    // Stage 3: Wait for the new images to render
+    // before starting the fade-in.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setIsTransitioning(false)
+      })
+    })
   }, FADE_DURATION)
 
   return () => {
-    window.clearTimeout(timeout)
+    window.clearTimeout(swapTimeout)
   }
 }, [rotationIndex, movies, games, favorites])
+
 
 /* =====================================================
    UPDATE ARTWORK WHEN COLLECTION CHANGES

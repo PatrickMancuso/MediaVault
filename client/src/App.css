@@ -14889,3 +14889,30 @@ background: rgba(34, 35, 33, 0.88);
 
   transform: scale(1.01);
 }
+
+
+
+/* =========================================================
+   MEDIAVAULT - SMOOTH ARTWORK ROTATION
+   ========================================================= */
+
+.dashboard-category-card .category-art,
+.collection-dashboard .favorite-grid {
+  opacity: 1;
+  transition: opacity 650ms ease-in-out;
+  will-change: opacity;
+}
+
+.dashboard-category-card .category-art.artwork-fading,
+.collection-dashboard .favorite-grid.artwork-fading {
+  opacity: 0;
+}
+
+/* Respect reduced motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-category-card .category-art,
+  .collection-dashboard .favorite-grid {
+    transition: none;
+  }
+}
