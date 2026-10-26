@@ -14945,7 +14945,7 @@ background: rgba(34, 35, 33, 0.88);
   position: absolute;
   inset: 0;
 
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.09);
 
   pointer-events: none;
   z-index: 2;
