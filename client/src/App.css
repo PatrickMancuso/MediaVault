@@ -15198,3 +15198,118 @@ background: rgba(34, 35, 33, 0.88);
 .collection-dashboard .recent-media-art .recent-media-image-game {
   object-fit: cover;
 }
+
+
+
+/* =========================================================
+   DASHBOARD - SLIGHTLY SMALLER FAVORITES
+   ========================================================= */
+
+/* Keep six favorites across the page */
+
+.collection-dashboard .favorite-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
+/* Shrink each poster slightly */
+
+.collection-dashboard .favorite-art {
+  width: 88%;
+  aspect-ratio: 2 / 3;
+  height: auto;
+
+  margin-inline: auto;
+}
+
+/* Keep the artwork proportional */
+
+.collection-dashboard .favorite-image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Align titles with the smaller artwork */
+
+.collection-dashboard .favorite-card > div:last-child {
+  width: 80%;
+  margin: 10px auto 0;
+}
+
+
+
+
+/* =========================================================
+   DASHBOARD - MATCH SCROLLBAR COLORS
+   ========================================================= */
+
+.collection-dashboard .recent-media-track,
+.collection-dashboard .recent-reviews-grid {
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    rgba(125, 125, 125, 0.55)
+    rgba(30, 30, 30, 0.35);
+}
+
+/* Chrome, Edge, Safari */
+
+.collection-dashboard .recent-media-track::-webkit-scrollbar,
+.collection-dashboard .recent-reviews-grid::-webkit-scrollbar {
+  height: 6px;
+}
+
+.collection-dashboard .recent-media-track::-webkit-scrollbar-track,
+.collection-dashboard .recent-reviews-grid::-webkit-scrollbar-track {
+  background: rgba(30, 30, 30, 0.35);
+  border-radius: 10px;
+}
+
+.collection-dashboard .recent-media-track::-webkit-scrollbar-thumb,
+.collection-dashboard .recent-reviews-grid::-webkit-scrollbar-thumb {
+  background: rgba(125, 125, 125, 0.55);
+  border-radius: 10px;
+}
+
+.collection-dashboard .recent-media-track::-webkit-scrollbar-thumb:hover,
+.collection-dashboard .recent-reviews-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(160, 160, 160, 0.75);
+}
+
+
+
+
+/* =========================================================
+   RECENTLY ADDED - TIGHTER TEXT SPACING
+   ========================================================= */
+
+.collection-dashboard .recent-media-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  justify-content: flex-start;
+  gap: 4px;
+
+  margin-top: 8px;
+}
+
+.collection-dashboard .recent-media-info strong {
+  display: block;
+  margin: 0;
+
+  line-height: 1.35;
+}
+
+.collection-dashboard .recent-media-info span {
+  display: block;
+  margin: 0;
+
+  line-height: 1.4;
+}
+

@@ -43,6 +43,62 @@ function shuffleMedia(items: MediaItem[]): MediaItem[] {
   return shuffled
 }
 
+
+/* =====================================================
+   ROTATION - PREVENT CONSECUTIVE DUPLICATES
+   ===================================================== */
+
+function getNextMediaSelection(
+  items: MediaItem[],
+  previousItems: MediaItem[],
+  count: number
+): MediaItem[] {
+
+  if (items.length === 0) {
+    return []
+  }
+
+  const previousIds = new Set(
+    previousItems.map((item) => item.id)
+  )
+
+  // Prioritize titles that were not
+  // displayed in the previous rotation.
+
+  const availableItems = items.filter(
+    (item) => !previousIds.has(item.id)
+  )
+
+  const shuffledAvailable =
+    shuffleMedia(availableItems)
+
+  // If enough new titles exist,
+  // avoid all previous entries.
+
+  if (shuffledAvailable.length >= count) {
+    return shuffledAvailable.slice(0, count)
+  }
+
+  // For smaller collections, reuse previous
+  // entries only when necessary.
+
+  const remainingCount =
+    count - shuffledAvailable.length
+
+  const previousPool = items.filter(
+    (item) => previousIds.has(item.id)
+  )
+
+  return [
+    ...shuffledAvailable,
+    ...shuffleMedia(previousPool).slice(
+      0,
+      remainingCount
+    )
+  ]
+}
+
+
 function CollectionDashboard({
   recentlyAdded,
   movies,
@@ -125,17 +181,37 @@ useEffect(() => {
 
   const swapTimeout = window.setTimeout(() => {
     // Stage 2: Replace the artwork
-    setRandomMovies(
-      shuffleMedia(movies).slice(0, 4)
-    )
+  
+/* Movies - four unique selections */
 
-    setRandomGames(
-      shuffleMedia(games).slice(0, 4)
-    )
+setRandomMovies((previous) =>
+  getNextMediaSelection(
+    movies,
+    previous,
+    4
+  )
+)
 
-    setFavoritePreview(
-      shuffleMedia(favorites).slice(0, 6)
-    )
+/* Games - four unique selections */
+
+setRandomGames((previous) =>
+  getNextMediaSelection(
+    games,
+    previous,
+    4
+  )
+)
+
+/* Favorites - six unique selections */
+
+setFavoritePreview((previous) =>
+  getNextMediaSelection(
+    favorites,
+    previous,
+    6
+  )
+)
+
 
     // Stage 3: Wait for the new images to render
     // before starting the fade-in.
