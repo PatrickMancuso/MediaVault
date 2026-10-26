@@ -15087,3 +15087,111 @@ background: rgba(34, 35, 33, 0.88);
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   MEDIAVAULT - MINIMAL FAVORITES & RECENTLY ADDED
+   ========================================================= */
+
+/* Remove outer card backgrounds and borders */
+
+.recent-media-card,
+.favorite-card {
+  background: transparent;
+  background-image: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* Remove outer card hover effects */
+
+.recent-media-card:hover,
+.favorite-card:hover {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* Remove matting and decorative frames */
+
+.recent-media-art,
+.favorite-art {
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 2 / 3;
+
+  padding: 0;
+  border: none;
+  border-radius: 5px;
+
+  background: transparent;
+  background-image: none !important;
+
+  box-shadow: none;
+  overflow: hidden;
+
+  transition: transform 180ms ease;
+}
+
+/* Remove old decorative pseudo-elements */
+
+.recent-media-art::before,
+.favorite-art::before {
+  content: none;
+}
+
+/* Display the full artwork without cropping */
+
+.recent-media-image,
+.favorite-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  transform: none;
+
+  border: none;
+  border-radius: 5px;
+  box-shadow: none;
+}
+
+/* Subtle dark overlay */
+
+.recent-media-art::after,
+.favorite-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+}
+
+/* Gentle hover effect */
+
+.recent-media-card:hover .recent-media-art,
+.favorite-card:hover .favorite-art {
+  transform: translateY(-3px);
+  box-shadow: none;
+}
+
+
+
