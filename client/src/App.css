@@ -15219,7 +15219,7 @@ background: rgba(34, 35, 33, 0.88);
 /* Shrink each poster slightly */
 
 .collection-dashboard .favorite-art {
-  width: 88%;
+  width: 90%;
   aspect-ratio: 2 / 3;
   height: auto;
 
@@ -15242,7 +15242,7 @@ background: rgba(34, 35, 33, 0.88);
 /* Align titles with the smaller artwork */
 
 .collection-dashboard .favorite-card > div:last-child {
-  width: 88%;
+  width: 90%;
   margin: 10px auto 0;
 }
 
