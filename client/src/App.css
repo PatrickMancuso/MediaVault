@@ -15374,7 +15374,7 @@ background: rgba(34, 35, 33, 0.88);
   height: auto;
   min-height: 0;
 
-margin: 5px 0 0;
+margin: 8px 0 0;
   padding: 0;
 }
 
@@ -15391,6 +15391,37 @@ margin: 5px 0 0;
 
 
 
+
+/* =========================================================
+   RECENTLY ADDED - TITLE TO METADATA SPACING
+   ========================================================= */
+
+.collection-dashboard .recent-media-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 2px;
+}
+
+.collection-dashboard .recent-media-info > strong {
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  flex: 0 0 auto;
+}
+
+.collection-dashboard .recent-media-info > span {
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  margin-top: 0;
+  padding: 0;
+  line-height: 1.2;
+  flex: 0 0 auto;
+  align-self: flex-start;
+}
 
 
 
