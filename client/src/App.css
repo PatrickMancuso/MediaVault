@@ -8871,7 +8871,7 @@ background: linear-gradient(
   display: flex;
   flex-direction: column;
 
-  gap: 8px;
+  gap: 0;
 
   padding: 0;
 
@@ -15374,7 +15374,7 @@ background: rgba(34, 35, 33, 0.88);
   height: auto;
   min-height: 0;
 
-  margin: 7px 0 0;
+margin: 5px 0 0;
   padding: 0;
 }
 
