@@ -7719,9 +7719,9 @@ background: linear-gradient(
 background:
   linear-gradient(
     135deg,
-    rgba(21, 34, 27, 0.55),
-    rgba(28, 40, 31, 0.40) 45%,
-    rgba(16, 27, 21, 0.55)
+    rgba(21, 34, 27, 0.51),
+    rgba(28, 40, 31, 0.37) 45%,
+    rgba(16, 27, 21, 0.51)
   );
 
 
@@ -7732,7 +7732,7 @@ background:
       rgba(10, 18, 13, 0.24);
 
   backdrop-filter:
-    blur(1px);
+    blur(0px);
 }
 
 
