@@ -72,7 +72,7 @@ function CollectionDashboard({
    ===================================================== */
 
 const ROTATION_INTERVAL = 12000
-const FADE_DURATION = 650
+const FADE_DURATION = 700
 
 const [rotationIndex, setRotationIndex] = useState(0)
 
