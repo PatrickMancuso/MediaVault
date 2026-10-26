@@ -15369,7 +15369,7 @@ background: rgba(34, 35, 33, 0.88);
   justify-content: flex-start;
   align-items: stretch;
 
-  gap: 2px;
+  gap: 4px;
 
   height: auto;
   min-height: 0;
