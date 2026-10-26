@@ -1,5 +1,4 @@
-import { useMemo } from 'react'
-
+import { useEffect, useState } from 'react'
 import type { MediaItem } from '../data/sampleMedia'
 
 import RecentReviews from './RecentReviews'
@@ -67,20 +66,96 @@ function CollectionDashboard({
     )
   })
 
-const randomMovies = useMemo(
-  () => shuffleMedia(movies).slice(0, 4),
-  [movies],
-)
 
-const randomGames = useMemo(
-  () => shuffleMedia(games).slice(0, 4),
-  [games],
-)
+/* =====================================================
+   DASHBOARD - ROTATING ARTWORK
+   ===================================================== */
 
-const favoritePreview = useMemo(
-  () => shuffleMedia(favorites).slice(0, 6),
-  [favorites],
-)
+const ROTATION_INTERVAL = 20000
+const FADE_DURATION = 500
+
+const [rotationIndex, setRotationIndex] = useState(0)
+
+const [isTransitioning, setIsTransitioning] =
+  useState(false)
+
+const [randomMovies, setRandomMovies] =
+  useState<MediaItem[]>(() =>
+    shuffleMedia(movies).slice(0, 4)
+  )
+
+const [randomGames, setRandomGames] =
+  useState<MediaItem[]>(() =>
+    shuffleMedia(games).slice(0, 4)
+  )
+
+const [favoritePreview, setFavoritePreview] =
+  useState<MediaItem[]>(() =>
+    shuffleMedia(favorites).slice(0, 6)
+  )
+
+/* =====================================================
+   ROTATION TIMER
+   ===================================================== */
+
+useEffect(() => {
+  const interval = window.setInterval(() => {
+    setRotationIndex((current) => current + 1)
+  }, ROTATION_INTERVAL)
+
+  return () => {
+    window.clearInterval(interval)
+  }
+}, [])
+
+/* =====================================================
+   ROTATE ARTWORK WITH FADE
+   ===================================================== */
+
+useEffect(() => {
+  if (rotationIndex === 0) return
+
+  setIsTransitioning(true)
+
+  const timeout = window.setTimeout(() => {
+    setRandomMovies(
+      shuffleMedia(movies).slice(0, 4)
+    )
+
+    setRandomGames(
+      shuffleMedia(games).slice(0, 4)
+    )
+
+    setFavoritePreview(
+      shuffleMedia(favorites).slice(0, 6)
+    )
+
+    setIsTransitioning(false)
+  }, FADE_DURATION)
+
+  return () => {
+    window.clearTimeout(timeout)
+  }
+}, [rotationIndex, movies, games, favorites])
+
+/* =====================================================
+   UPDATE ARTWORK WHEN COLLECTION CHANGES
+   ===================================================== */
+
+useEffect(() => {
+  setRandomMovies(
+    shuffleMedia(movies).slice(0, 4)
+  )
+
+  setRandomGames(
+    shuffleMedia(games).slice(0, 4)
+  )
+
+  setFavoritePreview(
+    shuffleMedia(favorites).slice(0, 6)
+  )
+}, [movies, games, favorites])
+
 
   return (
     <div className="collection-dashboard">
@@ -128,8 +203,11 @@ const favoritePreview = useMemo(
 
 {/* MOVIE POSTER COLLAGE */}
 
-<div className="category-art">
-  {randomMovies.map((item) => {
+<div
+  className={`category-art ${
+    isTransitioning ? 'artwork-fading' : ''
+  }`}
+>  {randomMovies.map((item) => {
     const artwork = getArtwork(item)
 
     return (
@@ -180,7 +258,11 @@ const favoritePreview = useMemo(
             
 {/* GAME POSTER COLLAGE */}
 
-<div className="category-art">
+<div
+  className={`category-art ${
+    isTransitioning ? 'artwork-fading' : ''
+  }`}
+>
   {randomGames.map((item) => {
     const artwork = getArtwork(item)
 
@@ -311,8 +393,11 @@ const favoritePreview = useMemo(
             </button>
           </div>
 
-          <div className="favorite-grid">
-            {favoritePreview.map(
+<div
+  className={`favorite-grid ${
+    isTransitioning ? 'artwork-fading' : ''
+  }`}
+>            {favoritePreview.map(
               (item) => {
                 const artwork =
                   getArtwork(item)
