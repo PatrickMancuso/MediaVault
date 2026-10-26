@@ -15094,3 +15094,32 @@ background: rgba(34, 35, 33, 0.88);
   margin-top: 10px;
   box-sizing: border-box;
 }
+
+
+
+
+/* =========================================================
+   RECENTLY ADDED - TEXT ALIGNMENT
+   ========================================================= */
+
+.recent-media-info strong {
+  display: block;
+
+  font-size: 13px;
+  line-height: 1.4;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recent-media-info span {
+  display: block;
+
+  font-size: 11px;
+  line-height: 1.5;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
