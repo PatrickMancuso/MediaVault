@@ -15237,7 +15237,7 @@ background: rgba(34, 35, 33, 0.88);
 /* Align titles with the smaller artwork */
 
 .collection-dashboard .favorite-card > div:last-child {
-  width: 85%;
+  width: 88%;
   margin: 10px auto 0;
 }
 
@@ -15294,7 +15294,7 @@ background: rgba(34, 35, 33, 0.88);
   align-items: flex-start;
 
   justify-content: flex-start;
-  gap: 3px;
+  gap: 2px;
 
   margin-top: 8px;
 }
