@@ -15102,3 +15102,32 @@ background: rgba(34, 35, 33, 0.88);
 
 
 
+/* =========================================================
+   MEDIAVAULT - MINIMAL POSTER CARDS
+   ========================================================= */
+
+.recent-media-card,
+.favorite-card {
+  background: transparent;
+  background-image: none;
+
+  border: none;
+  border-radius: 0;
+
+  box-shadow: none;
+
+  padding: 0;
+}
+
+/* Remove container effects on hover */
+
+.recent-media-card:hover,
+.favorite-card:hover {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+
+
+
