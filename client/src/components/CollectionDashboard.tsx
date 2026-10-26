@@ -71,8 +71,8 @@ function CollectionDashboard({
    DASHBOARD - ROTATING ARTWORK
    ===================================================== */
 
-const ROTATION_INTERVAL = 12000
-const FADE_DURATION = 700
+const ROTATION_INTERVAL = 15000
+const FADE_DURATION = 800
 
 const [rotationIndex, setRotationIndex] = useState(0)
 
@@ -252,9 +252,7 @@ useEffect(() => {
 
               <strong>Movies</strong>
 
-              <small>
-                {movies.length} titles
-              </small>
+            
 
               <em>
                 Browse shelf →
@@ -307,9 +305,7 @@ useEffect(() => {
 
               <strong>Games</strong>
 
-              <small>
-                {games.length} titles
-              </small>
+             
 
               <em>
                 Browse shelf →
