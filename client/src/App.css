@@ -15341,3 +15341,70 @@ background: rgba(34, 35, 33, 0.88);
 }
 
 
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   RECENTLY ADDED - FIX TITLE / METADATA SPACING
+   ========================================================= */
+
+.collection-dashboard .recent-media-track .recent-media-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  row-gap: 0;
+}
+
+.collection-dashboard .recent-media-card .recent-media-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  gap: 2px;
+
+  height: auto;
+  min-height: 0;
+
+  margin: 7px 0 0;
+  padding: 0;
+}
+
+.collection-dashboard .recent-media-card .recent-media-info strong,
+.collection-dashboard .recent-media-card .recent-media-info span {
+  display: block;
+
+  margin: 0;
+  padding: 0;
+
+  line-height: 1.25;
+  flex: 0 0 auto;
+}
+
+
+
+
+
+
+
+
+
+.recent-media-info {
+  outline: 1px solid red;
+}
+
+.recent-media-info strong {
+  outline: 1px solid yellow;
+}
+
+.recent-media-info span {
+  outline: 1px solid cyan;
+}
