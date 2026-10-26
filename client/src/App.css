@@ -14979,7 +14979,7 @@ background: rgba(34, 35, 33, 0.88);
 .favorite-card:hover .favorite-art::after,
 .recent-review-card:hover .recent-review-cover::after,
 .profile-top-five-item:hover .profile-top-five-cover::after {
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 
