@@ -15123,3 +15123,78 @@ background: rgba(34, 35, 33, 0.88);
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+
+
+
+/* Game covers fill the same artwork area as movies */
+
+.recent-media-image-game {
+  object-fit: cover;
+  object-position: center;
+}
+
+
+
+/* =========================================================
+   RECENTLY ADDED - CARD SIZE REPAIR
+   ========================================================= */
+
+/* Horizontal shelf */
+
+.collection-dashboard .recent-media-track {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Force consistent card dimensions */
+
+.collection-dashboard .recent-media-track .recent-media-card {
+  flex: 0 0 190px;
+  width: 190px;
+  min-width: 190px;
+  max-width: 190px;
+
+  box-sizing: border-box;
+}
+
+/* Force consistent artwork dimensions */
+
+.collection-dashboard .recent-media-card .recent-media-art {
+  width: 100%;
+  height: 285px;
+  min-height: 285px;
+  max-height: 285px;
+
+  aspect-ratio: auto;
+  box-sizing: border-box;
+
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Ensure images fill their allocated dimensions */
+
+.collection-dashboard .recent-media-art .recent-media-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  min-width: 0;
+  min-height: 0;
+
+  object-position: center;
+  transform: none;
+}
+
+/* Games fill the frame */
+
+.collection-dashboard .recent-media-art .recent-media-image-game {
+  object-fit: cover;
+}

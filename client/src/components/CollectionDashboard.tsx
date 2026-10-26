@@ -340,11 +340,17 @@ useEffect(() => {
         >
           <div className="recent-media-art">
             {artwork ? (
-              <img
-                src={artwork}
-                alt=""
-                className="recent-media-image"
-              />
+              
+<img
+  src={artwork}
+  alt=""
+  className={`recent-media-image ${
+    item.type === 'game'
+      ? 'recent-media-image-game'
+      : ''
+  }`}
+/>
+
             ) : (
               <>
                 <span className="recent-art-type">
