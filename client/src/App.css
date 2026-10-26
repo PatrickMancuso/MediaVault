@@ -14928,18 +14928,29 @@ background: rgba(34, 35, 33, 0.88);
 
 /* Artwork containers */
 
+
+/* =========================================================
+   MEDIAVAULT - CONSISTENT ARTWORK DARKENING
+   ========================================================= */
+
+/* Artwork containers */
+
 .recent-media-art,
 .favorite-art,
-.recent-review-cover {
+.recent-review-cover,
+.profile-top-five-cover,
+.media-cover {
   position: relative;
   overflow: hidden;
 }
 
-/* Shared dark overlay */
+/* Shared subtle dark overlay */
 
 .recent-media-art::after,
 .favorite-art::after,
-.recent-review-cover::after {
+.recent-review-cover::after,
+.profile-top-five-cover::after,
+.media-cover::after {
   content: '';
 
   position: absolute;
@@ -14959,10 +14970,16 @@ background: rgba(34, 35, 33, 0.88);
    MEDIAVAULT - ARTWORK HOVER BRIGHTNESS
    ========================================================= */
 
+
+/* =========================================================
+   MEDIAVAULT - ARTWORK HOVER BRIGHTNESS
+   ========================================================= */
+
 .recent-media-card:hover .recent-media-art::after,
 .favorite-card:hover .favorite-art::after,
-.recent-review-card:hover .recent-review-cover::after {
-  background: rgba(0, 0, 0, 0.04);
+.recent-review-card:hover .recent-review-cover::after,
+.profile-top-five-item:hover .profile-top-five-cover::after {
+  background: rgba(0, 0, 0, 0.03);
 }
 
 
