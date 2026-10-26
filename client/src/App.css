@@ -7715,13 +7715,15 @@ background: linear-gradient(
   border-radius:
     10px;
 
-  background:
-    linear-gradient(
-      135deg,
-      rgba(21, 34, 27, 0.72),
-      rgba(28, 40, 31, 0.58) 45%,
-      rgba(16, 27, 21, 0.73)
-    );
+  
+background:
+  linear-gradient(
+    135deg,
+    rgba(21, 34, 27, 0.55),
+    rgba(28, 40, 31, 0.40) 45%,
+    rgba(16, 27, 21, 0.55)
+  );
+
 
   box-shadow:
     inset 0 1px 0
@@ -7730,7 +7732,7 @@ background: linear-gradient(
       rgba(10, 18, 13, 0.24);
 
   backdrop-filter:
-    blur(2px);
+    blur(1px);
 }
 
 
