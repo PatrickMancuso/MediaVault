@@ -15397,14 +15397,3 @@ margin: 5px 0 0;
 
 
 
-.recent-media-info {
-  outline: 1px solid red;
-}
-
-.recent-media-info strong {
-  outline: 1px solid yellow;
-}
-
-.recent-media-info span {
-  outline: 1px solid cyan;
-}
