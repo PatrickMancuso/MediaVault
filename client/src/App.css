@@ -10653,7 +10653,7 @@ background: rgba(34, 35, 33, 0.88);
 
   pointer-events: none;
 
-  opacity: 1;
+  opacity: 0.8;
 
   background:
     linear-gradient(
@@ -15447,3 +15447,21 @@ margin: 8px 0 0;
 
 
 
+
+/* =========================================================
+   BROWSE ARCHIVES - HOVER BRIGHTNESS
+   ========================================================= */
+
+/* Smooth overlay transition */
+
+.dashboard-category-movies .category-overlay,
+.dashboard-category-games .category-overlay {
+  transition: opacity 250ms ease;
+}
+
+/* Brighten artwork when hovering */
+
+.dashboard-category-movies:hover .category-overlay,
+.dashboard-category-games:hover .category-overlay {
+  opacity: 0.35;
+}
