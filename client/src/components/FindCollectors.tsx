@@ -94,8 +94,12 @@ function FindCollectors({
       {!loading && !error && (
         <div className="find-collectors-results">
           {collectors.length === 0 ? (
-            <p>No public collectors found.</p>
-          ) : (
+  <p className="find-collectors-empty">
+    {search.trim()
+      ? 'No collectors match your search.'
+      : 'No public collectors yet. Be the first to share your collection!'}
+  </p>
+) : (
             collectors.map((collector) => (
               <button
                 key={collector.user_id}
