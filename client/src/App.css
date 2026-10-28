@@ -10653,20 +10653,20 @@ background: rgba(34, 35, 33, 0.88);
 
   pointer-events: none;
 
-  opacity: 0.7;
+  opacity: 0.75;
 
   background:
     linear-gradient(
       90deg,
       rgba(17, 27, 21, 0.47),
       rgba(17, 27, 21, 0.08) 58%,
-      rgba(17, 27, 21, 0.35)
+      rgba(17, 27, 21, 0.45)
     ),
     linear-gradient(
   180deg,
   rgba(12, 20, 15, 0.03) 0%,
   rgba(12, 20, 15, 0.20) 55%,
-  rgba(12, 20, 15, 0.75) 100%
+  rgba(12, 20, 15, 0.9) 100%
 );
 }
 
