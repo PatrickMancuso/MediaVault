@@ -45,6 +45,12 @@ function PublicProfilePage({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
+  const [collectionType, setCollectionType] =
+  useState<'movie' | 'game'>('movie')
+
+const [collectionDisplay, setCollectionDisplay] =
+  useState<'covers' | 'list'>('covers')
+
   useEffect(() => {
     let cancelled = false
 
@@ -158,6 +164,67 @@ function PublicProfilePage({
     </div>
   )
 
+  
+/* =====================================================
+   PUBLIC PROFILE - COMPACT COLLECTION
+   ===================================================== */
+
+const collectionItems = (
+  collectionType === 'movie' ? movies : games
+).slice().sort((a, b) =>
+  a.title.localeCompare(b.title)
+)
+
+const renderCompactCollection = () => (
+  <div className="public-collection-scroll">
+    {collectionDisplay === 'covers' ? (
+      <div className="public-collection-grid">
+        {collectionItems.map((item) => (
+          <div
+            key={item.id}
+            className="public-collection-item"
+            title={item.title}
+          >
+            <div className="public-collection-art">
+              {item.cover_image ? (
+                <img
+                  src={item.cover_image}
+                  alt={item.title}
+                  loading="lazy"
+                />
+              ) : (
+                <span>{item.title}</span>
+              )}
+            </div>
+
+            <strong>{item.title}</strong>
+
+            <small>
+              {item.year} · {item.format}
+            </small>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div className="public-collection-list">
+        {collectionItems.map((item) => (
+          <div
+            key={item.id}
+            className="public-collection-list-item"
+          >
+            <strong>{item.title}</strong>
+
+            <span>
+              {item.year} · {item.format}
+            </span>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+)
+
+
   if (loading) {
     return (
       <div className="profile-page">
@@ -246,19 +313,94 @@ function PublicProfilePage({
         {renderMediaGrid(topGames)}
       </div>
 
-      <div className="profile-favorites-section">
-        <div className="profile-section-heading">
-          <h2>Movie Collection</h2>
-        </div>
-        {renderMediaGrid(movies)}
+    
+{/* =====================================================
+    PUBLIC COLLECTION BROWSER
+    ===================================================== */}
+
+<div className="public-collection-section">
+
+  <div className="public-collection-header">
+    <div>
+      <h2>Collection</h2>
+      <p>
+        Browse this collector's complete archive
+      </p>
+    </div>
+
+    <div className="public-collection-controls">
+
+      {/* MOVIES / GAMES */}
+
+      <div className="public-collection-toggle">
+        <button
+          type="button"
+          className={
+            collectionType === 'movie'
+              ? 'active'
+              : ''
+          }
+          onClick={() =>
+            setCollectionType('movie')
+          }
+        >
+          Movies ({movies.length})
+        </button>
+
+        <button
+          type="button"
+          className={
+            collectionType === 'game'
+              ? 'active'
+              : ''
+          }
+          onClick={() =>
+            setCollectionType('game')
+          }
+        >
+          Games ({games.length})
+        </button>
       </div>
 
-      <div className="profile-favorites-section">
-        <div className="profile-section-heading">
-          <h2>Game Collection</h2>
-        </div>
-        {renderMediaGrid(games)}
+      {/* COVERS / LIST */}
+
+      <div className="public-collection-toggle">
+        <button
+          type="button"
+          className={
+            collectionDisplay === 'covers'
+              ? 'active'
+              : ''
+          }
+          onClick={() =>
+            setCollectionDisplay('covers')
+          }
+        >
+          Covers
+        </button>
+
+        <button
+          type="button"
+          className={
+            collectionDisplay === 'list'
+              ? 'active'
+              : ''
+          }
+          onClick={() =>
+            setCollectionDisplay('list')
+          }
+        >
+          List
+        </button>
       </div>
+
+    </div>
+  </div>
+
+  {renderCompactCollection()}
+
+</div>
+
     </section>
   )
 }
