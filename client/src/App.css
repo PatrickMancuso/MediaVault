@@ -15899,3 +15899,350 @@ margin: 8px 0 0;
   }
 }
 
+
+
+
+/* =========================================================
+   MEDIAVAULT - PUBLIC COLLECTION BROWSER REPAIR
+   ========================================================= */
+
+/* Main collection section */
+
+.public-profile-page .public-collection-section {
+  width: 100%;
+  min-width: 0;
+  margin-top: 45px;
+}
+
+/* Header and controls */
+
+.public-profile-page .public-collection-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.public-profile-page .public-collection-header h2 {
+  margin: 0;
+  color: #f3eae6;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.public-profile-page .public-collection-header p {
+  margin: 6px 0 0;
+  color: #aaa0ac;
+  font-size: 13px;
+}
+
+.public-profile-page .public-collection-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Purple toggle containers */
+
+.public-profile-page .public-collection-toggle {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+
+  padding: 4px;
+  border: 1px solid rgba(196, 148, 222, 0.25);
+  border-radius: 6px;
+
+  background: rgba(31, 24, 35, 0.95);
+}
+
+.public-profile-page .public-collection-toggle button {
+  appearance: none;
+
+  padding: 9px 15px;
+
+  border: 0;
+  border-radius: 4px;
+
+  background: transparent;
+  color: #aaa0ac;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.public-profile-page .public-collection-toggle button:hover {
+  background: rgba(115, 70, 126, 0.35);
+  color: #f3eae6;
+}
+
+.public-profile-page .public-collection-toggle button.active {
+  background: linear-gradient(
+    145deg,
+    #754982,
+    #38243f
+  );
+
+  color: #fff;
+}
+
+/* =========================================================
+   SCROLLABLE COLLECTION CONTAINER
+   ========================================================= */
+
+.public-profile-page .public-collection-scroll {
+  width: 100%;
+  max-height: 650px;
+
+  min-width: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 18px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(196, 148, 222, 0.18);
+  border-radius: 8px;
+
+  background: rgba(13, 17, 17, 0.85);
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(125, 125, 125, 0.6)
+    rgba(30, 30, 30, 0.4);
+}
+
+/* =========================================================
+   COVER GRID - SEVEN COLUMNS
+   ========================================================= */
+
+.public-profile-page .public-collection-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(7, minmax(0, 1fr));
+
+  gap: 22px 14px;
+
+  width: 100%;
+  min-width: 0;
+
+  align-items: start;
+}
+
+.public-profile-page .public-collection-item {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  min-width: 0;
+  width: 100%;
+
+  gap: 5px;
+}
+
+/* Poster container */
+
+.public-profile-page .public-collection-art {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  aspect-ratio: 2 / 3;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  border-radius: 5px;
+  background: #101311;
+}
+
+/* Artwork */
+
+.public-profile-page .public-collection-art img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Subtle artwork darkening */
+
+.public-profile-page .public-collection-art::after {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.09);
+
+  pointer-events: none;
+  transition: background 180ms ease;
+}
+
+.public-profile-page .public-collection-item:hover
+.public-collection-art::after {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* Titles and metadata */
+
+.public-profile-page .public-collection-item strong {
+  display: block;
+
+  margin: 3px 0 0;
+
+  color: #f3eae6;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.public-profile-page .public-collection-item small {
+  display: block;
+
+  margin: 0;
+
+  color: #aaa0ac;
+  font-size: 10px;
+  line-height: 1.4;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   LIST VIEW
+   ========================================================= */
+
+.public-profile-page .public-collection-list {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.public-profile-page .public-collection-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  width: 100%;
+  min-width: 0;
+
+  padding: 13px 12px;
+
+  box-sizing: border-box;
+
+  border-bottom:
+    1px solid rgba(196, 148, 222, 0.12);
+
+  transition: background 150ms ease;
+}
+
+.public-profile-page .public-collection-list-item:hover {
+  background: rgba(196, 148, 222, 0.06);
+}
+
+.public-profile-page .public-collection-list-item:last-child {
+  border-bottom: none;
+}
+
+.public-profile-page .public-collection-list-item strong {
+  flex: 1;
+  min-width: 0;
+
+  color: #f3eae6;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.public-profile-page .public-collection-list-item span {
+  flex-shrink: 0;
+
+  color: #aaa0ac;
+  font-size: 12px;
+
+  white-space: nowrap;
+}
+
+/* Empty collection */
+
+.public-profile-page .public-collection-empty {
+  padding: 45px 20px;
+  text-align: center;
+  color: #aaa0ac;
+}
+
+/* =========================================================
+   RESPONSIVE LAYOUT
+   ========================================================= */
+
+@media (max-width: 1200px) {
+  .public-profile-page .public-collection-grid {
+    grid-template-columns:
+      repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 850px) {
+  .public-profile-page .public-collection-grid {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .public-profile-page .public-collection-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .public-profile-page .public-collection-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .public-profile-page .public-collection-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .public-profile-page .public-collection-list-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+
