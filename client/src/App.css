@@ -15594,3 +15594,81 @@ margin: 8px 0 0;
   color: #aaa0ac;
   font-size: 12px;
 }
+
+
+
+
+/* =========================================================
+   MEDIAVAULT - PUBLIC PROFILE
+   ========================================================= */
+
+.public-profile-back {
+  margin-bottom: 22px;
+  padding: 10px 15px;
+
+  border: 1px solid rgba(196, 148, 222, 0.25);
+  border-radius: 6px;
+
+  background: rgba(45, 31, 49, 0.85);
+  color: #f3eae6;
+
+  cursor: pointer;
+}
+
+.public-profile-back:hover {
+  background: rgba(80, 48, 88, 0.9);
+}
+
+.public-media-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.public-media-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.public-media-art {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+
+  border-radius: 5px;
+  background: #141718;
+}
+
+.public-media-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.public-media-card strong {
+  font-size: 13px;
+  color: #f3eae6;
+}
+
+.public-media-card small {
+  color: #aaa0ac;
+  font-size: 11px;
+}
+
+@media (max-width: 900px) {
+  .public-media-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 550px) {
+  .public-media-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
