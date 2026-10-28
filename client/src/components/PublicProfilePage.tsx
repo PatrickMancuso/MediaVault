@@ -32,6 +32,52 @@ interface PublicProfilePageProps {
   onBack: () => void
 }
 
+
+/* =====================================================
+   MEDIAVAULT - FORMAT DISPLAY NAMES
+   ===================================================== */
+
+const getFormatDisplayName = (format: string): string => {
+  const labels: Record<string, string> = {
+    vhs: 'VHS',
+    dvd: 'DVD',
+    bluray: 'Blu-ray',
+    'blu-ray': 'Blu-ray',
+    laserdisc: 'LaserDisc',
+
+    nes: 'NES',
+    snes: 'SNES',
+    n64: 'Nintendo 64',
+    gamecube: 'GameCube',
+    wii: 'Wii',
+    wiiu: 'Wii U',
+    switch: 'Nintendo Switch',
+
+    ps1: 'PlayStation',
+    ps2: 'PlayStation 2',
+    ps3: 'PlayStation 3',
+    ps4: 'PlayStation 4',
+    ps5: 'PlayStation 5',
+
+    xbox: 'Xbox',
+    xbox360: 'Xbox 360',
+    xboxone: 'Xbox One',
+    xboxseries: 'Xbox Series X/S',
+
+    pc: 'PC',
+    steam: 'Steam',
+  }
+
+  return (
+    labels[format.toLowerCase()] ??
+    format
+  )
+}
+
+
+
+
+
 function PublicProfilePage({
   collectorId,
   onBack,
@@ -157,12 +203,14 @@ const [collectionDisplay, setCollectionDisplay] =
 
           <strong>{item.title}</strong>
           <small>
-            {item.year} · {item.format}
+{item.year} · {getFormatDisplayName(item.format)}         
           </small>
         </div>
       ))}
     </div>
   )
+
+
 
   
 /* =====================================================
@@ -200,7 +248,7 @@ const renderCompactCollection = () => (
             <strong>{item.title}</strong>
 
             <small>
-              {item.year} · {item.format}
+{item.year} · {getFormatDisplayName(item.format)}           
             </small>
           </div>
         ))}
@@ -215,7 +263,7 @@ const renderCompactCollection = () => (
             <strong>{item.title}</strong>
 
             <span>
-              {item.year} · {item.format}
+{item.year} · {getFormatDisplayName(item.format)}           
             </span>
           </div>
         ))}
