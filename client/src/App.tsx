@@ -18,6 +18,7 @@ import EmptyCollection from './components/EmptyCollection'
 import ResetPassword from './components/ResetPassword'
 import ProfilePage from './components/ProfilePage'
 import FindCollectors from './components/FindCollectors'
+import PublicProfilePage from './components/PublicProfilePage'
 
 import type { MediaItem } from './data/sampleMedia'
 import './App.css'
@@ -1598,22 +1599,22 @@ if (!user) {
   <div className="collection-loading">
     Loading your collection...
   </div>
+
 ) : activeView === 'collectors' ? (
-  <>
+  selectedCollectorId ? (
+    <PublicProfilePage
+      collectorId={selectedCollectorId}
+      onBack={() => setSelectedCollectorId(null)}
+    />
+  ) : (
     <FindCollectors
       onSelectCollector={(userId) => {
         setSelectedCollectorId(userId)
       }}
     />
-
-    {selectedCollectorId && (
-      <p className="collector-selection-message">
-        Collector selected. Public profile viewing
-        will be available soon.
-      </p>
-    )}
-  </>
+  )
 ) : activeView === 'profile' ? (
+
   <ProfilePage
     userId={user.id}
     userEmail={user.email ?? ''}
