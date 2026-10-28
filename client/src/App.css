@@ -15466,3 +15466,18 @@ margin: 8px 0 0;
 .dashboard-category-games:hover .category-overlay {
   opacity: 0.35;
 }
+
+
+/* =========================================================
+   PROFILE - USERNAME DISPLAY
+   ========================================================= */
+
+.profile-username {
+  display: block;
+  margin-top: 5px;
+
+  color: #c494de;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}

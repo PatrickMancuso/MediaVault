@@ -5,12 +5,16 @@ import type { ChangeEvent, FormEvent } from 'react'
 export interface ProfileChanges {
   displayName: string
   bio: string
+  username: string
+  isPublic: boolean
   avatarFile: File | null
 }
 
 interface EditProfileModalProps {
   displayName: string
   bio: string
+  username: string
+  isPublic: boolean
   onClose: () => void
   onSave: (changes: ProfileChanges) => Promise<void>
 }
@@ -18,16 +22,29 @@ interface EditProfileModalProps {
 function EditProfileModal({
   displayName,
   bio,
+  username,
+  isPublic,
   onClose,
   onSave,
 }: EditProfileModalProps) {
   const [name, setName] = useState(displayName)
   const [about, setAbout] = useState(bio)
+
+  const [usernameValue, setUsernameValue] =
+    useState(username)
+
+  const [publicProfile, setPublicProfile] =
+    useState(isPublic)
+
   const [avatarFile, setAvatarFile] =
     useState<File | null>(null)
 
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+
+  /* =====================================================
+     AVATAR VALIDATION
+     ===================================================== */
 
   const handleAvatarChange = (
     event: ChangeEvent<HTMLInputElement>,
@@ -52,14 +69,38 @@ function EditProfileModal({
     setAvatarFile(file)
   }
 
+  /* =====================================================
+     SAVE PROFILE
+     ===================================================== */
+
   const handleSubmit = async (
     event: FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault()
     setError('')
 
+    const cleanedUsername =
+      usernameValue.trim().toLowerCase()
+
     if (!name.trim()) {
       setError('Please enter a display name.')
+      return
+    }
+
+    if (
+      cleanedUsername &&
+      !/^[a-z0-9_]{3,24}$/.test(cleanedUsername)
+    ) {
+      setError(
+        'Usernames must be 3–24 characters and contain only letters, numbers, or underscores.'
+      )
+      return
+    }
+
+    if (publicProfile && !cleanedUsername) {
+      setError(
+        'Choose a username before making your profile public.'
+      )
       return
     }
 
@@ -69,6 +110,8 @@ function EditProfileModal({
       await onSave({
         displayName: name.trim(),
         bio: about.trim(),
+        username: cleanedUsername,
+        isPublic: publicProfile,
         avatarFile,
       })
 
@@ -77,7 +120,7 @@ function EditProfileModal({
       setError(
         err instanceof Error
           ? err.message
-          : 'Unable to save your profile.',
+          : 'Unable to save your profile.'
       )
     } finally {
       setSaving(false)
@@ -96,7 +139,9 @@ function EditProfileModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="edit-profile-title"
-        onClick={(event) => event.stopPropagation()}
+        onClick={(event) =>
+          event.stopPropagation()
+        }
       >
         <button
           type="button"
@@ -118,8 +163,8 @@ function EditProfileModal({
           </h2>
 
           <p>
-            Customize how your MediaVault profile
-            appears.
+            Customize your profile and control
+            how others discover you.
           </p>
         </div>
 
@@ -129,6 +174,7 @@ function EditProfileModal({
         >
           <label>
             Display Name
+
             <input
               type="text"
               value={name}
@@ -141,7 +187,27 @@ function EditProfileModal({
           </label>
 
           <label>
+            Username
+
+            <input
+              type="text"
+              value={usernameValue}
+              onChange={(event) =>
+                setUsernameValue(
+                  event.target.value.toLowerCase()
+                )
+              }
+              minLength={3}
+              maxLength={24}
+              pattern="[a-z0-9_]{3,24}"
+              placeholder="your_username"
+              autoComplete="off"
+            />
+          </label>
+
+          <label>
             Bio
+
             <textarea
               value={about}
               onChange={(event) =>
@@ -155,12 +221,33 @@ function EditProfileModal({
 
           <label>
             Profile Picture
+
             <input
               type="file"
               accept="image/png,image/jpeg,image/webp"
               onChange={handleAvatarChange}
             />
           </label>
+
+          <label className="profile-visibility-setting">
+            <input
+              type="checkbox"
+              checked={publicProfile}
+              onChange={(event) =>
+                setPublicProfile(event.target.checked)
+              }
+            />
+
+            <span>
+              Make my profile public
+            </span>
+          </label>
+
+          <p className="profile-visibility-description">
+            Public profiles will be discoverable by
+            other MediaVault users once social
+            features are enabled.
+          </p>
 
           {error && (
             <p className="auth-error" role="alert">

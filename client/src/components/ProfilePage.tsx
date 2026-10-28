@@ -29,6 +29,9 @@ function ProfilePage({
   const [profileName, setProfileName] = useState('')
   const [bio, setBio] = useState('')
 
+  const [username, setUsername] = useState('')
+const [isPublic, setIsPublic] = useState(false)
+
   const [avatarPath, setAvatarPath] =
     useState<string | null>(null)
 
@@ -66,7 +69,7 @@ const [editingTopFive, setEditingTopFive] =
       const { data, error } = await supabase
         .from('profiles')
 .select(
-  'display_name, bio, avatar_path, top_movies, top_games'
+  'display_name, bio, avatar_path, top_movies, top_games, username, is_public'
 )
         .eq('user_id', userId)
         .maybeSingle()
@@ -90,6 +93,8 @@ const [editingTopFive, setEditingTopFive] =
       setProfileName(data?.display_name ?? '')
       setBio(data?.bio ?? '')
       setAvatarPath(data?.avatar_path ?? null)
+      setUsername(data?.username ?? '')
+setIsPublic(data?.is_public ?? false)
       setTopMovieIds(data?.top_movies ?? [])
 setTopGameIds(data?.top_games ?? [])
 
@@ -322,49 +327,64 @@ const topGames = useMemo(
       await supabase
         .from('profiles')
         .upsert(
-          {
-            user_id: userId,
-            display_name: changes.displayName,
-            bio: changes.bio,
-            avatar_path: nextAvatarPath,
-            updated_at:
-              new Date().toISOString(),
-          },
+         {
+  user_id: userId,
+  display_name: changes.displayName,
+  bio: changes.bio,
+  username: changes.username || null,
+  is_public: changes.isPublic,
+  avatar_path: nextAvatarPath,
+  updated_at: new Date().toISOString(),
+},
           {
             onConflict: 'user_id',
           }
         )
 
-    if (saveError) {
+
+/* =====================================================
+   HANDLE PROFILE SAVE ERRORS
+   ===================================================== */
+
+if (saveError) {
+  console.error(
+    'Failed to save profile:',
+    saveError
+  )
+
+  // Remove newly uploaded avatar if saving fails.
+  if (uploadedPath) {
+    const { error: cleanupError } =
+      await supabase.storage
+        .from('avatars')
+        .remove([uploadedPath])
+
+    if (cleanupError) {
       console.error(
-        'Failed to save profile:',
-        saveError,
-      )
-
-      // Clean up a newly uploaded image if the
-      // database update was unsuccessful.
-      if (uploadedPath) {
-        const { error: cleanupError } =
-          await supabase.storage
-            .from('avatars')
-            .remove([uploadedPath])
-
-        if (cleanupError) {
-          console.error(
-            'Failed to clean up avatar:',
-            cleanupError,
-          )
-        }
-      }
-
-      throw new Error(
-        'Unable to save your profile. Please try again.'
+        'Failed to clean up avatar:',
+        cleanupError
       )
     }
+  }
+
+  // Username already exists.
+  if (saveError.code === '23505') {
+    throw new Error(
+      'That username is already taken. Please choose another.'
+    )
+  }
+
+  throw new Error(
+    'Unable to save your profile. Please try again.'
+  )
+}
+
 
     setProfileName(changes.displayName)
     setBio(changes.bio)
     setAvatarPath(nextAvatarPath)
+    setUsername(changes.username)
+setIsPublic(changes.isPublic)
   }
 
   /* =====================================================
@@ -513,12 +533,20 @@ if (type === 'movie') {
             MEDIAVAULT PROFILE
           </span>
 
-          <h1>{displayName}</h1>
+         
+<h1>{displayName}</h1>
 
-          <p>
-            {bio ||
-              'Add a Bio for your friends and enemies'}
-          </p>
+{username && (
+  <span className="profile-username">
+    @{username}
+  </span>
+)}
+
+<p>
+  {bio ||
+    'Add a Bio for your friends and enemies'}
+</p>
+
 
           <span className="profile-email">
             {userEmail}
@@ -638,16 +666,20 @@ if (type === 'movie') {
 
       {/* EDIT PROFILE MODAL */}
 
-      {editing && (
-        <EditProfileModal
-          displayName={displayName}
-          bio={bio}
-          onClose={() =>
-            setEditing(false)
-          }
-          onSave={handleSaveProfile}
-        />
-      )}
+     
+{editing && (
+  <EditProfileModal
+    displayName={displayName}
+    bio={bio}
+    username={username}
+    isPublic={isPublic}
+    onClose={() =>
+      setEditing(false)
+    }
+    onSave={handleSaveProfile}
+  />
+)}
+
 
 
 {editingTopFive && (
