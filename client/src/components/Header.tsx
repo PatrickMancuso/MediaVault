@@ -7,6 +7,7 @@ type View =
   | 'games'
   | 'favorites'
   | 'profile'
+  | 'collectors'
 
 interface HeaderProps {
   activeView: View
@@ -119,6 +120,12 @@ function Header({
     onViewChange('profile')
   }
 
+
+  const handleCollectorsClick = () => {
+  setIsAccountMenuOpen(false)
+  onViewChange('collectors')
+}
+
   /* =====================================================
      HEADER
      ===================================================== */
@@ -222,27 +229,40 @@ function Header({
               </span>
             </button>
 
-            {/* PROFILE DROPDOWN */}
+           
+{/* ACCOUNT DROPDOWN */}
 
-            {userEmail && isAccountMenuOpen && (
-              <div
-                className="account-menu"
-                role="menu"
-              >
-                <button
-                  type="button"
-                  className="account-menu-item"
-                  role="menuitem"
-                  onClick={handleProfileClick}
-                >
-                  <span>Profile</span>
+{userEmail && isAccountMenuOpen && (
+  <div
+    className="account-menu"
+    role="menu"
+  >
+    {/* PROFILE */}
 
-                  <span aria-hidden="true">
-                    ›
-                  </span>
-                </button>
-              </div>
-            )}
+    <button
+      type="button"
+      className="account-menu-item"
+      role="menuitem"
+      onClick={handleProfileClick}
+    >
+      <span>Profile</span>
+      <span aria-hidden="true">›</span>
+    </button>
+
+    {/* FIND COLLECTORS */}
+
+    <button
+      type="button"
+      className="account-menu-item"
+      role="menuitem"
+      onClick={handleCollectorsClick}
+    >
+      <span>Find Collectors</span>
+      <span aria-hidden="true">›</span>
+    </button>
+  </div>
+)}
+
           </div>
 
         </div>

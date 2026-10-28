@@ -17,6 +17,7 @@ import WelcomePage from './components/WelcomePage'
 import EmptyCollection from './components/EmptyCollection'
 import ResetPassword from './components/ResetPassword'
 import ProfilePage from './components/ProfilePage'
+import FindCollectors from './components/FindCollectors'
 
 import type { MediaItem } from './data/sampleMedia'
 import './App.css'
@@ -27,6 +28,7 @@ type View =
   | 'games'
   | 'favorites'
   | 'profile'
+  | 'collectors'
 
 interface CustomOption {
   id: string
@@ -326,6 +328,9 @@ description: media.description,
 function App() {
   const [activeView, setActiveView] =
     useState<View>('collection')
+
+const [selectedCollectorId, setSelectedCollectorId] =
+  useState<string | null>(null)
 
     const [librarySearch, setLibrarySearch] =
   useState('')
@@ -1587,19 +1592,39 @@ if (!user) {
 <div className="room-glow room-glow-right" />
 
 
+
+
 {collectionLoading ? (
   <div className="collection-loading">
     Loading your collection...
   </div>
+) : activeView === 'collectors' ? (
+  <>
+    <FindCollectors
+      onSelectCollector={(userId) => {
+        setSelectedCollectorId(userId)
+      }}
+    />
+
+    {selectedCollectorId && (
+      <p className="collector-selection-message">
+        Collector selected. Public profile viewing
+        will be available soon.
+      </p>
+    )}
+  </>
 ) : activeView === 'profile' ? (
   <ProfilePage
-  userId={user.id}
-  userEmail={user.email ?? ''}
-  collection={collection}
-  onSignOut={() => void handleSignOut()}
-  onSelectMedia={handleSelect}
-/>
+    userId={user.id}
+    userEmail={user.email ?? ''}
+    collection={collection}
+    onSignOut={() => void handleSignOut()}
+    onSelectMedia={handleSelect}
+  />
 ) : activeView === 'collection' ? (
+
+
+
   collection.length === 0 ? (
     <EmptyCollection
       onAddMedia={() =>
