@@ -10653,7 +10653,7 @@ background: rgba(34, 35, 33, 0.88);
 
   pointer-events: none;
 
-  opacity: 0.75;
+  opacity: 0.8;
 
   background:
     linear-gradient(
@@ -10666,7 +10666,7 @@ background: rgba(34, 35, 33, 0.88);
   180deg,
   rgba(12, 20, 15, 0.03) 0%,
   rgba(12, 20, 15, 0.20) 55%,
-  rgba(12, 20, 15, 0.9) 100%
+  rgba(12, 20, 15, 0.93) 100%
 );
 }
 
