@@ -16255,3 +16255,28 @@ margin: 8px 0 0;
 }
 
 
+
+
+
+.overview {
+  background:
+    radial-gradient(
+      ellipse at 75% 15%,
+      rgba(183, 95, 64, 0.20) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      115deg,
+      #21182d 0%,
+      #302039 45%,
+      #251c30 100%
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 12px;
+  color: #f5f0f3;
+}
+
+
+
+
