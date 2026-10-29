@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import dashboardImage from '../assets/welcome/MediaVaultDashMain.png'
 import reviewsImage from '../assets/welcome/MediaVaultReviewFav.png'
 
-import moviesImage from '../assets/welcome/gamesearch.png'
-import gamesImage from '../assets/welcome/Library.png'
+import moviesImage from '../assets/welcome/MediaVaultMSearch.png'
+import gamesImage from '../assets/welcome/MediaVaultGSearch.png'
 import addMediaImage from '../assets/welcome/mediadetail.png'
 
 const slides = [
@@ -16,7 +16,7 @@ const slides = [
       'See your movies, games, favorites, and recent reviews in one place.',
   },
   {
-    image: ,
+    image: moviesImage,
     title: 'Browse Your Media',
     description:
       'Explore your collection with artwork, search, filters, and sorting.',
@@ -29,7 +29,7 @@ const slides = [
       'Record your personal ratings and thoughts about each title.',
   },
   {
-  image: moviesImage,
+  image: addMediaImage,
   title: 'Add to Your Collection',
   description:
     'Search for movies or games and import their details automatically.',
