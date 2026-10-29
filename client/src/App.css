@@ -16399,3 +16399,121 @@ margin: 8px 0 0;
 
 
 
+
+
+/* =========================================================
+   MEDIAVAULT - EDIT PROFILE MODAL REFINEMENT
+   ========================================================= */
+
+/* Overall modal typography */
+
+.profile-edit-modal {
+  font-size: 14px;
+}
+
+/* Main heading */
+
+.profile-edit-modal .auth-header h2 {
+  font-size: 30px;
+  line-height: 1.2;
+}
+
+/* Subtitle */
+
+.profile-edit-modal .auth-header > p:last-child {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #aaa8a5;
+}
+
+/* Form field labels */
+
+.profile-edit-modal .auth-form > label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #d6d0ca;
+}
+
+/* Text inputs */
+
+.profile-edit-modal .auth-form input[type="text"],
+.profile-edit-modal .auth-form textarea {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* File input */
+
+.profile-edit-modal .auth-form input[type="file"] {
+  font-size: 13px;
+}
+
+/* =========================================================
+   PUBLIC PROFILE VISIBILITY
+   ========================================================= */
+
+.profile-edit-modal .profile-visibility-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* Label above checkbox */
+
+.profile-edit-modal .profile-visibility-label {
+  display: block;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #d6d0ca;
+}
+
+/* Small, properly sized checkbox */
+
+.profile-edit-modal .profile-public-checkbox {
+  appearance: auto;
+
+  display: block;
+
+  width: 18px;
+  height: 18px;
+
+  min-width: 18px;
+  min-height: 18px;
+
+  max-width: 18px;
+  max-height: 18px;
+
+  margin: 0;
+  padding: 0;
+
+  flex: none;
+
+  accent-color: #a475bc;
+  cursor: pointer;
+}
+
+/* Visibility description */
+
+.profile-edit-modal .profile-visibility-description {
+  margin: 0;
+
+  color: #aaa8a5;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Save button */
+
+.profile-edit-modal .auth-submit {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
