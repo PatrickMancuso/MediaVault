@@ -229,25 +229,35 @@ function EditProfileModal({
             />
           </label>
 
-          <label className="profile-visibility-setting">
-            <input
-              type="checkbox"
-              checked={publicProfile}
-              onChange={(event) =>
-                setPublicProfile(event.target.checked)
-              }
-            />
+    
+{/* =====================================================
+    PROFILE VISIBILITY
+    ===================================================== */}
 
-            <span>
-              Make my profile public
-            </span>
-          </label>
+<div className="profile-visibility-section">
+  <label
+    htmlFor="profile-public-checkbox"
+    className="profile-visibility-label"
+  >
+    Make my profile public
+  </label>
 
-          <p className="profile-visibility-description">
-            Public profiles will be discoverable by
-            other MediaVault users once social
-            features are enabled.
-          </p>
+  <input
+    id="profile-public-checkbox"
+    type="checkbox"
+    className="profile-public-checkbox"
+    checked={publicProfile}
+    onChange={(event) =>
+      setPublicProfile(event.target.checked)
+    }
+  />
+
+  <p className="profile-visibility-description">
+    Your profile and collection will be visible
+    to other MediaVault users.
+  </p>
+</div>
+
 
           {error && (
             <p className="auth-error" role="alert">
