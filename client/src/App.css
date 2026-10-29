@@ -16308,3 +16308,45 @@ margin: 8px 0 0;
 
 
 
+
+/* Individual overview cards */
+.overview .stat-card {
+  background: #211a2b !important;
+
+  border: 1px solid rgba(190, 160, 200, 0.45);
+  border-radius: 6px;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.18);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Hover effect */
+.overview .stat-card:hover {
+  background: #30233c !important;
+  border-color: #d5a5ba;
+  transform: translateY(-2px);
+}
+
+/* Card labels */
+.overview .stat-label {
+  color: #c8b8cf;
+}
+
+/* Main numbers */
+.overview .stat-value {
+  color: #f8f3f8;
+}
+
+/* Format counts */
+.overview .format-value {
+  color: #f4ad71;
+}
+
+
+
+
