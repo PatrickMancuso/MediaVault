@@ -275,20 +275,22 @@ function AuthModal({
           </button>
         </form>
 
-        {/* FORGOT PASSWORD */}
 
-        {mode === 'signin' && (
-          <div className="auth-forgot">
-            <button
-              type="button"
-              onClick={() =>
-                changeMode('reset')
-              }
-            >
-              Forgot password?
-            </button>
-          </div>
-        )}
+  
+{/* FORGOT PASSWORD */}
+
+{mode === 'signin' && (
+  <div className="auth-forgot">
+    <button
+      type="button"
+      className="auth-forgot-password"
+      onClick={() => changeMode('reset')}
+    >
+      Forgot Password?
+    </button>
+  </div>
+)}
+
 
         {/* SWITCH BETWEEN MODES */}
 
