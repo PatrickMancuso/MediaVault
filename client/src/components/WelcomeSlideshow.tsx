@@ -16,20 +16,20 @@ const slides = [
       'See your movies, games, favorites, and recent reviews in one place.',
   },
   {
-    image: moviesImage,
+    image: reviewsImage,
     title: 'Browse Your Media',
     description:
       'Explore your collection with artwork, search, filters, and sorting.',
   },
 
   {
-    image: reviewsImage,
+    image: addMediaImage,
     title: 'Rate & Review',
     description:
       'Record your personal ratings and thoughts about each title.',
   },
   {
-  image: addMediaImage,
+  image: moviesImage,
   title: 'Add to Your Collection',
   description:
     'Search for movies or games and import their details automatically.',
