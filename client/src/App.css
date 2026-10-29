@@ -8792,11 +8792,14 @@ background:
 .dashboard-overview {
   
 
-  background: linear-gradient(
-    180deg,
-    #8f421f 0%,
-    #4b2419 50%,
-    #1b1418 100%
+ background: linear-gradient(
+    90deg,
+    rgba(46, 28, 61, 0.98) 0%,
+    rgba(88, 48, 93, 0.98) 23%,
+    rgba(152, 71, 99, 0.98) 46%,
+    rgba(185, 101, 70, 0.98) 67%,
+    rgba(117, 64, 94, 0.98) 84%,
+    rgba(48, 32, 61, 0.98) 100%
   );
 
   border-color: rgba(79, 116, 143, 0.48);
