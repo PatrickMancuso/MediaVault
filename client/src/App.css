@@ -16280,3 +16280,31 @@ margin: 8px 0 0;
 
 
 
+
+.overview .stat-card {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 6px;
+  backdrop-filter: blur(8px);
+}
+
+.overview .stat-card:hover {
+  background: rgba(255, 255, 255, 0.075);
+  border-color: rgba(231, 163, 109, 0.30);
+  transition: all 0.2s ease;
+}
+
+.overview .stat-label {
+  color: #c7b7c5;
+}
+
+.overview .stat-value {
+  color: #f5f0f3;
+}
+
+.overview .format-value {
+  color: #e7a36d;
+}
+
+
+
