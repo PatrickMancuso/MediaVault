@@ -181,14 +181,7 @@ function Header({
                 Library
               </span>
 
-              <span
-                className={`library-chevron ${
-                  isLibraryMenuOpen ? 'open' : ''
-                }`}
-                aria-hidden="true"
-              >
-                ▾
-              </span>
+        
 
               <span className="nav-indicator" />
             </button>
