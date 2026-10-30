@@ -16851,3 +16851,21 @@ background: rgba(53, 38, 63, 0.75) !important;
   line-height: 1.6;
 }
 
+
+
+/* =========================================================
+   MEDIAVAULT - FOUR ITEM NAVIGATION
+   ========================================================= */
+
+.site-header .main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.site-header .main-nav > .nav-item,
+.site-header .header-library-wrapper {
+  flex: 0 0 auto;
+}
+
