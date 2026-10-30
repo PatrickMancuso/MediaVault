@@ -16678,3 +16678,121 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 
 
+/* =========================================================
+   MEDIAVAULT - LIBRARY NAVIGATION DROPDOWN
+   ========================================================= */
+
+.header-library-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.header-library-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Dropdown arrow */
+
+.library-chevron {
+  display: inline-block;
+
+  color: #c494de;
+  font-size: 13px;
+
+  transition: transform 180ms ease;
+}
+
+.library-chevron.open {
+  transform: rotate(180deg);
+}
+
+/* Dropdown container */
+
+.library-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 175px;
+  padding: 6px;
+
+  z-index: 1000;
+
+  border: 1px solid rgba(196, 148, 222, 0.35);
+  border-radius: 7px;
+
+  background: linear-gradient(
+    145deg,
+    #392540,
+    #211826
+  );
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Dropdown buttons */
+
+.library-dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  padding: 11px 13px;
+
+  border: none;
+  border-radius: 4px;
+
+  background: transparent;
+  color: #d8cbdc;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  text-align: left;
+  cursor: pointer;
+
+  transition:
+    background 180ms ease,
+    color 180ms ease;
+}
+
+/* Hover */
+
+.library-dropdown-item:hover {
+  background: rgba(196, 148, 222, 0.16);
+  color: #fff;
+}
+
+/* Active library */
+
+.library-dropdown-item.active {
+  background: rgba(196, 148, 222, 0.12);
+  color: #e2b8f1;
+}
+
+/* Chevron */
+
+.library-dropdown-item span:last-child {
+  color: #c494de;
+  font-size: 17px;
+}
+
+/* Prevent dropdown clipping */
+
+.main-nav {
+  overflow: visible;
+}
+
+.header-inner {
+  overflow: visible;
+}
+
