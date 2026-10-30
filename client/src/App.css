@@ -16516,3 +16516,165 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+
+/* =========================================================
+   MEDIAVAULT - SIGN IN / SIGN UP / RESET MODAL
+   ========================================================= */
+
+/* Main authentication modal */
+
+.auth-backdrop > .auth-modal:not(.profile-edit-modal) {
+  font-size: 15px;
+}
+
+/* Eyebrow text */
+
+.auth-modal:not(.profile-edit-modal) .auth-eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+}
+
+/* Main title */
+
+.auth-modal:not(.profile-edit-modal) .auth-header h2 {
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+/* Description under title */
+
+.auth-modal:not(.profile-edit-modal) .auth-header > p:last-child {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Email / Password labels */
+
+.auth-modal:not(.profile-edit-modal) .auth-form label {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #d6d0ca;
+}
+
+/* Input fields */
+
+.auth-modal:not(.profile-edit-modal) .auth-form input {
+  font-size: 15px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+/* Primary submit button */
+
+.auth-modal:not(.profile-edit-modal) .auth-submit {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   FORGOT PASSWORD LINK
+   ========================================================= */
+
+.auth-modal:not(.profile-edit-modal) .auth-forgot {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  margin-top: 10px;
+}
+
+.auth-modal:not(.profile-edit-modal)
+.auth-forgot .auth-forgot-password {
+  appearance: none;
+
+  display: inline-block;
+
+  width: auto;
+  height: auto;
+
+  margin: 0;
+  padding: 4px 0;
+
+  border: 0;
+  border-radius: 0;
+
+  background: transparent;
+  box-shadow: none;
+
+  color: #c494de;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+
+  cursor: pointer;
+
+  transition: color 180ms ease;
+}
+
+.auth-modal:not(.profile-edit-modal)
+.auth-forgot .auth-forgot-password:hover {
+  background: transparent;
+  color: #e2b8f1;
+  text-decoration: underline;
+}
+
+/* =========================================================
+   BOTTOM ACCOUNT SWITCH
+   ========================================================= */
+
+.auth-modal:not(.profile-edit-modal) .auth-switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 7px;
+  margin-top: 20px;
+
+  color: #bdb5b2;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.auth-modal:not(.profile-edit-modal) .auth-switch button {
+  appearance: none;
+
+  width: auto;
+  height: auto;
+
+  margin: 0;
+  padding: 0;
+
+  border: none;
+  background: transparent;
+  box-shadow: none;
+
+  color: #dfa16e;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.auth-modal:not(.profile-edit-modal)
+.auth-switch button:hover {
+  color: #f0bd91;
+  text-decoration: underline;
+}
+
+/* Error and success messages */
+
+.auth-modal:not(.profile-edit-modal) .auth-error,
+.auth-modal:not(.profile-edit-modal) .auth-message {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+
+
