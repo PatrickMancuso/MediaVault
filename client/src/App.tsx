@@ -30,6 +30,7 @@ type View =
   | 'favorites'
   | 'profile'
   | 'collectors'
+  | 'feed'
 
 interface CustomOption {
   id: string
