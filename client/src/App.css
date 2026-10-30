@@ -16869,3 +16869,179 @@ background: rgba(53, 38, 63, 0.75) !important;
   flex: 0 0 auto;
 }
 
+
+
+/* =========================================================
+   MEDIAVAULT - INBOX PAGE
+   ========================================================= */
+
+.inbox-page {
+  width: min(1150px, 90vw);
+  margin: 45px auto;
+  padding: 32px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(196, 148, 222, 0.22);
+  border-radius: 10px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(31, 25, 37, 0.88),
+    rgba(19, 22, 22, 0.9)
+  );
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.18);
+}
+
+/* Header */
+
+.inbox-header {
+  margin-bottom: 28px;
+}
+
+.inbox-eyebrow {
+  display: block;
+  margin-bottom: 10px;
+
+  color: #c494de;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.inbox-header h1 {
+  margin: 0 0 10px;
+
+  color: #f3eae6;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.inbox-header p {
+  margin: 0;
+
+  color: #b8afb9;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Category navigation */
+
+.inbox-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+
+  border-bottom:
+    1px solid rgba(196, 148, 222, 0.16);
+}
+
+.inbox-tab {
+  appearance: none;
+
+  padding: 11px 17px;
+
+  border: 1px solid rgba(196, 148, 222, 0.18);
+  border-radius: 6px;
+
+  background: rgba(42, 32, 47, 0.6);
+  color: #bdb1c1;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.inbox-tab:hover {
+  background: rgba(91, 59, 103, 0.55);
+  color: #f3eae6;
+}
+
+.inbox-tab.active {
+  background: rgba(110, 70, 125, 0.6);
+
+  border-color: rgba(196, 148, 222, 0.55);
+
+  color: #fff;
+}
+
+/* Main content */
+
+.inbox-content {
+  min-height: 330px;
+
+  border: 1px solid rgba(196, 148, 222, 0.12);
+  border-radius: 8px;
+
+  background: rgba(15, 18, 20, 0.55);
+}
+
+/* Empty state */
+
+.inbox-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 330px;
+  padding: 35px;
+
+  text-align: center;
+}
+
+.inbox-empty-icon {
+  margin-bottom: 16px;
+
+  color: #c494de;
+  font-size: 38px;
+}
+
+.inbox-empty h2 {
+  margin: 0 0 10px;
+
+  color: #f3eae6;
+  font-size: 21px;
+}
+
+.inbox-empty p {
+  max-width: 420px;
+  margin: 0;
+
+  color: #aaa0ac;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Mobile */
+
+@media (max-width: 650px) {
+  .inbox-page {
+    width: 94vw;
+    padding: 20px;
+    margin: 25px auto;
+  }
+
+  .inbox-tabs {
+    gap: 6px;
+  }
+
+  .inbox-tab {
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+}
+
+
