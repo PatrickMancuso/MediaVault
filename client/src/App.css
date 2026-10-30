@@ -16861,7 +16861,7 @@ background: rgba(53, 38, 63, 0.75) !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 7px;
 }
 
 .site-header .main-nav > .nav-item,
