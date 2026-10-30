@@ -226,9 +226,28 @@ function Header({
             }`}
             onClick={() => navigateTo('feed')}
           >
-            <span className="nav-label">Feed</span>
+            <span className="nav-label">Activity</span>
             <span className="nav-indicator" />
           </button>
+
+
+          
+{/* DISCOVER - VISUAL PLACEHOLDER */}
+
+<button
+  type="button"
+  className="nav-item"
+  onClick={() => {
+    // Discover page coming soon.
+  }}
+>
+  <span className="nav-label">
+    Discover
+  </span>
+
+  <span className="nav-indicator" />
+</button>
+
 
         </nav>
 
