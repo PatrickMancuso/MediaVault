@@ -16796,3 +16796,58 @@ background: rgba(53, 38, 63, 0.75) !important;
   overflow: visible;
 }
 
+
+
+
+
+/* =========================================================
+   MEDIAVAULT - FEED PAGE FOUNDATION
+   ========================================================= */
+
+.feed-page {
+  width: min(1200px, 90vw);
+  margin: 45px auto;
+  padding: 32px;
+
+  border: 1px solid rgba(196, 148, 222, 0.2);
+  border-radius: 10px;
+
+  background: rgba(18, 20, 20, 0.85);
+}
+
+.feed-header h1 {
+  margin: 0 0 8px;
+  color: #f3eae6;
+  font-size: 30px;
+}
+
+.feed-header p {
+  margin: 0;
+  color: #aaa0ac;
+  font-size: 14px;
+}
+
+.feed-empty {
+  margin-top: 30px;
+  padding: 50px 25px;
+
+  border: 1px dashed rgba(196, 148, 222, 0.25);
+  border-radius: 8px;
+
+  text-align: center;
+  background: rgba(37, 30, 40, 0.4);
+}
+
+.feed-empty h2 {
+  margin: 0 0 10px;
+  color: #f3eae6;
+  font-size: 20px;
+}
+
+.feed-empty p {
+  margin: 0;
+  color: #aaa0ac;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
