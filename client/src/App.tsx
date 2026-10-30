@@ -19,6 +19,7 @@ import ResetPassword from './components/ResetPassword'
 import ProfilePage from './components/ProfilePage'
 import FindCollectors from './components/FindCollectors'
 import PublicProfilePage from './components/PublicProfilePage'
+import FeedPage from './components/FeedPage'
 
 import type { MediaItem } from './data/sampleMedia'
 import './App.css'
@@ -1613,7 +1614,13 @@ if (!user) {
         setSelectedCollectorId(userId)
       }}
     />
+
   )
+
+) : activeView === 'feed' ? (
+
+  <FeedPage />
+
 ) : activeView === 'profile' ? (
 
   <ProfilePage
@@ -1623,7 +1630,9 @@ if (!user) {
     onSignOut={() => void handleSignOut()}
     onSelectMedia={handleSelect}
   />
+
 ) : activeView === 'collection' ? (
+
 
 
 
