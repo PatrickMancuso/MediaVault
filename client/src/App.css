@@ -17045,3 +17045,88 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+/* =========================================================
+   MEDIAVAULT - PUBLIC PROFILE FRIENDSHIP
+   ========================================================= */
+
+.public-profile-page .public-profile-friendship {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+
+  margin-left: auto;
+}
+
+.public-friend-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.public-friend-button {
+  padding: 11px 17px;
+
+  border: 1px solid rgba(196, 148, 222, 0.4);
+  border-radius: 6px;
+
+  background: linear-gradient(
+    145deg,
+    #69416e,
+    #38243f
+  );
+
+  color: #f3eae6;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.public-friend-button:hover:not(:disabled) {
+  border-color: #c494de;
+  transform: translateY(-2px);
+}
+
+.public-friend-button.secondary,
+.public-friend-button.pending,
+.public-friend-button.connected {
+  background: rgba(35, 29, 39, 0.85);
+}
+
+.public-friend-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.public-friend-status {
+  color: #aaa0ac;
+  font-size: 13px;
+}
+
+.public-friend-error {
+  max-width: 260px;
+  margin: 0;
+
+  color: #e6a0a0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+  .public-profile-page .public-profile-friendship {
+    width: 100%;
+    align-items: flex-start;
+    margin-left: 0;
+  }
+}
+
+
+
