@@ -9,6 +9,7 @@ type View =
   | 'profile'
   | 'collectors'
   | 'feed'
+  | 'inbox'
 
 interface HeaderProps {
   activeView: View
@@ -297,6 +298,21 @@ function Header({
                 className="account-menu"
                 role="menu"
               >
+
+
+                
+{/* INBOX */}
+
+<button
+  type="button"
+  className="account-menu-item"
+  role="menuitem"
+  onClick={() => navigateTo('inbox')}
+>
+  <span>Inbox</span>
+  <span aria-hidden="true">›</span>
+</button>
+
 
                 {/* PROFILE */}
 
