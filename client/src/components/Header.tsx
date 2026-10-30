@@ -8,6 +8,7 @@ type View =
   | 'favorites'
   | 'profile'
   | 'collectors'
+  | 'feed'
 
 interface HeaderProps {
   activeView: View
@@ -24,85 +25,80 @@ function Header({
   onAccount,
   userEmail,
 }: HeaderProps) {
-  const [
-    isAccountMenuOpen,
-    setIsAccountMenuOpen,
-  ] = useState(false)
+  const [isAccountMenuOpen, setIsAccountMenuOpen] =
+    useState(false)
 
-  const accountMenuRef =
-    useRef<HTMLDivElement>(null)
+  const [isLibraryMenuOpen, setIsLibraryMenuOpen] =
+    useState(false)
 
-  const navigation = [
-    {
-      id: 'collection' as const,
-      label: 'Collection',
-    },
-    {
-      id: 'movies' as const,
-      label: 'Movies',
-    },
-    {
-      id: 'games' as const,
-      label: 'Games',
-    },
-    {
-      id: 'favorites' as const,
-      label: 'Favorites',
-    },
-  ]
+  const accountMenuRef = useRef<HTMLDivElement>(null)
+  const libraryMenuRef = useRef<HTMLDivElement>(null)
+
+  const isLibraryActive =
+    activeView === 'movies' || activeView === 'games'
 
   /* =====================================================
-     CLOSE DROPDOWN WHEN CLICKING OUTSIDE
+     CLOSE DROPDOWNS
      ===================================================== */
 
   useEffect(() => {
-    const handleOutsideClick = (
-      event: MouseEvent,
-    ) => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      const target = event.target as Node
+
       if (
         accountMenuRef.current &&
-        !accountMenuRef.current.contains(
-          event.target as Node,
-        )
+        !accountMenuRef.current.contains(target)
       ) {
         setIsAccountMenuOpen(false)
       }
+
+      if (
+        libraryMenuRef.current &&
+        !libraryMenuRef.current.contains(target)
+      ) {
+        setIsLibraryMenuOpen(false)
+      }
     }
 
-    const handleEscape = (
-      event: KeyboardEvent,
-    ) => {
+    const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setIsAccountMenuOpen(false)
+        setIsLibraryMenuOpen(false)
       }
     }
 
     document.addEventListener(
       'mousedown',
-      handleOutsideClick,
+      handleOutsideClick
     )
 
     document.addEventListener(
       'keydown',
-      handleEscape,
+      handleEscape
     )
 
     return () => {
       document.removeEventListener(
         'mousedown',
-        handleOutsideClick,
+        handleOutsideClick
       )
 
       document.removeEventListener(
         'keydown',
-        handleEscape,
+        handleEscape
       )
     }
   }, [])
 
   /* =====================================================
-     ACCOUNT MENU
+     NAVIGATION HANDLERS
      ===================================================== */
+
+  const navigateTo = (view: View) => {
+    setIsAccountMenuOpen(false)
+    setIsLibraryMenuOpen(false)
+    onViewChange(view)
+  }
 
   const handleAccountClick = () => {
     if (!userEmail) {
@@ -110,21 +106,14 @@ function Header({
       return
     }
 
-    setIsAccountMenuOpen(
-      (current) => !current,
-    )
+    setIsLibraryMenuOpen(false)
+    setIsAccountMenuOpen((current) => !current)
   }
 
-  const handleProfileClick = () => {
+  const handleLibraryClick = () => {
     setIsAccountMenuOpen(false)
-    onViewChange('profile')
+    setIsLibraryMenuOpen((current) => !current)
   }
-
-
-  const handleCollectorsClick = () => {
-  setIsAccountMenuOpen(false)
-  onViewChange('collectors')
-}
 
   /* =====================================================
      HEADER
@@ -139,10 +128,8 @@ function Header({
         <button
           type="button"
           className="brand-console"
-          onClick={() =>
-            onViewChange('collection')
-          }
-          aria-label="Go to collection"
+          onClick={() => navigateTo('collection')}
+          aria-label="Go to home"
         >
           <span className="brand-light" />
 
@@ -161,26 +148,95 @@ function Header({
           className="main-nav"
           aria-label="Main navigation"
         >
-          {navigation.map((item) => (
+
+          {/* HOME */}
+
+          <button
+            type="button"
+            className={`nav-item ${
+              activeView === 'collection' ? 'active' : ''
+            }`}
+            onClick={() => navigateTo('collection')}
+          >
+            <span className="nav-label">Home</span>
+            <span className="nav-indicator" />
+          </button>
+
+          {/* LIBRARY DROPDOWN */}
+
+          <div
+            className="header-library-wrapper"
+            ref={libraryMenuRef}
+          >
             <button
-              key={item.id}
               type="button"
-              className={`nav-item ${
-                activeView === item.id
-                  ? 'active'
-                  : ''
+              className={`nav-item header-library-trigger ${
+                isLibraryActive ? 'active' : ''
               }`}
-              onClick={() =>
-                onViewChange(item.id)
-              }
+              onClick={handleLibraryClick}
+              aria-expanded={isLibraryMenuOpen}
+              aria-haspopup="true"
             >
               <span className="nav-label">
-                {item.label}
+                Library
+              </span>
+
+              <span
+                className={`library-chevron ${
+                  isLibraryMenuOpen ? 'open' : ''
+                }`}
+                aria-hidden="true"
+              >
+                ▾
               </span>
 
               <span className="nav-indicator" />
             </button>
-          ))}
+
+            {isLibraryMenuOpen && (
+              <div className="library-dropdown">
+                <button
+                  type="button"
+                  className={`library-dropdown-item ${
+                    activeView === 'movies'
+                      ? 'active'
+                      : ''
+                  }`}
+                  onClick={() => navigateTo('movies')}
+                >
+                  <span>Movies</span>
+                  <span aria-hidden="true">›</span>
+                </button>
+
+                <button
+                  type="button"
+                  className={`library-dropdown-item ${
+                    activeView === 'games'
+                      ? 'active'
+                      : ''
+                  }`}
+                  onClick={() => navigateTo('games')}
+                >
+                  <span>Games</span>
+                  <span aria-hidden="true">›</span>
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* FEED */}
+
+          <button
+            type="button"
+            className={`nav-item ${
+              activeView === 'feed' ? 'active' : ''
+            }`}
+            onClick={() => navigateTo('feed')}
+          >
+            <span className="nav-label">Feed</span>
+            <span className="nav-indicator" />
+          </button>
+
         </nav>
 
         {/* HEADER ACTIONS */}
@@ -194,10 +250,7 @@ function Header({
             className="header-add-media"
             onClick={onAddMedia}
           >
-            <span className="header-add-icon">
-              +
-            </span>
-
+            <span className="header-add-icon">+</span>
             <span>Add Media</span>
           </button>
 
@@ -213,9 +266,7 @@ function Header({
               onClick={handleAccountClick}
               aria-label="Open account menu"
               aria-expanded={
-                userEmail
-                  ? isAccountMenuOpen
-                  : undefined
+                userEmail ? isAccountMenuOpen : undefined
               }
               aria-haspopup="menu"
             >
@@ -229,40 +280,50 @@ function Header({
               </span>
             </button>
 
-           
-{/* ACCOUNT DROPDOWN */}
+            {userEmail && isAccountMenuOpen && (
+              <div
+                className="account-menu"
+                role="menu"
+              >
 
-{userEmail && isAccountMenuOpen && (
-  <div
-    className="account-menu"
-    role="menu"
-  >
-    {/* PROFILE */}
+                {/* PROFILE */}
 
-    <button
-      type="button"
-      className="account-menu-item"
-      role="menuitem"
-      onClick={handleProfileClick}
-    >
-      <span>Profile</span>
-      <span aria-hidden="true">›</span>
-    </button>
+                <button
+                  type="button"
+                  className="account-menu-item"
+                  role="menuitem"
+                  onClick={() => navigateTo('profile')}
+                >
+                  <span>Profile</span>
+                  <span aria-hidden="true">›</span>
+                </button>
 
-    {/* FIND COLLECTORS */}
+                {/* FIND COLLECTORS */}
 
-    <button
-      type="button"
-      className="account-menu-item"
-      role="menuitem"
-      onClick={handleCollectorsClick}
-    >
-      <span>Find Collectors</span>
-      <span aria-hidden="true">›</span>
-    </button>
-  </div>
-)}
+                <button
+                  type="button"
+                  className="account-menu-item"
+                  role="menuitem"
+                  onClick={() => navigateTo('collectors')}
+                >
+                  <span>Find Collectors</span>
+                  <span aria-hidden="true">›</span>
+                </button>
 
+                {/* FAVORITES */}
+
+                <button
+                  type="button"
+                  className="account-menu-item"
+                  role="menuitem"
+                  onClick={() => navigateTo('favorites')}
+                >
+                  <span>Favorites</span>
+                  <span aria-hidden="true">›</span>
+                </button>
+
+              </div>
+            )}
           </div>
 
         </div>
