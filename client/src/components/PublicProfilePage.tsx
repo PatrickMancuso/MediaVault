@@ -33,6 +33,14 @@ interface PublicProfilePageProps {
 }
 
 
+interface Friendship {
+  id: string
+  requester_id: string
+  receiver_id: string
+  status: 'pending' | 'accepted' | 'declined'
+}
+
+
 /* =====================================================
    MEDIAVAULT - FORMAT DISPLAY NAMES
    ===================================================== */
@@ -91,6 +99,22 @@ function PublicProfilePage({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
+
+const [currentUserId, setCurrentUserId] =
+  useState<string | null>(null)
+
+const [friendship, setFriendship] =
+  useState<Friendship | null>(null)
+
+const [friendshipLoading, setFriendshipLoading] =
+  useState(true)
+
+const [friendshipSaving, setFriendshipSaving] =
+  useState(false)
+
+const [friendshipError, setFriendshipError] =
+  useState('')
+  
   const [collectionType, setCollectionType] =
   useState<'movie' | 'game'>('movie')
 
@@ -146,12 +170,178 @@ const [collectionDisplay, setCollectionDisplay] =
       setLoading(false)
     }
 
+    
     void loadPublicProfile()
 
     return () => {
       cancelled = true
     }
   }, [collectorId])
+
+
+  /* =====================================================
+     LOAD FRIENDSHIP STATUS
+     ===================================================== */
+
+  useEffect(() => {
+    let cancelled = false
+
+    const loadFriendship = async () => {
+      setFriendshipLoading(true)
+      setFriendshipError('')
+      setFriendship(null)
+      setCurrentUserId(null)
+
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser()
+
+      if (cancelled) return
+
+      if (userError || !userData.user) {
+        setFriendshipError(
+          'Sign in to manage friendships.'
+        )
+        setFriendshipLoading(false)
+        return
+      }
+
+      const userId = userData.user.id
+      setCurrentUserId(userId)
+
+      if (userId === collectorId) {
+        setFriendshipLoading(false)
+        return
+      }
+
+      const { data, error: lookupError } =
+        await supabase
+          .from('friendships')
+          .select(
+            'id, requester_id, receiver_id, status'
+          )
+          .or(
+            `and(requester_id.eq.${userId},receiver_id.eq.${collectorId}),and(requester_id.eq.${collectorId},receiver_id.eq.${userId})`
+          )
+          .maybeSingle()
+
+      if (cancelled) return
+
+      if (lookupError) {
+        console.error(lookupError)
+        setFriendshipError(
+          'Unable to load friendship status.'
+        )
+      } else {
+        setFriendship(data as Friendship | null)
+      }
+
+      setFriendshipLoading(false)
+    }
+
+    void loadFriendship()
+
+    return () => {
+      cancelled = true
+    }
+  }, [collectorId])
+
+
+
+
+  
+/* =====================================================
+   FRIENDSHIP ACTIONS
+   ===================================================== */
+
+const handleFriendshipAction = async (
+  action: 'send' | 'accept' | 'decline' | 'cancel' | 'remove'
+) => {
+  if (
+    friendshipSaving ||
+    friendshipLoading ||
+    !currentUserId
+  ) return
+
+  setFriendshipSaving(true)
+  setFriendshipError('')
+
+  try {
+    let result
+
+    switch (action) {
+      case 'send':
+        result = await supabase.rpc(
+          'send_friend_request',
+          { target_user_id: collectorId }
+        )
+        break
+
+      case 'accept':
+      case 'decline':
+        if (!friendship) return
+
+        result = await supabase.rpc(
+          'respond_to_friend_request',
+          {
+            request_id: friendship.id,
+            response:
+              action === 'accept'
+                ? 'accepted'
+                : 'declined',
+          }
+        )
+        break
+
+      case 'cancel':
+        if (!friendship) return
+
+        result = await supabase.rpc(
+          'cancel_friend_request',
+          { request_id: friendship.id }
+        )
+        break
+
+      case 'remove':
+        if (!friendship) return
+
+        result = await supabase.rpc(
+          'remove_friend',
+          { friendship_id: friendship.id }
+        )
+        break
+    }
+
+    if (result?.error) throw result.error
+
+    const { data, error } = await supabase
+      .from('friendships')
+      .select(
+        'id, requester_id, receiver_id, status'
+      )
+      .or(
+        `and(requester_id.eq.${currentUserId},receiver_id.eq.${collectorId}),and(requester_id.eq.${collectorId},receiver_id.eq.${currentUserId})`
+      )
+      .maybeSingle()
+
+    if (error) throw error
+
+    setFriendship(data as Friendship | null)
+  } catch (err) {
+    setFriendshipError(
+      err instanceof Error
+        ? err.message
+        : 'Unable to update friendship.'
+    )
+  } finally {
+    setFriendshipSaving(false)
+  }
+}
+
+
+
+  /* =====================================================
+     EXISTING MOVIES AND GAMES
+     ===================================================== */
 
   const movies = useMemo(
     () => media.filter((item) => item.type === 'movie'),
@@ -162,6 +352,7 @@ const [collectionDisplay, setCollectionDisplay] =
     () => media.filter((item) => item.type === 'game'),
     [media]
   )
+
 
   const totalReviews = useMemo(
     () =>
@@ -292,6 +483,8 @@ const renderCompactCollection = () => (
     )
   }
 
+
+
   const displayName =
     profile.display_name || profile.username
 
@@ -306,9 +499,14 @@ const renderCompactCollection = () => (
       </button>
 
       <div className="profile-hero">
+
+        {/* PROFILE PICTURE */}
+
         <div className="profile-avatar">
           {displayName.charAt(0).toUpperCase()}
         </div>
+
+        {/* PROFILE INFORMATION */}
 
         <div className="profile-identity">
           <span className="profile-eyebrow">
@@ -323,13 +521,114 @@ const renderCompactCollection = () => (
 
           <p>{profile.bio || 'No bio added yet.'}</p>
         </div>
+
+        {/* FRIENDSHIP CONTROLS */}
+
+        {currentUserId !== collectorId && (
+          <div className="public-profile-friendship">
+
+            {friendshipLoading ? (
+              <button
+                type="button"
+                className="public-friend-button"
+                disabled
+              >
+                Loading...
+              </button>
+            ) : friendship?.status === 'accepted' ? (
+              <button
+                type="button"
+                className="public-friend-button connected"
+                disabled={friendshipSaving}
+                onClick={() => {
+  if (
+    window.confirm(
+      'Are you sure you want to remove this friend?'
+    )
+  ) {
+    void handleFriendshipAction('remove')
+  }
+}}
+              >
+                ✓ Friends
+              </button>
+            ) : friendship?.status === 'pending' ? (
+              friendship.requester_id === currentUserId ? (
+                <button
+                  type="button"
+                  className="public-friend-button pending"
+                  disabled={friendshipSaving}
+                  onClick={() =>
+                    handleFriendshipAction('cancel')
+                  }
+                >
+                  Request Pending · Cancel
+                </button>
+              ) : (
+                <div className="public-friend-actions">
+                  <button
+                    type="button"
+                    className="public-friend-button"
+                    disabled={friendshipSaving}
+                    onClick={() =>
+                      handleFriendshipAction('accept')
+                    }
+                  >
+                    Accept Request
+                  </button>
+
+                  <button
+                    type="button"
+                    className="public-friend-button secondary"
+                    disabled={friendshipSaving}
+                    onClick={() =>
+                      handleFriendshipAction('decline')
+                    }
+                  >
+                    Decline
+                  </button>
+                </div>
+              )
+            ) : friendship?.status === 'declined' ? (
+              <span className="public-friend-status">
+                Request declined
+              </span>
+            ) : (
+              <button
+                type="button"
+                className="public-friend-button"
+                disabled={friendshipSaving || !currentUserId}
+                onClick={() =>
+                  handleFriendshipAction('send')
+                }
+              >
+                + Add Friend
+              </button>
+            )}
+
+            {friendshipError && (
+              <p
+                className="public-friend-error"
+                role="alert"
+              >
+                {friendshipError}
+              </p>
+            )}
+
+          </div>
+        )}
+
       </div>
 
+      {/* PROFILE STATISTICS */}
+
       <div className="profile-stats">
-        <div className="profile-stat">
-          <span>TOTAL TITLES</span>
-          <strong>{media.length}</strong>
-        </div>
+
+<div className="profile-stat">
+  <span>TOTAL TITLES</span>
+  <strong>{media.length}</strong>
+</div>
+        
 
         <div className="profile-stat">
           <span>MOVIES</span>
