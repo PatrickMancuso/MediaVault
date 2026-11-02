@@ -17130,3 +17130,172 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 
 
+
+
+
+/* =========================================================
+   MEDIAVAULT - INBOX FRIEND REQUESTS
+   ========================================================= */
+
+.inbox-request-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+}
+
+.inbox-request-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 20px;
+
+  border: 1px solid rgba(196, 148, 222, 0.22);
+  border-radius: 8px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(48, 36, 54, 0.8),
+    rgba(27, 26, 32, 0.85)
+  );
+}
+
+.inbox-request-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+
+  border: 1px solid rgba(196, 148, 222, 0.45);
+  border-radius: 50%;
+
+  background: rgba(107, 65, 116, 0.65);
+
+  color: #f3eae6;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.inbox-request-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  flex: 1;
+  min-width: 0;
+}
+
+.inbox-request-info strong {
+  color: #f3eae6;
+  font-size: 15px;
+}
+
+.inbox-request-username {
+  color: #c494de;
+  font-size: 13px;
+}
+
+.inbox-request-info p {
+  margin: 4px 0 0;
+
+  color: #c4bac6;
+  font-size: 14px;
+}
+
+.inbox-request-info small {
+  margin-top: 3px;
+
+  color: #918793;
+  font-size: 12px;
+}
+
+.inbox-request-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inbox-accept-button,
+.inbox-decline-button {
+  padding: 10px 16px;
+
+  border-radius: 6px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.inbox-accept-button {
+  border: 1px solid rgba(196, 148, 222, 0.5);
+  background: #69416e;
+  color: #fff;
+}
+
+.inbox-accept-button:hover:not(:disabled) {
+  background: #81528b;
+}
+
+.inbox-decline-button {
+  border: 1px solid rgba(196, 148, 222, 0.25);
+  background: rgba(34, 29, 38, 0.9);
+  color: #d3c7d7;
+}
+
+.inbox-decline-button:hover:not(:disabled) {
+  background: rgba(75, 51, 82, 0.75);
+}
+
+.inbox-accept-button:disabled,
+.inbox-decline-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.inbox-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 19px;
+  height: 19px;
+
+  margin-left: 8px;
+  padding: 0 5px;
+
+  border-radius: 10px;
+
+  background: rgba(196, 148, 222, 0.25);
+  color: #f3eae6;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+@media (max-width: 650px) {
+  .inbox-request-card {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .inbox-request-actions {
+    width: 100%;
+  }
+
+  .inbox-request-actions button {
+    flex: 1;
+  }
+}
+
+
