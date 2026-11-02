@@ -17299,3 +17299,285 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+
+/* =========================================================
+   MEDIAVAULT - FRIEND ACTIVITY FEED
+   ========================================================= */
+
+/* Header */
+
+.feed-header-expanded {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.feed-eyebrow {
+  display: block;
+  margin-bottom: 9px;
+
+  color: #c494de;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+/* Refresh */
+
+.feed-refresh {
+  padding: 10px 16px;
+
+  border: 1px solid rgba(196, 148, 222, 0.35);
+  border-radius: 6px;
+
+  background: rgba(75, 48, 85, 0.65);
+  color: #e8d9eb;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.feed-refresh:hover:not(:disabled) {
+  background: rgba(105, 65, 110, 0.85);
+}
+
+.feed-refresh:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Filters */
+
+.feed-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  margin: 25px 0;
+  padding-bottom: 18px;
+
+  border-bottom: 1px solid rgba(196, 148, 222, 0.16);
+}
+
+.feed-filter {
+  padding: 10px 16px;
+
+  border: 1px solid rgba(196, 148, 222, 0.2);
+  border-radius: 6px;
+
+  background: rgba(42, 32, 47, 0.65);
+  color: #bdb1c1;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.feed-filter:hover {
+  background: rgba(91, 59, 103, 0.55);
+  color: #fff;
+}
+
+.feed-filter.active {
+  background: rgba(110, 70, 125, 0.65);
+  border-color: rgba(196, 148, 222, 0.55);
+  color: #fff;
+}
+
+/* Activity list */
+
+.feed-activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Activity card */
+
+.feed-activity-card {
+  padding: 22px;
+
+  border: 1px solid rgba(196, 148, 222, 0.2);
+  border-radius: 9px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(45, 35, 49, 0.78),
+    rgba(22, 24, 26, 0.88)
+  );
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Collector header */
+
+.feed-activity-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 18px;
+}
+
+.feed-user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+
+  border: 1px solid rgba(196, 148, 222, 0.4);
+  border-radius: 50%;
+
+  background: rgba(105, 65, 110, 0.7);
+  color: #fff;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.feed-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.feed-user-info strong {
+  color: #f3eae6;
+  font-size: 15px;
+}
+
+.feed-user-info span {
+  color: #aaa0ac;
+  font-size: 12px;
+}
+
+/* Media layout */
+
+.feed-activity-media {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.feed-activity-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 115px;
+  width: 115px;
+  height: 170px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(214, 220, 211, 0.15);
+  border-radius: 5px;
+
+  background: #101311;
+}
+
+.feed-activity-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.feed-activity-art span {
+  padding: 10px;
+  color: #ddd3dd;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Media information */
+
+.feed-activity-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.feed-activity-details h2 {
+  margin: 0 0 7px;
+  color: #f3eae6;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.feed-activity-meta {
+  margin: 0 0 12px;
+  color: #aaa0ac;
+  font-size: 13px;
+}
+
+.feed-activity-rating {
+  margin-bottom: 10px;
+  color: #e6a26c;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+
+.feed-activity-review {
+  margin: 0;
+  color: #d1c7d2;
+  font-size: 14px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.feed-activity-description {
+  margin: 0;
+  color: #b8adb9;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Mobile */
+
+@media (max-width: 650px) {
+  .feed-header-expanded {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .feed-activity-card {
+    padding: 16px;
+  }
+
+  .feed-activity-media {
+    gap: 13px;
+  }
+
+  .feed-activity-art {
+    flex-basis: 85px;
+    width: 85px;
+    height: 128px;
+  }
+
+  .feed-activity-details h2 {
+    font-size: 17px;
+  }
+
+  .feed-activity-review {
+    font-size: 13px;
+  }
+}
+
+
