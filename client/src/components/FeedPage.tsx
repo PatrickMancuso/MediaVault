@@ -20,6 +20,82 @@ interface ActivityItem {
   activity_at: string
 }
 
+
+interface AdditionGroup {
+  kind: 'additions'
+  userId: string
+  username: string | null
+  displayName: string | null
+  items: ActivityItem[]
+  activityAt: string
+}
+
+interface ReviewEntry {
+  kind: 'review'
+  item: ActivityItem
+  activityAt: string
+}
+
+type FeedEntry = AdditionGroup | ReviewEntry
+
+const groupActivity = (
+  activities: ActivityItem[]
+): FeedEntry[] => {
+  const entries: FeedEntry[] = []
+  const additions = activities
+    .filter(item => item.activity_type === 'addition')
+  .sort((a, b) =>
+  new Date(b.activity_at).getTime() -
+  new Date(a.activity_at).getTime()
+)
+
+  const groups = new Map<string, AdditionGroup>()
+
+  for (const item of additions) {
+    const day = item.activity_at.slice(0, 10)
+    const key = `${item.user_id}-${day}`
+
+    let group = groups.get(key)
+
+    if (!group) {
+      group = {
+        kind: 'additions',
+        userId: item.user_id,
+        username: item.username,
+        displayName: item.display_name,
+        items: [],
+        activityAt: item.activity_at,
+      }
+
+      groups.set(key, group)
+    }
+
+    group.items.push(item)
+
+    if (item.activity_at > group.activityAt) {
+      group.activityAt = item.activity_at
+    }
+  }
+
+  entries.push(...groups.values())
+
+  for (const item of activities) {
+    if (item.activity_type === 'review') {
+      entries.push({
+        kind: 'review',
+        item,
+        activityAt: item.activity_at,
+      })
+    }
+  }
+
+  return entries.sort((a, b) =>
+    new Date(b.activityAt).getTime() -
+    new Date(a.activityAt).getTime()
+  )
+}
+
+
 const formatLabels: Record<string, string> = {
   dvd: 'DVD',
   vhs: 'VHS',
@@ -127,6 +203,8 @@ function FeedPage() {
             item.activity_type === activeFilter
         )
 
+  const groupedEntries = groupActivity(filteredActivities)
+
   const filters: {
     id: ActivityFilter
     label: string
@@ -215,53 +293,55 @@ function FeedPage() {
                 : 'No recent reviews from your friends.'}
           </p>
         </div>
-      ) : (
-        <div className="feed-activity-list">
+     
+) : (
+  <div className="feed-activity-list">
 
-          {filteredActivities.map((item) => {
-            const collectorName =
-              item.display_name ||
-              item.username ||
-              'MediaVault Collector'
+    {groupedEntries.map((entry) => {
 
-            const isReview =
-              item.activity_type === 'review'
+      /* =============================================
+         GROUPED ADDITIONS
+         ============================================= */
 
-            return (
-              <article
-                key={`${item.media_id}-${item.activity_type}`}
-                className="feed-activity-card"
-              >
+      if (entry.kind === 'additions') {
+        const collectorName =
+          entry.displayName ||
+          entry.username ||
+          'MediaVault Collector'
 
-                {/* COLLECTOR */}
+        return (
+          <article
+            key={`additions-${entry.userId}-${entry.activityAt}`}
+            className="feed-activity-card feed-addition-group"
+          >
 
-                <div className="feed-activity-user">
-                  <div className="feed-user-avatar">
-                    {collectorName
-                      .charAt(0)
-                      .toUpperCase()}
-                  </div>
+            <div className="feed-activity-user">
+              <div className="feed-user-avatar">
+                {collectorName.charAt(0).toUpperCase()}
+              </div>
 
-                  <div className="feed-user-info">
-                    <strong>{collectorName}</strong>
+              <div className="feed-user-info">
+                <strong>{collectorName}</strong>
 
-                    <span>
-                      {isReview
-                        ? 'Reviewed a title'
-                        : 'Added to their collection'}
-                      {' · '}
-                      {formatActivityDate(
-                        item.activity_at
-                      )}
-                    </span>
-                  </div>
-                </div>
+                <span>
+                  Added {entry.items.length}{' '}
+                  {entry.items.length === 1
+                    ? 'title'
+                    : 'titles'}
+                  {' · '}
+                  {formatActivityDate(entry.activityAt)}
+                </span>
+              </div>
+            </div>
 
-                {/* MEDIA */}
+            <div className="feed-addition-track">
 
-                <div className="feed-activity-media">
-
-                  <div className="feed-activity-art">
+              {entry.items.map((item) => (
+                <div
+                  key={item.media_id}
+                  className="feed-addition-item"
+                >
+                  <div className="feed-addition-art">
                     {item.cover_image ? (
                       <img
                         src={item.cover_image}
@@ -273,63 +353,118 @@ function FeedPage() {
                     )}
                   </div>
 
-                  <div className="feed-activity-details">
-                    <h2>{item.title}</h2>
+                  <strong title={item.title}>
+                    {item.title}
+                  </strong>
 
-                    <p className="feed-activity-meta">
-                      {item.media_type === 'game'
-                        ? 'Game'
-                        : 'Movie'}
-                      {' · '}
-                      {item.media_year}
-                      {' · '}
-                      {getFormatName(
-                        item.media_format
-                      )}
-                    </p>
-
-                    {isReview &&
-                      item.personal_rating !== null && (
-                        <div className="feed-activity-rating">
-                          {'★'.repeat(
-                            Math.max(
-                              0,
-                              Math.min(
-                                5,
-                                Math.round(
-                                  item.personal_rating
-                                )
-                              )
-                            )
-                          )}
-                        </div>
-                      )}
-
-                    {isReview &&
-                      item.personal_review && (
-                        <p className="feed-activity-review">
-                          {item.personal_review}
-                        </p>
-                      )}
-
-                    {!isReview && (
-                      <p className="feed-activity-description">
-                        Added this title to their
-                        MediaVault collection.
-                      </p>
-                    )}
-                  </div>
+                  <small>
+                    {item.media_year}
+                    {' · '}
+                    {getFormatName(item.media_format)}
+                  </small>
                 </div>
+              ))}
 
-              </article>
-            )
-          })}
+            </div>
 
-        </div>
-      )}
+          </article>
+        )
+      }
+
+      /* =============================================
+         INDIVIDUAL REVIEWS
+         ============================================= */
+
+      const item = entry.item
+
+      const collectorName =
+        item.display_name ||
+        item.username ||
+        'MediaVault Collector'
+
+      return (
+        <article
+          key={`review-${item.media_id}`}
+          className="feed-activity-card feed-review-card"
+        >
+
+          <div className="feed-activity-user">
+            <div className="feed-user-avatar">
+              {collectorName.charAt(0).toUpperCase()}
+            </div>
+
+            <div className="feed-user-info">
+              <strong>{collectorName}</strong>
+
+              <span>
+                Reviewed a title
+                {' · '}
+                {formatActivityDate(item.activity_at)}
+              </span>
+            </div>
+          </div>
+
+          <div className="feed-activity-media">
+
+            <div className="feed-activity-art">
+              {item.cover_image ? (
+                <img
+                  src={item.cover_image}
+                  alt={item.title}
+                  loading="lazy"
+                />
+              ) : (
+                <span>{item.title}</span>
+              )}
+            </div>
+
+            <div className="feed-activity-details">
+              <h2>{item.title}</h2>
+
+              <p className="feed-activity-meta">
+                {item.media_type === 'game'
+                  ? 'Game'
+                  : 'Movie'}
+                {' · '}
+                {item.media_year}
+                {' · '}
+                {getFormatName(item.media_format)}
+              </p>
+
+              {item.personal_rating !== null && (
+                <div className="feed-activity-rating">
+                  {'★'.repeat(
+                    Math.max(
+                      0,
+                      Math.min(
+                        5,
+                        Math.round(item.personal_rating)
+                      )
+                    )
+                  )}
+                </div>
+              )}
+
+              {item.personal_review && (
+                <p className="feed-activity-review">
+                  {item.personal_review}
+                </p>
+              )}
+            </div>
+
+          </div>
+
+        </article>
+      )
+
+    })}
+
+  </div>
+)}
 
     </section>
   )
 }
 
 export default FeedPage
+
