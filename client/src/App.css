@@ -17581,3 +17581,109 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+/* =========================================================
+   MEDIAVAULT - GROUPED ACTIVITY ADDITIONS
+   ========================================================= */
+
+.feed-addition-group {
+  overflow: hidden;
+}
+
+.feed-addition-track {
+  display: flex;
+  flex-wrap: nowrap;
+
+  gap: 14px;
+  padding: 6px 2px 16px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scroll-snap-type: x proximity;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    rgba(125, 125, 125, 0.55)
+    rgba(30, 30, 30, 0.35);
+}
+
+.feed-addition-item {
+  flex: 0 0 calc((100% - 28px) / 3);
+  min-width: 0;
+
+  scroll-snap-align: start;
+}
+
+.feed-addition-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  aspect-ratio: 2 / 3;
+
+  overflow: hidden;
+
+  border-radius: 5px;
+  background: #101311;
+}
+
+.feed-addition-art img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+.feed-addition-art span {
+  padding: 12px;
+
+  color: #ddd3dd;
+  font-size: 13px;
+  text-align: center;
+}
+
+.feed-addition-item strong {
+  display: block;
+
+  margin-top: 9px;
+
+  color: #f3eae6;
+  font-size: 13px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.feed-addition-item small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #aaa0ac;
+  font-size: 11px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Slight visual distinction for reviews */
+
+.feed-review-card {
+  border-color: rgba(196, 148, 222, 0.3);
+}
+
+@media (max-width: 650px) {
+  .feed-addition-item {
+    flex-basis: calc((100% - 14px) / 2);
+  }
+}
+
+
+
