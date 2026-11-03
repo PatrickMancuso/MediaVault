@@ -767,6 +767,12 @@ const switchMediaType = (
 ) => {
   setMediaType(type)
 
+  if (type === 'book' || type === 'music') {
+  setMode('manual')
+} else {
+  setMode('automatic')
+}
+
   setSelectedAutomaticResult(null)
   setImportedMetadata(null)
   setSearchResults([])
