@@ -17686,4 +17686,17 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+.media-type-switch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .media-type-switch {
+    grid-template-columns: 1fr;
+  }
+}
+
+
 
