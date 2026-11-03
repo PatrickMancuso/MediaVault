@@ -1,13 +1,36 @@
-export type MediaType = 'movie' | 'game'
+export type MediaType =
+  | 'movie'
+  | 'game'
+  | 'book'
+  | 'music'
 
 export type BuiltInMediaFormat =
+  // Movies
   | 'VHS'
   | 'DVD'
   | 'Bluray'
   | 'Laserdisc'
+
+  // Games
   | 'NES'
   | 'PS1'
   | 'Xbox 360'
+
+  // Books
+  | 'Hardcover'
+  | 'Paperback'
+  | 'eBook'
+  | 'Audiobook'
+  | 'Special Edition'
+
+  // Music
+  | 'Vinyl'
+  | 'CD'
+  | 'Cassette'
+  | 'Digital'
+  | '8-Track'
+  | 'Digital'
+
 
 export type MediaFormat =
   | BuiltInMediaFormat
@@ -65,8 +88,12 @@ reviewUpdatedAt?: string | null
   // API METADATA
   // =====================================================
 
-  source?: 'tmdb' | 'igdb' | 'manual'
-
+source?:
+  | 'tmdb'
+  | 'igdb'
+  | 'openlibrary'
+  | 'musicbrainz'
+  | 'manual'
   externalId?: string
 
   // =====================================================
@@ -121,6 +148,53 @@ publishers?: string[]
   playerPerspectives?: string[]
 
   themes?: string[]
+
+  
+  // =====================================================
+  // BOOK METADATA
+  // =====================================================
+
+  authors?: string[]
+
+  isbn10?: string
+  isbn13?: string
+
+  bookPublisher?: string
+
+  pageCount?: number
+
+  bookLanguage?: string
+
+  bookEdition?: string
+
+  openLibraryWorkId?: string
+  openLibraryEditionId?: string
+
+
+  
+  // =====================================================
+  // MUSIC METADATA
+  // =====================================================
+
+  artists?: string[]
+
+  albumType?: string
+
+  recordLabel?: string
+
+  trackCount?: number
+
+  tracks?: {
+    position: number
+    title: string
+    durationMs?: number
+  }[]
+
+  musicBrainzReleaseGroupId?: string
+  musicBrainzReleaseId?: string
+
+  catalogNumber?: string
+
 
   // =====================================================
   // VIDEO
@@ -391,12 +465,58 @@ export const movieGenres = [
   'Crime',
   'Animation',
   'Comedy',
+  'Documentary',
 ]
 
 export const gameGenres = [
-  'RPG',
+  'Action,
   'Adventure',
+  'RPG',
   'Open World',
-  'Indie',
   'Puzzle',
+  'FPS',
+  'Racing',
+  'Strategy',
+  
+]
+
+
+export const bookGenres = [
+  'Fiction',
+  'Science Fiction',
+  'Fantasy',
+  'Mystery',
+  'Thriller',
+  'Horror',
+  'Romance',
+  'Historical Fiction',
+  'Biography',
+  'History',
+  'Philosophy',
+  'Science',
+  'Art',
+  'Comics',
+  'Graphic Novel',
+  'Nonfiction',
+]
+
+export const musicGenres = [
+  'Rock',
+  'Pop',
+  'Jazz',
+  'Funk',
+  'Soul',
+  'R&B',
+  'Hip-Hop',
+  'Electronic',
+  'Ambient',
+  'Classical',
+  'Blues',
+  'Folk',
+  'Country',
+  'Reggae',
+  'Metal',
+  'Punk',
+  'Soundtrack',
+  'Experimental',
 ]
