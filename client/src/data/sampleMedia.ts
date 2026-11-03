@@ -27,7 +27,6 @@ export type BuiltInMediaFormat =
   | 'Vinyl'
   | 'CD'
   | 'Cassette'
-  | 'Digital'
   | '8-Track'
   | 'Digital'
 
@@ -469,7 +468,7 @@ export const movieGenres = [
 ]
 
 export const gameGenres = [
-  'Action,
+  'Action',
   'Adventure',
   'RPG',
   'Open World',
