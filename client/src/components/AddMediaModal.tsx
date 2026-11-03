@@ -6,6 +6,11 @@ import {
   type ChangeEvent,
 } from 'react'
 
+import {
+  bookGenres,
+  musicGenres,
+} from '../data/sampleMedia'
+
 import type {
   MediaFormat,
   MediaItem,
@@ -233,6 +238,39 @@ const BUILTIN_GAME_FORMATS: {
   },
 ]
 
+
+/* =====================================================
+   BOOK FORMATS
+   ===================================================== */
+
+const BUILTIN_BOOK_FORMATS: {
+  value: MediaFormat
+  label: string
+}[] = [
+  { value: 'Hardcover', label: 'Hardcover' },
+  { value: 'Paperback', label: 'Paperback' },
+  { value: 'eBook', label: 'eBook' },
+  { value: 'Audiobook', label: 'Audiobook' },
+  { value: 'Special Edition', label: 'Special Edition' },
+]
+
+/* =====================================================
+   MUSIC FORMATS
+   ===================================================== */
+
+const BUILTIN_MUSIC_FORMATS: {
+  value: MediaFormat
+  label: string
+}[] = [
+  { value: 'Vinyl', label: 'Vinyl' },
+  { value: 'CD', label: 'CD' },
+  { value: 'Cassette', label: 'Cassette' },
+  { value: 'Digital', label: 'Digital' },
+  { value: '8-Track', label: '8-Track' },
+  { value: 'MiniDisc', label: 'MiniDisc' },
+]
+
+
 const BUILTIN_MOVIE_GENRES = [
   'Action',
   'Adventure',
@@ -254,6 +292,30 @@ const BUILTIN_GAME_GENRES = [
   'Strategy',
 ]
 
+
+/* =====================================================
+   CATEGORY OPTIONS
+   ===================================================== */
+
+const MEDIA_FORMAT_OPTIONS: Record<
+  MediaType,
+  { value: MediaFormat; label: string }[]
+> = {
+  movie: BUILTIN_MOVIE_FORMATS,
+  game: BUILTIN_GAME_FORMATS,
+  book: BUILTIN_BOOK_FORMATS,
+  music: BUILTIN_MUSIC_FORMATS,
+}
+
+const MEDIA_GENRE_OPTIONS: Record<
+  MediaType,
+  string[]
+> = {
+  movie: BUILTIN_MOVIE_GENRES,
+  game: BUILTIN_GAME_GENRES,
+  book: bookGenres,
+  music: musicGenres,
+}
 
 
 
@@ -440,66 +502,57 @@ const [
      AVAILABLE FORMATS
      ========================================================= */
 
-  const formatOptions = useMemo(() => {
-    const builtins =
-      mediaType === 'movie'
-        ? BUILTIN_MOVIE_FORMATS
-        : BUILTIN_GAME_FORMATS
 
-    const custom =
-      mediaType === 'movie'
-        ? customMovieFormats
-        : customGameFormats
+const formatOptions = useMemo(() => {
+  const builtins =
+    MEDIA_FORMAT_OPTIONS[mediaType]
 
-    return [
-      ...builtins,
-      ...custom.map((item) => ({
-  value: item.label,
-  label: item.label,
-})),
-    ]
-  }, [
-    mediaType,
-    customMovieFormats,
-    customGameFormats,
-  ])
+  const custom =
+    mediaType === 'movie'
+      ? customMovieFormats
+      : mediaType === 'game'
+        ? customGameFormats
+        : []
+
+  return [
+    ...builtins,
+    ...custom.map((item) => ({
+      value: item.label,
+      label: item.label,
+    })),
+  ]
+}, [
+  mediaType,
+  customMovieFormats,
+  customGameFormats,
+])
+
 
   /* =========================================================
      AVAILABLE GENRES
      ========================================================= */
 
-  const genreOptions = useMemo(() => {
-    const builtins =
-      mediaType === 'movie'
-        ? BUILTIN_MOVIE_GENRES
-        : BUILTIN_GAME_GENRES
 
-    const custom =
-      mediaType === 'movie'
-        ? customMovieGenres
-        : customGameGenres
+const genreOptions = useMemo(() => {
+  const builtins =
+    MEDIA_GENRE_OPTIONS[mediaType]
 
-    return [
-      ...builtins,
-      ...custom.map(
-        (item) => item.label,
-      ),
-    ]
-  }, [
-    mediaType,
-    customMovieGenres,
-    customGameGenres,
-  ])
+  const custom =
+    mediaType === 'movie'
+      ? customMovieGenres
+      : mediaType === 'game'
+        ? customGameGenres
+        : []
 
-
-  useEffect(() => {
-  if (!selectedAutomaticResult) return
-
-  selectedResultRef.current?.scrollIntoView({
-    behavior: 'smooth',
-block: 'end',
-  })
-}, [selectedAutomaticResult])
+  return [
+    ...builtins,
+    ...custom.map((item) => item.label),
+  ]
+}, [
+  mediaType,
+  customMovieGenres,
+  customGameGenres,
+])
 
 
 /* =========================================================
@@ -617,10 +670,8 @@ setManualOrientation(editingMedia.orientation)
 useEffect(() => {
   if (editingMedia) return
 
-  const firstFormat =
-    mediaType === 'movie'
-      ? BUILTIN_MOVIE_FORMATS[0].value
-      : BUILTIN_GAME_FORMATS[0].value
+ const firstFormat =
+  MEDIA_FORMAT_OPTIONS[mediaType][0].value
 
   setManualFormat(firstFormat)
   setManualGenre('')
@@ -710,28 +761,29 @@ setSearchResults(
      MEDIA TYPE SWITCH
      ========================================================= */
 
-  const switchMediaType = (
-    type: MediaType,
-  ) => {
-    setMediaType(type)
 
-setSelectedAutomaticResult(null)
-setImportedMetadata(null)
-setSearchResults([])
-setAutomaticError('')
-    const formats =
-      type === 'movie'
-        ? BUILTIN_MOVIE_FORMATS
-        : BUILTIN_GAME_FORMATS
+const switchMediaType = (
+  type: MediaType,
+) => {
+  setMediaType(type)
 
-    setManualFormat(
-      formats[0].value,
-    )
+  setSelectedAutomaticResult(null)
+  setImportedMetadata(null)
+  setSearchResults([])
+  setAutomaticError('')
+  setIsCustomizingAutomatic(false)
 
-    setManualGenre('')
+  const formats = MEDIA_FORMAT_OPTIONS[type]
 
-    setSearch('')
-  }
+  setManualFormat(formats[0].value)
+  setManualFormats([])
+
+  setManualGenre('')
+  setManualGenres([])
+
+  setSearch('')
+}
+
 
   /* =========================================================
      IMAGE UPLOAD
@@ -1333,44 +1385,48 @@ onClose()
     </strong>
   </div>
 
-  <div className="media-type-switch">
+
+<div className="media-type-switch">
+  {([
+    {
+      type: 'movie',
+      title: 'Movie',
+      description: 'VHS, DVD, Blu-ray',
+    },
+    {
+      type: 'game',
+      title: 'Video Game',
+      description: 'PlayStation, Xbox, Nintendo',
+    },
+    {
+      type: 'book',
+      title: 'Book',
+      description: 'Hardcover, Paperback, eBook',
+    },
+    {
+      type: 'music',
+      title: 'Music',
+      description: 'Vinyl, CD, Cassette',
+    },
+  ] as const).map((option) => (
     <button
+      key={option.type}
       type="button"
       className={
-        mediaType === 'movie'
+        mediaType === option.type
           ? 'active'
           : ''
       }
       onClick={() =>
-        switchMediaType('movie')
+        switchMediaType(option.type)
       }
     >
-      <strong>Movie</strong>
-
-      <span>
-        VHS, DVD, Blu-ray,
-        LaserDisc
-      </span>
+      <strong>{option.title}</strong>
+      <span>{option.description}</span>
     </button>
+  ))}
+</div>
 
-    <button
-      type="button"
-      className={
-        mediaType === 'game'
-          ? 'active'
-          : ''
-      }
-      onClick={() =>
-        switchMediaType('game')
-      }
-    >
-      <strong>Video Game</strong>
-
-      <span>
-        NES, PlayStation, Xbox
-      </span>
-    </button>
-  </div>
 </section>
 
           {/* =================================================
