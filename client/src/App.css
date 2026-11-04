@@ -17706,3 +17706,72 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+
+/* =========================================================
+   MEDIAVAULT - BOOK AND MUSIC LIBRARY SHELVES
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   BOOK SHELVES
+   --------------------------------------------------------- */
+
+.media-row-books .media-line-covers {
+  align-items: flex-end;
+  gap: 12px;
+}
+
+/* Book cover dimensions */
+
+.media-row-books .media-object.orientation-cover {
+  width: 175px;
+  height: 255px;
+  margin-bottom: 5px;
+}
+
+/* ---------------------------------------------------------
+   MUSIC SHELVES
+   --------------------------------------------------------- */
+
+.media-row-music .media-line-covers {
+  align-items: flex-end;
+  gap: 14px;
+}
+
+/* Square album artwork */
+
+.media-row-music .media-object.orientation-cover {
+  width: 205px;
+  height: 205px;
+  margin-bottom: 5px;
+}
+
+/* Keep artwork proportional */
+
+.media-row-music .media-cover img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+/* ---------------------------------------------------------
+   SHELF ALIGNMENT
+   --------------------------------------------------------- */
+
+/* Keep shorter album covers sitting on the shelf */
+
+.media-row-books .media-line,
+.media-row-music .media-line {
+  align-items: flex-end;
+}
+
+/* Preserve hover interactions */
+
+.media-row-books .media-object:hover,
+.media-row-music .media-object:hover {
+  z-index: 20;
+}
+
