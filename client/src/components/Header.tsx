@@ -5,6 +5,8 @@ type View =
   | 'collection'
   | 'movies'
   | 'games'
+  | 'books'
+  | 'music'
   | 'favorites'
   | 'profile'
   | 'collectors'
@@ -35,8 +37,11 @@ function Header({
   const accountMenuRef = useRef<HTMLDivElement>(null)
   const libraryMenuRef = useRef<HTMLDivElement>(null)
 
-  const isLibraryActive =
-    activeView === 'movies' || activeView === 'games'
+ const isLibraryActive =
+  activeView === 'movies' ||
+  activeView === 'games' ||
+  activeView === 'books' ||
+  activeView === 'music'
 
   /* =====================================================
      CLOSE DROPDOWNS
@@ -214,6 +219,36 @@ function Header({
                   <span>Games</span>
                   <span aria-hidden="true">›</span>
                 </button>
+
+                
+
+{/* BOOKS */}
+
+<button
+  type="button"
+  className={`library-dropdown-item ${
+    activeView === 'books' ? 'active' : ''
+  }`}
+  onClick={() => navigateTo('books')}
+>
+  <span>Books</span>
+  <span aria-hidden="true">›</span>
+</button>
+
+{/* MUSIC */}
+
+<button
+  type="button"
+  className={`library-dropdown-item ${
+    activeView === 'music' ? 'active' : ''
+  }`}
+  onClick={() => navigateTo('music')}
+>
+  <span>Music</span>
+  <span aria-hidden="true">›</span>
+</button>
+
+
               </div>
             )}
           </div>
