@@ -309,7 +309,7 @@ useEffect(() => {
   )
 
   setFavoritePreview(
-    shuffleMedia(favorites).slice(0, 48)
+    shuffleMedia(favorites).slice(0, 6)
   )
 }, [movies, games, books, music, favorites])
 
