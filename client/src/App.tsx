@@ -1599,16 +1599,20 @@ const renderRows = () => {
 }
 
 
+
 const renderCollectionDashboard = () => (
   <CollectionDashboard
     recentlyAdded={recentlyAdded}
     movies={movies}
     games={games}
+    books={books}
+    music={music}
     favorites={favorites}
     onSelect={handleSelect}
     onViewChange={setActiveView}
   />
 )
+
 
 
 
