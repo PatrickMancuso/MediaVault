@@ -17775,3 +17775,75 @@ background: rgba(53, 38, 63, 0.75) !important;
   z-index: 20;
 }
 
+
+
+
+/* =========================================================
+   MEDIAVAULT - BOOK AND MUSIC COVER DIMENSIONS
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   BOOK COVERS
+   --------------------------------------------------------- */
+
+.library-cover-card.library-cover-book .library-cover-art {
+  aspect-ratio: 2 / 3;
+  height: auto;
+  overflow: hidden;
+}
+
+.library-cover-card.library-cover-book .library-cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* ---------------------------------------------------------
+   MUSIC COVERS
+   --------------------------------------------------------- */
+
+.library-cover-card.library-cover-music .library-cover-art {
+  aspect-ratio: 1 / 1;
+  height: auto;
+  overflow: hidden;
+}
+
+.library-cover-card.library-cover-music .library-cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* ---------------------------------------------------------
+   AUTHOR / ARTIST
+   --------------------------------------------------------- */
+
+.library-cover-creator {
+  display: block;
+
+  margin-top: 4px;
+
+  color: rgba(210, 190, 216, 0.7);
+  font-size: 12px;
+  line-height: 1.3;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------------------------------------------------------
+   KEEP MIXED FAVORITES ALIGNED
+   --------------------------------------------------------- */
+
+.media-line-covers {
+  align-items: flex-end;
+}
+
+.library-cover-card {
+  align-self: flex-end;
+}
+
+
