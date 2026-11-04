@@ -17897,3 +17897,142 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+/* =========================================================
+   MEDIAVAULT - CONSISTENT LIBRARY ALIGNMENT
+   ========================================================= */
+
+/* Keep artwork cards in a uniform row */
+
+.media-line-covers {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+/* Prevent individual cards from shifting */
+
+.media-line-covers .library-cover-card {
+  align-self: flex-start;
+
+  margin-top: 0;
+  margin-bottom: 0;
+
+  transform: none;
+}
+
+/* Standardize artwork positioning */
+
+.media-line-covers .library-cover-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0;
+}
+
+/* Remove irregular positioning */
+
+.media-line-covers .library-cover-card:nth-child(n) {
+  margin-top: 0;
+  margin-bottom: 0;
+
+  transform: none;
+}
+
+/* Preserve hover brightness */
+
+.media-line-covers .library-cover-card:hover {
+  filter: brightness(1.08);
+}
+
+
+
+/* =========================================================
+   MEDIAVAULT - SQUARE MUSIC ARTWORK
+   RECENTLY ADDED ONLY
+   ========================================================= */
+
+/* Music cards are wider than standard media cards */
+
+.collection-dashboard .recent-media-track
+.recent-media-card-music {
+  flex: 0 0 285px;
+  width: 285px;
+  min-width: 285px;
+  max-width: 285px;
+}
+
+/* Square artwork container */
+
+.collection-dashboard .recent-media-card-music
+.recent-media-art {
+  width: 100%;
+
+  height: 285px;
+  min-height: 285px;
+  max-height: 285px;
+
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+/* Preserve the complete album cover */
+
+.collection-dashboard .recent-media-card-music
+.recent-media-image-music {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  transform: none;
+}
+
+
+
+
+/* =========================================================
+   MEDIAVAULT - MUSIC LIBRARY ARTWORK ONLY
+   ========================================================= */
+
+/* Music cards use square artwork */
+
+.media-line-covers
+.library-cover-card.library-cover-music {
+  flex: 0 0 270px;
+  width: 270px;
+  min-width: 270px;
+  max-width: 270px;
+}
+
+/* Square album frame */
+
+.media-line-covers
+.library-cover-card.library-cover-music
+.library-cover-art {
+  width: 270px;
+  height: 270px;
+
+  min-height: 270px;
+  max-height: 270px;
+
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+/* No cropping */
+
+.media-line-covers
+.library-cover-card.library-cover-music
+.library-cover-image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+}
