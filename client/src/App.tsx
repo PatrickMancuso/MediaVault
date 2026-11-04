@@ -827,27 +827,23 @@ const clearLibraryFilters = () => {
     setSelectedMedia(item)
   }
 
- const handleAddMedia = async (
-  newMedia: MediaItem,
-) => {
-  if (!user) {
-    console.error(
-      'Cannot add media without a signed-in user.',
-    )
 
-    return
+const handleAddMedia = async (
+  newMedia: MediaItem,
+): Promise<boolean> => {
+  if (!user) {
+    window.alert(
+      'You must be signed in to add media.'
+    )
+    return false
   }
 
-  const row =
-    mediaItemToRow(
-      newMedia,
-      user.id,
-    )
+  const row = mediaItemToRow(
+    newMedia,
+    user.id
+  )
 
-  const {
-    data,
-    error,
-  } = await supabase
+  const { data, error } = await supabase
     .from('media_items')
     .insert(row)
     .select()
@@ -856,28 +852,28 @@ const clearLibraryFilters = () => {
   if (error) {
     console.error(
       'Failed to save media to Supabase:',
-      error,
+      error
     )
 
     window.alert(
-      'Unable to save this media item. Please try again.',
+      'Unable to save this media item. Please try again.'
     )
 
-    return
+    return false
   }
 
-  const savedMedia =
-    rowToMediaItem(
-      data as MediaItemRow,
-    )
-
-  setCollection(
-    (current) => [
-      ...current,
-      savedMedia,
-    ],
+  const savedMedia = rowToMediaItem(
+    data as MediaItemRow
   )
+
+  setCollection((current) => [
+    ...current,
+    savedMedia,
+  ])
+
+  return true
 }
+
 
 
 
