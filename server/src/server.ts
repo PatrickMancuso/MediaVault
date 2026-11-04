@@ -738,6 +738,116 @@ app.get("/api/media/movie/:id", async (req, res) => {
 });
 
 
+
+/* =====================================================
+   OPEN LIBRARY - BOOK SEARCH
+   ===================================================== */
+
+app.get("/api/media/search/book", async (req, res) => {
+  try {
+    const query = String(req.query.q ?? "").trim();
+
+    if (!query || query.length > 200) {
+      return res.status(400).json({
+        error: "Enter a valid book search.",
+      });
+    }
+
+    const url = new URL(
+      "https://openlibrary.org/search.json"
+    );
+
+    url.searchParams.set("q", query);
+    url.searchParams.set("limit", "15");
+    url.searchParams.set(
+      "fields",
+      [
+        "key",
+        "title",
+        "author_name",
+        "first_publish_year",
+        "cover_i",
+        "edition_key",
+        "isbn",
+        "publisher",
+        "number_of_pages_median",
+        "language",
+      ].join(",")
+    );
+
+    const response = await fetch(url, {
+      headers: {
+        Accept: "application/json",
+      },
+      signal: AbortSignal.timeout(12000),
+    });
+
+    if (!response.ok) {
+      console.error(
+        "Open Library search failed:",
+        response.status
+      );
+
+      return res.status(502).json({
+        error: "Unable to search Open Library.",
+      });
+    }
+
+    const data = await response.json();
+
+    const results = Array.isArray(data.docs)
+      ? data.docs.map((book: any) => ({
+          externalId: book.key,
+          title: book.title ?? "",
+          year: book.first_publish_year ?? null,
+          authors: book.author_name ?? [],
+
+          coverImage: book.cover_i
+            ? `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`
+            : null,
+
+          isbn13:
+            book.isbn?.find(
+              (isbn: string) =>
+                isbn.replace(/[-\s]/g, "").length === 13
+            ) ?? null,
+
+          isbn10:
+            book.isbn?.find(
+              (isbn: string) =>
+                isbn.replace(/[-\s]/g, "").length === 10
+            ) ?? null,
+
+          bookPublisher:
+            book.publisher?.[0] ?? null,
+
+          pageCount:
+            book.number_of_pages_median ?? null,
+
+          bookLanguage:
+            book.language?.[0] ?? null,
+
+          openLibraryWorkId: book.key,
+          openLibraryEditionId:
+            book.edition_key?.[0] ?? null,
+        }))
+      : [];
+
+    return res.json({
+      source: "openlibrary",
+      results,
+    });
+  } catch (error) {
+    console.error("Book search error:", error);
+
+    return res.status(500).json({
+      error: "Unable to search books.",
+    });
+  }
+});
+
+
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(
     `MediaLibrary API running on port ${PORT}`,
