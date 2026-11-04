@@ -17699,4 +17699,10 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+.add-media-save-actions {
+  margin-top: 20px;
+  padding: 20px 0 8px;
+  border-top: 1px solid rgba(196, 148, 222, 0.2);
+}
+
 
