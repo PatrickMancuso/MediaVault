@@ -23,6 +23,8 @@ const TMDB_ACCESS_TOKEN =
 const TWITCH_CLIENT_SECRET =
   process.env.TWITCH_CLIENT_SECRET;
 
+
+
 /* =====================================================
    MUSICBRAINZ CONFIGURATION
    ===================================================== */
@@ -70,8 +72,7 @@ async function musicBrainzFetch(url: URL) {
 app.use(cors());
 app.use(express.json());
 
-app.use(cors());
-app.use(express.json());
+
 
 let igdbAccessToken:
   | string
