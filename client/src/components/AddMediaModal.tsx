@@ -1470,8 +1470,13 @@ videos:
   return
 }
 
-onAdd(newMedia)
-onClose()
+
+const saved = await onAdd(newMedia)
+
+if (saved) {
+  onClose()
+}
+
   }
 
   /* =========================================================
