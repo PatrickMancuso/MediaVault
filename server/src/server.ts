@@ -23,6 +23,53 @@ const TMDB_ACCESS_TOKEN =
 const TWITCH_CLIENT_SECRET =
   process.env.TWITCH_CLIENT_SECRET;
 
+/* =====================================================
+   MUSICBRAINZ CONFIGURATION
+   ===================================================== */
+
+const MUSICBRAINZ_USER_AGENT =
+  process.env.MUSICBRAINZ_USER_AGENT;
+
+let lastMusicBrainzRequest = 0;
+
+async function musicBrainzFetch(url: URL) {
+  if (!MUSICBRAINZ_USER_AGENT) {
+    throw new Error(
+      "MUSICBRAINZ_USER_AGENT is not configured."
+    );
+  }
+
+  // Pace requests to the public MusicBrainz API.
+  const elapsed =
+    Date.now() - lastMusicBrainzRequest;
+
+  const waitTime = Math.max(0, 1100 - elapsed);
+
+  if (waitTime > 0) {
+    await new Promise<void>((resolve) =>
+      setTimeout(resolve, waitTime)
+    );
+  }
+
+  lastMusicBrainzRequest = Date.now();
+
+  return fetch(url, {
+    headers: {
+      Accept: "application/json",
+      "User-Agent": MUSICBRAINZ_USER_AGENT,
+    },
+    signal: AbortSignal.timeout(12000),
+  });
+}
+
+
+/* =====================================================
+   EXPRESS MIDDLEWARE
+   ===================================================== */
+
+app.use(cors());
+app.use(express.json());
+
 app.use(cors());
 app.use(express.json());
 
@@ -846,6 +893,98 @@ app.get("/api/media/search/book", async (req, res) => {
   }
 });
 
+
+/* =====================================================
+   MUSICBRAINZ - ALBUM SEARCH
+   ===================================================== */
+
+app.get("/api/media/search/music", async (req, res) => {
+  try {
+    const query = String(req.query.q ?? "").trim();
+
+    if (!query || query.length > 200) {
+      return res.status(400).json({
+        error: "Enter a valid album search.",
+      });
+    }
+
+    const url = new URL(
+      "https://musicbrainz.org/ws/2/release-group/"
+    );
+
+    url.searchParams.set("query", query);
+    url.searchParams.set("fmt", "json");
+    url.searchParams.set("limit", "15");
+
+    const response = await musicBrainzFetch(url);
+
+    if (!response.ok) {
+      console.error(
+        "MusicBrainz search failed:",
+        response.status
+      );
+
+      return res.status(502).json({
+        error: "Unable to search MusicBrainz.",
+      });
+    }
+
+    const data = await response.json();
+
+    const results = Array.isArray(
+      data["release-groups"]
+    )
+      ? data["release-groups"].map(
+          (album: any) => {
+            const releaseDate =
+              album["first-release-date"] ?? "";
+
+            const artists =
+              album["artist-credit"]
+                ?.filter(
+                  (entry: any) => entry.artist
+                )
+                ?.map(
+                  (entry: any) =>
+                    entry.artist.name
+                ) ?? [];
+
+            return {
+              externalId: album.id,
+              title: album.title ?? "",
+              year: releaseDate
+                ? Number(releaseDate.slice(0, 4))
+                : null,
+
+              releaseDate,
+              artists,
+
+              albumType:
+                album["primary-type"] ?? "Album",
+
+              genres: [],
+
+              coverImage:
+                `https://coverartarchive.org/release-group/${album.id}/front-500`,
+
+              musicBrainzReleaseGroupId: album.id,
+            };
+          }
+        )
+      : [];
+
+    return res.json({
+      source: "musicbrainz",
+      results,
+    });
+  } catch (error) {
+    console.error("Music search error:", error);
+
+    return res.status(500).json({
+      error: "Unable to search music.",
+    });
+  }
+});
 
 
 app.listen(PORT, "0.0.0.0", () => {
