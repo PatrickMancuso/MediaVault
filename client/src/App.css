@@ -18039,3 +18039,310 @@ background: rgba(53, 38, 63, 0.75) !important;
   object-fit: contain;
   object-position: center;
 }
+
+
+
+
+/* =========================================================
+   MEDIAVAULT - DIAGONAL BROWSE ARCHIVES
+   MOVIES / GAMES / MUSIC / BOOKS
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   COLLAGE CONTAINER
+   --------------------------------------------------------- */
+
+.dashboard-category-card .category-art-diagonal {
+  position: absolute;
+  inset: 0;
+
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ---------------------------------------------------------
+   INDIVIDUAL ARTWORK
+   --------------------------------------------------------- */
+
+.dashboard-category-card
+.category-art-diagonal
+.category-diagonal-item {
+  position: absolute;
+
+  display: block;
+  flex: none;
+
+  width: 34%;
+  height: 110%;
+
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 235, 220, 0.18);
+  border-radius: 3px;
+
+  background: #161218;
+
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.38);
+
+  transform-origin: center center;
+}
+
+/* ---------------------------------------------------------
+   ARTWORK IMAGES
+   --------------------------------------------------------- */
+
+.dashboard-category-card
+.category-art-diagonal
+.category-diagonal-item img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  transform: none;
+  border: none;
+}
+
+/* =========================================================
+   DIAGONAL COVER POSITIONS
+   ========================================================= */
+
+/* Left edge - partially outside */
+
+.dashboard-category-card
+.category-art-diagonal
+.category-diagonal-item:nth-child(1) {
+  left: -12%;
+  top: -34%;
+
+  transform: rotate(-19deg);
+  z-index: 1;
+}
+
+/* Lower left */
+
+.dashboard-category-card
+.category-art-diagonal
+.category-diagonal-item:nth-child(2) {
+  left: 9%;
+  top: 24%;
+
+  transform: rotate(-19deg);
+  z-index: 3;
+}
+
+/* Upper middle */
+
+.dashboard-category-card
+.category-art-diagonal
+.category-diagonal-item:nth-child(3) {
+  left: 29%;
+  top: -32%;
+
+  transform: rotate(-19deg);
+  z-index: 2;
+}
+
+/* Lower middle */
+
+.dashboard-category-card
+.category-art-diagonal
+.category-diagonal-item:nth-child(4) {
+  left: 49%;
+  top: 21%;
+
+  transform: rotate(-19deg);
+  z-index: 5;
+}
+
+/* Upper right */
+
+.dashboard-category-card
+.category-art-diagonal
+.category-diagonal-item:nth-child(5) {
+  left: 69%;
+  top: -35%;
+
+  transform: rotate(-19deg);
+  z-index: 4;
+}
+
+/* Right edge - partially outside */
+
+.dashboard-category-card
+.category-art-diagonal
+.category-diagonal-item:nth-child(6) {
+  left: 89%;
+  top: 20%;
+
+  transform: rotate(-19deg);
+  z-index: 6;
+}
+
+/* =========================================================
+   SMALL COLLECTIONS
+   ========================================================= */
+
+/* One title */
+
+.dashboard-category-card
+.category-art-diagonal
+.category-diagonal-item:only-child {
+  left: 32%;
+  top: -15%;
+
+  width: 42%;
+  height: 125%;
+
+  transform: rotate(-15deg);
+}
+
+/* Two titles */
+
+.dashboard-category-card
+.category-art-diagonal
+.category-diagonal-item:first-child:nth-last-child(2) {
+  left: 12%;
+  top: -22%;
+
+  width: 43%;
+  height: 125%;
+}
+
+.dashboard-category-card
+.category-art-diagonal
+.category-diagonal-item:nth-child(2):last-child {
+  left: 49%;
+  top: 12%;
+
+  width: 43%;
+  height: 125%;
+}
+
+/* =========================================================
+   OVERLAY AND TEXT LAYERS
+   ========================================================= */
+
+.dashboard-category-card .category-overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 10;
+  pointer-events: none;
+}
+
+.dashboard-category-card .category-content {
+  position: absolute;
+  z-index: 20;
+}
+
+/* =========================================================
+   ARTWORK FADE TRANSITION
+   ========================================================= */
+
+.dashboard-category-card .category-art-diagonal {
+  opacity: 1;
+
+  transition:
+    opacity 650ms ease-in-out;
+}
+
+.dashboard-category-card
+.category-art-diagonal.artwork-fading {
+  opacity: 0;
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-category-card .category-art-diagonal {
+    transition: none;
+  }
+}
+
+
+
+/* =========================================================
+   BROWSE ARCHIVES - BOOK AND MUSIC OVERLAYS
+   ========================================================= */
+
+/* Match the existing Movie and Game overlays */
+
+.dashboard-category-books .category-overlay,
+.dashboard-category-music .category-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+
+  pointer-events: none;
+
+  opacity: 0.65;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(17, 27, 21, 0.47),
+      rgba(17, 27, 21, 0.08) 58%,
+      rgba(17, 27, 21, 0.30)
+    ),
+    linear-gradient(
+      180deg,
+      rgba(12, 20, 15, 0.03) 0%,
+      rgba(12, 20, 15, 0.15) 45%,
+      rgba(12, 20, 15, 0.80) 100%
+    );
+
+  transition: opacity 250ms ease;
+}
+
+/* Slightly brighten artwork on hover */
+
+.dashboard-category-books:hover .category-overlay,
+.dashboard-category-music:hover .category-overlay {
+  opacity: 0.45;
+}
+
+/* Preserve category text */
+
+.dashboard-category-books .category-content,
+.dashboard-category-music .category-content {
+  position: absolute;
+  z-index: 20;
+
+  left: 22px;
+  bottom: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+
+  color: #f4eee5;
+  pointer-events: none;
+}
+
+.dashboard-category-books .category-content strong,
+.dashboard-category-music .category-content strong {
+  color: #f4eee5;
+}
+
+.dashboard-category-books .category-content em,
+.dashboard-category-music .category-content em {
+  color: #d99a63;
+}
+
+
