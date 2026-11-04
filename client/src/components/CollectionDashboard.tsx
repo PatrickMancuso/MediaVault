@@ -76,11 +76,18 @@ function buildCollageItems(
     return []
   }
 
+  const shuffled = shuffleMedia(items)
+
+  if (shuffled.length >= count) {
+    return shuffled.slice(0, count)
+  }
+
   return Array.from(
     { length: count },
-    (_, index) => items[index % items.length]
+    (_, index) => shuffled[index % shuffled.length]
   )
 }
+
 
 /* =====================================================
    ROTATION - PREVENT CONSECUTIVE DUPLICATES
@@ -169,8 +176,8 @@ function CollectionDashboard({
    DASHBOARD - ROTATING ARTWORK
    ===================================================== */
 
-const ROTATION_INTERVAL = 15000
-const FADE_DURATION = 800
+const ROTATION_INTERVAL = 30000
+const FADE_DURATION = 1200
 
 const [rotationIndex, setRotationIndex] = useState(0)
 
@@ -179,22 +186,22 @@ const [isTransitioning, setIsTransitioning] =
 
 const [randomMovies, setRandomMovies] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(movies).slice(0, 6)
+    shuffleMedia(movies).slice(0, 48)
   )
 
 const [randomGames, setRandomGames] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(games).slice(0, 6)
+    shuffleMedia(games).slice(0, 48)
   )
 
   const [randomBooks, setRandomBooks] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(books).slice(0, 6)
+    shuffleMedia(books).slice(0, 48)
   )
 
 const [randomMusic, setRandomMusic] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(music).slice(0, 6)
+    shuffleMedia(music).slice(0, 48)
   )
 
 const [favoritePreview, setFavoritePreview] =
@@ -238,19 +245,19 @@ useEffect(() => {
 
 
 setRandomMovies((previous) =>
-  getNextMediaSelection(movies, previous, 6)
+  getNextMediaSelection(movies, previous, 48)
 )
 
 setRandomGames((previous) =>
-  getNextMediaSelection(games, previous, 6)
+  getNextMediaSelection(games, previous, 48)
 )
 
 setRandomMusic((previous) =>
-  getNextMediaSelection(music, previous, 6)
+  getNextMediaSelection(music, previous, 48)
 )
 
 setRandomBooks((previous) =>
-  getNextMediaSelection(books, previous, 6)
+  getNextMediaSelection(books, previous, 48)
 )
 
 /* Favorites - six unique selections */
@@ -286,23 +293,23 @@ setFavoritePreview((previous) =>
 
 useEffect(() => {
   setRandomMovies(
-    shuffleMedia(movies).slice(0, 6)
+    shuffleMedia(movies).slice(0, 48)
   )
 
   setRandomGames(
-    shuffleMedia(games).slice(0, 6)
+    shuffleMedia(games).slice(0, 48)
   )
 
   setRandomMusic(
-    shuffleMedia(music).slice(0, 6)
+    shuffleMedia(music).slice(0, 48)
   )
 
   setRandomBooks(
-    shuffleMedia(books).slice(0, 6)
+    shuffleMedia(books).slice(0, 48)
   )
 
   setFavoritePreview(
-    shuffleMedia(favorites).slice(0, 6)
+    shuffleMedia(favorites).slice(0, 48)
   )
 }, [movies, games, books, music, favorites])
 
