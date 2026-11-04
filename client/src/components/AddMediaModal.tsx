@@ -437,6 +437,33 @@ const [manualFormats, setManualFormats] =
     setManualDescription,
   ] = useState('')
 
+  
+/* =====================================================
+   BOOK METADATA
+   ===================================================== */
+
+const [bookAuthors, setBookAuthors] = useState('')
+const [bookIsbn, setBookIsbn] = useState('')
+const [bookPublisher, setBookPublisher] = useState('')
+const [bookPageCount, setBookPageCount] = useState('')
+const [bookLanguage, setBookLanguage] = useState('')
+const [bookEdition, setBookEdition] = useState('')
+
+/* =====================================================
+   MUSIC METADATA
+   ===================================================== */
+
+const [musicArtists, setMusicArtists] = useState('')
+const [musicAlbumType, setMusicAlbumType] =
+  useState('Album')
+const [musicRecordLabel, setMusicRecordLabel] =
+  useState('')
+const [musicCatalogNumber, setMusicCatalogNumber] =
+  useState('')
+const [musicTrackCount, setMusicTrackCount] =
+  useState('')
+
+
   const [manualFavorite, setManualFavorite] =
     useState(false)
 
@@ -662,6 +689,32 @@ setPersonalReview(
   setManualOrientation(editingMedia.orientation)
   setSpineImage(editingMedia.spineImage)
   setCoverImage(editingMedia.coverImage)
+  
+/* Book fields */
+
+setBookAuthors((editingMedia.authors ?? []).join(', '))
+setBookIsbn(
+  editingMedia.isbn13 ??
+  editingMedia.isbn10 ??
+  ''
+)
+setBookPublisher(editingMedia.bookPublisher ?? '')
+setBookPageCount(
+  editingMedia.pageCount?.toString() ?? ''
+)
+setBookLanguage(editingMedia.bookLanguage ?? '')
+setBookEdition(editingMedia.bookEdition ?? '')
+
+/* Music fields */
+
+setMusicArtists((editingMedia.artists ?? []).join(', '))
+setMusicAlbumType(editingMedia.albumType ?? 'Album')
+setMusicRecordLabel(editingMedia.recordLabel ?? '')
+setMusicCatalogNumber(editingMedia.catalogNumber ?? '')
+setMusicTrackCount(
+  editingMedia.trackCount?.toString() ?? ''
+)
+
   setMode('manual')
 }, [editingMedia])
 
@@ -798,6 +851,25 @@ setNewGenre('')
 setNewFormat('')
 
 setSearch('')
+
+  
+/* Reset Book fields */
+
+setBookAuthors('')
+setBookIsbn('')
+setBookPublisher('')
+setBookPageCount('')
+setBookLanguage('')
+setBookEdition('')
+
+/* Reset Music fields */
+
+setMusicArtists('')
+setMusicAlbumType('Album')
+setMusicRecordLabel('')
+setMusicCatalogNumber('')
+setMusicTrackCount('')
+
 }
 
 
@@ -1190,6 +1262,65 @@ orientation: manualOrientation,
 spineImage,
 
 coverImage,
+
+  
+/* =====================================================
+   BOOK METADATA
+   ===================================================== */
+
+...(mediaType === 'book' && {
+  authors: bookAuthors
+    .split(',')
+    .map((author) => author.trim())
+    .filter(Boolean),
+
+  isbn10:
+    bookIsbn.replace(/[-\s]/g, '').length === 10
+      ? bookIsbn.replace(/[-\s]/g, '')
+      : undefined,
+
+  isbn13:
+    bookIsbn.replace(/[-\s]/g, '').length === 13
+      ? bookIsbn.replace(/[-\s]/g, '')
+      : undefined,
+
+  bookPublisher: bookPublisher.trim() || undefined,
+
+  pageCount:
+    bookPageCount.trim() &&
+    Number(bookPageCount) > 0
+      ? Number(bookPageCount)
+      : undefined,
+
+  bookLanguage: bookLanguage.trim() || undefined,
+  bookEdition: bookEdition.trim() || undefined,
+}),
+
+/* =====================================================
+   MUSIC METADATA
+   ===================================================== */
+
+...(mediaType === 'music' && {
+  artists: musicArtists
+    .split(',')
+    .map((artist) => artist.trim())
+    .filter(Boolean),
+
+  albumType: musicAlbumType,
+
+  recordLabel:
+    musicRecordLabel.trim() || undefined,
+
+  catalogNumber:
+    musicCatalogNumber.trim() || undefined,
+
+  trackCount:
+    musicTrackCount.trim() &&
+    Number(musicTrackCount) > 0
+      ? Number(musicTrackCount)
+      : undefined,
+}),
+
 
 source:
   editingMedia?.source ??
@@ -2092,6 +2223,185 @@ onClose()
 
                 </div>
               </section>
+
+
+
+{/* =================================================
+    BOOK DETAILS
+    ================================================= */}
+
+{mediaType === 'book' && (
+  <section className="add-media-section">
+    <div className="add-media-section-heading">
+      <span>04</span>
+      <strong>Book Details</strong>
+    </div>
+
+    <div className="manual-form">
+      <label>
+        <span>Author(s)</span>
+        <input
+          type="text"
+          value={bookAuthors}
+          onChange={(event) =>
+            setBookAuthors(event.target.value)
+          }
+          placeholder="Frank Herbert"
+        />
+      </label>
+
+      <div className="form-grid">
+        <label>
+          <span>ISBN</span>
+          <input
+            type="text"
+            value={bookIsbn}
+            onChange={(event) =>
+              setBookIsbn(event.target.value)
+            }
+            placeholder="ISBN-10 or ISBN-13"
+          />
+        </label>
+
+        <label>
+          <span>Publisher</span>
+          <input
+            type="text"
+            value={bookPublisher}
+            onChange={(event) =>
+              setBookPublisher(event.target.value)
+            }
+            placeholder="Publisher"
+          />
+        </label>
+
+        <label>
+          <span>Page Count</span>
+          <input
+            type="number"
+            min="1"
+            value={bookPageCount}
+            onChange={(event) =>
+              setBookPageCount(event.target.value)
+            }
+            placeholder="Number of pages"
+          />
+        </label>
+
+        <label>
+          <span>Language</span>
+          <input
+            type="text"
+            value={bookLanguage}
+            onChange={(event) =>
+              setBookLanguage(event.target.value)
+            }
+            placeholder="English"
+          />
+        </label>
+      </div>
+
+      <label>
+        <span>Edition</span>
+        <input
+          type="text"
+          value={bookEdition}
+          onChange={(event) =>
+            setBookEdition(event.target.value)
+          }
+          placeholder="First edition, revised edition..."
+        />
+      </label>
+    </div>
+  </section>
+)}
+
+
+              
+{/* =================================================
+    MUSIC DETAILS
+    ================================================= */}
+
+{mediaType === 'music' && (
+  <section className="add-media-section">
+    <div className="add-media-section-heading">
+      <span>04</span>
+      <strong>Music Details</strong>
+    </div>
+
+    <div className="manual-form">
+      <label>
+        <span>Artist(s)</span>
+        <input
+          type="text"
+          value={musicArtists}
+          onChange={(event) =>
+            setMusicArtists(event.target.value)
+          }
+          placeholder="Miles Davis"
+        />
+      </label>
+
+      <div className="form-grid">
+        <label>
+          <span>Release Type</span>
+          <select
+            value={musicAlbumType}
+            onChange={(event) =>
+              setMusicAlbumType(event.target.value)
+            }
+          >
+            <option value="Album">Album</option>
+            <option value="EP">EP</option>
+            <option value="Single">Single</option>
+            <option value="Compilation">Compilation</option>
+            <option value="Live Album">Live Album</option>
+            <option value="Soundtrack">Soundtrack</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Record Label</span>
+          <input
+            type="text"
+            value={musicRecordLabel}
+            onChange={(event) =>
+              setMusicRecordLabel(event.target.value)
+            }
+            placeholder="Columbia Records"
+          />
+        </label>
+
+        <label>
+          <span>Catalog Number</span>
+          <input
+            type="text"
+            value={musicCatalogNumber}
+            onChange={(event) =>
+              setMusicCatalogNumber(event.target.value)
+            }
+            placeholder="CL 1355"
+          />
+        </label>
+
+        <label>
+          <span>Track Count</span>
+          <input
+            type="number"
+            min="1"
+            value={musicTrackCount}
+            onChange={(event) =>
+              setMusicTrackCount(event.target.value)
+            }
+            placeholder="Number of tracks"
+          />
+        </label>
+      </div>
+    </div>
+  </section>
+)}
+
+              
 
               {/* ===============================================
                   IMPORTED GAME INFORMATION
