@@ -176,8 +176,8 @@ function CollectionDashboard({
    DASHBOARD - ROTATING ARTWORK
    ===================================================== */
 
-const ROTATION_INTERVAL = 30000
-const FADE_DURATION = 1200
+const ROTATION_INTERVAL = 35000
+const FADE_DURATION = 1400
 
 const [rotationIndex, setRotationIndex] = useState(0)
 
