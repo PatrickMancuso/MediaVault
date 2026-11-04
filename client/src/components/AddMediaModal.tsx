@@ -25,7 +25,7 @@ interface CustomOption {
 
 interface AddMediaModalProps {
   onClose: () => void
-  onAdd: (media: MediaItem) => void
+onAdd: (media: MediaItem) => Promise<boolean>
   onSaveEdit?: (media: MediaItem) => Promise<boolean>
 
   editingMedia?: MediaItem | null
