@@ -18553,3 +18553,37 @@ background: rgba(53, 38, 63, 0.75) !important;
   }
 }
 
+
+
+/* =========================================================
+   BROWSE ARCHIVES - GAME COVER REFINEMENT
+   ========================================================= */
+
+/* Slightly wider Game tiles */
+
+.dashboard-category-games
+.category-art-diagonal {
+  --collage-tile-width: 165px;
+}
+
+/* Allow Game artwork to fill the tile */
+
+.dashboard-category-games
+.category-art-diagonal
+.category-diagonal-item {
+  aspect-ratio: 3 / 4;
+}
+
+/* Fill the available space */
+
+.dashboard-category-games
+.category-art-diagonal
+.category-diagonal-item img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+
