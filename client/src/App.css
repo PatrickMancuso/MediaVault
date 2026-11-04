@@ -18611,3 +18611,27 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+/* =========================================================
+   BROWSE ARCHIVES - MOVIE ARTWORK STRETCH
+   MOVIES ONLY
+   ========================================================= */
+
+/* Keep the Movie collage tiles at their current size */
+
+.dashboard-archives-section
+.dashboard-category-movies
+.category-art-diagonal
+.category-diagonal-item img {
+  width: 100%;
+  height: 100%;
+
+  /* Stretch image to fill the entire tile */
+  object-fit: fill;
+  object-position: center;
+
+  max-width: none;
+  max-height: none;
+}
+
