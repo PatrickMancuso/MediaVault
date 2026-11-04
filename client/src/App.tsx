@@ -29,6 +29,8 @@ type View =
   | 'collection'
   | 'movies'
   | 'games'
+  | 'books'
+  | 'music'
   | 'favorites'
   | 'profile'
   | 'collectors'
@@ -652,6 +654,28 @@ useEffect(() => {
     [collection],
   )
 
+  
+/* =====================================================
+   BOOK AND MUSIC COLLECTIONS
+   ===================================================== */
+
+const books = useMemo(
+  () =>
+    collection.filter(
+      (item) => item.type === 'book'
+    ),
+  [collection]
+)
+
+const music = useMemo(
+  () =>
+    collection.filter(
+      (item) => item.type === 'music'
+    ),
+  [collection]
+)
+
+
   const favorites = useMemo(
     () =>
       collection.filter(
@@ -678,12 +702,18 @@ useEffect(() => {
    LIBRARY SEARCH AND FILTERS
    ========================================================= */
 
+
 const libraryItems =
   activeView === 'movies'
     ? movies
     : activeView === 'games'
       ? games
-      : []
+      : activeView === 'books'
+        ? books
+        : activeView === 'music'
+          ? music
+          : []
+
 
 const libraryGenreOptions = Array.from(
   new Set(
@@ -1248,21 +1278,26 @@ const getFormatDisplayName = (format: string) => {
    ========================================================= */
 
 const renderLibrarySearch = () => {
-  if (
-    activeView !== 'movies' &&
-    activeView !== 'games'
-  ) {
-    return null
-  }
+if (
+  activeView !== 'movies' &&
+  activeView !== 'games' &&
+  activeView !== 'books' &&
+  activeView !== 'music'
+) {
+  return null
+}
 
   return (
     <div className="library-search-panel">
       <div className="library-search-heading">
         <div>
           <h2>
-            {activeView === 'movies'
-              ? 'Movie Library'
-              : 'Game Library'}
+            {{
+  movies: 'Movie Library',
+  games: 'Game Library',
+  books: 'Book Library',
+  music: 'Music Library',
+}[activeView as 'movies' | 'games' | 'books' | 'music']}
           </h2>
 
           <p>
@@ -1440,15 +1475,23 @@ const renderLibrarySearch = () => {
    RENDER ROWS - FILTERED AND SORTED
    ========================================================= */
 
+
 const renderRows = () => {
   if (
     activeView === 'movies' ||
-    activeView === 'games'
+    activeView === 'games' ||
+    activeView === 'books' ||
+    activeView === 'music'
   ) {
     const currentType =
       activeView === 'movies'
         ? 'movie'
-        : 'game'
+        : activeView === 'games'
+          ? 'game'
+          : activeView === 'books'
+            ? 'book'
+            : 'music'
+
 
     const items = filteredLibraryItems.filter(
       (item) => item.type === currentType
