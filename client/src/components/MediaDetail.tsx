@@ -230,8 +230,10 @@ className={`detail-cover detail-cover-${media.type}`}
                       rgba(10, 13, 12, 0.28)
                     ),
                     url("${media.coverImage}")`,
-                  backgroundSize: 'cover',
-                  backgroundPosition:
+backgroundSize:
+  isBook || isMusic ? 'contain' : 'cover',
+backgroundRepeat: 'no-repeat',
+                backgroundPosition:
                     'center',
                 }
               : undefined
