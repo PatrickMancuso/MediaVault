@@ -24,6 +24,24 @@ const formatLabels: Record<string, string> = {
   nes: 'NES',
   ps1: 'PlayStation',
   xbox360: 'Xbox 360',
+
+  
+// Books
+hardcover: 'Hardcover',
+paperback: 'Paperback',
+' mass market paperback': 'Mass Market Paperback',
+ebook: 'eBook',
+audiobook: 'Audiobook',
+'special edition': 'Special Edition',
+
+// Music
+vinyl: 'Vinyl',
+cd: 'CD',
+cassette: 'Cassette',
+digital: 'Digital',
+'8-track': '8-Track',
+minidisc: 'MiniDisc',
+
 }
 
 function getArtwork(media: MediaItem) {
@@ -45,6 +63,24 @@ function shuffleMedia(items: MediaItem[]): MediaItem[] {
   return shuffled
 }
 
+
+/* =====================================================
+   BUILD DECORATIVE BROWSE COLLAGE
+   ===================================================== */
+
+function buildCollageItems(
+  items: MediaItem[],
+  count = 48
+): MediaItem[] {
+  if (items.length === 0) {
+    return []
+  }
+
+  return Array.from(
+    { length: count },
+    (_, index) => items[index % items.length]
+  )
+}
 
 /* =====================================================
    ROTATION - PREVENT CONSECUTIVE DUPLICATES
@@ -322,12 +358,12 @@ useEffect(() => {
   className={`category-art category-art-diagonal ${
   isTransitioning ? 'artwork-fading' : ''
 }`}
->  {randomMovies.map((item) => {
+>  {buildCollageItems(randomMovies).map((item, index) => {
     const artwork = getArtwork(item)
 
     return (
       <div
-        key={item.id}
+key={`${item.id}-${index}`}
         className="category-art-item category-diagonal-item"
       >
         {artwork ? (
@@ -376,12 +412,12 @@ useEffect(() => {
   isTransitioning ? 'artwork-fading' : ''
 }`}
 >
-  {randomGames.map((item) => {
+  {buildCollageItems(randomGames).map((item, index) => {
     const artwork = getArtwork(item)
 
     return (
       <div
-        key={item.id}
+key={`${item.id}-${index}`}
         className="category-art-item category-diagonal-item"
       >
         {artwork ? (
@@ -429,12 +465,12 @@ useEffect(() => {
       isTransitioning ? 'artwork-fading' : ''
     }`}
   >
-    {randomMusic.map((item) => {
-      const artwork = getArtwork(item)
+{buildCollageItems(randomMusic).map((item, index) => {
+  const artwork = getArtwork(item)
 
       return (
         <div
-          key={item.id}
+key={`${item.id}-${index}`}
           className="category-art-item category-diagonal-item"
         >
           {artwork ? (
@@ -474,12 +510,12 @@ useEffect(() => {
       isTransitioning ? 'artwork-fading' : ''
     }`}
   >
-    {randomBooks.map((item) => {
-      const artwork = getArtwork(item)
+{buildCollageItems(randomBooks).map((item, index) => {
+  const artwork = getArtwork(item)
 
       return (
         <div
-          key={item.id}
+key={`${item.id}-${index}`}
           className="category-art-item category-diagonal-item"
         >
           {artwork ? (
