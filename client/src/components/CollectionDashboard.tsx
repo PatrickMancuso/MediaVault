@@ -701,6 +701,18 @@ className={`recent-media-card recent-media-card-${item.type}`}
             </strong>
           </div>
 
+          
+<div>
+  <span>Books</span>
+  <strong>{books.length}</strong>
+</div>
+
+<div>
+  <span>Music</span>
+  <strong>{music.length}</strong>
+</div>
+
+
           <div>
             <span>Favorites</span>
             <strong>
