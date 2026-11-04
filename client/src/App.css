@@ -17847,3 +17847,53 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+/* =========================================================
+   MEDIA DETAIL - BOOK AND MUSIC ARTWORK
+   ========================================================= */
+
+.detail-cover-book,
+.detail-cover-music {
+  background-repeat: no-repeat;
+  background-color: #101311;
+}
+
+.detail-cover-book {
+  background-size: contain;
+  background-position: center;
+}
+
+.detail-cover-music {
+  background-size: contain;
+  background-position: center;
+}
+
+/* Music track listing */
+
+.detail-track-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 10px;
+}
+
+.detail-track-item {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.detail-track-item > span {
+  min-width: 22px;
+  color: #b99ac4;
+  font-size: 12px;
+}
+
+.detail-track-item strong {
+  color: #e8dfe9;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+
