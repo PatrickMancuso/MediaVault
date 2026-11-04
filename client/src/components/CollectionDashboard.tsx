@@ -411,7 +411,7 @@ useEffect(() => {
         <button
           key={item.id}
           type="button"
-          className="recent-media-card"
+className={`recent-media-card recent-media-card-${item.type}`}
           onClick={() => onSelect(item)}
         >
           <div className="recent-media-art">
@@ -420,20 +420,20 @@ useEffect(() => {
 <img
   src={artwork}
   alt=""
-  className={`recent-media-image ${
-    item.type === 'game'
-      ? 'recent-media-image-game'
-      : ''
-  }`}
+  className={`recent-media-image recent-media-image-${item.type}`}
+  loading="lazy"
 />
 
             ) : (
               <>
-                <span className="recent-art-type">
-                  {item.type === 'movie'
-                    ? 'FILM'
-                    : 'GAME'}
-                </span>
+              <span className="recent-art-type">
+  {{
+    movie: 'FILM',
+    game: 'GAME',
+    book: 'BOOK',
+    music: 'MUSIC',
+  }[item.type]}
+</span>
 
                 <strong>
                   {item.title}
@@ -447,15 +447,23 @@ useEffect(() => {
               {item.title}
             </strong>
 
-            <span>
-              {item.type === 'movie'
-                ? 'Movie'
-                : 'Game'}{' '}
-              · {item.genre} ·{' '}
-              {formatLabels[item.format] ??
-                item.format}{' '}
-              · {item.year}
-            </span>
+          
+<span>
+  {{
+    movie: 'Movie',
+    game: 'Game',
+    book: 'Book',
+    music: 'Music',
+  }[item.type]}
+  {' · '}
+  {item.genre}
+  {' · '}
+  {formatLabels[item.format.toLowerCase()] ??
+    item.format}
+  {' · '}
+  {item.year}
+</span>
+
           </div>
         </button>
       )
