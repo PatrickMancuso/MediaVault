@@ -7,10 +7,12 @@ interface CollectionDashboardProps {
   recentlyAdded: MediaItem[]
   movies: MediaItem[]
   games: MediaItem[]
+  books: MediaItem[]
+  music: MediaItem[]
   favorites: MediaItem[]
   onSelect: (media: MediaItem) => void
   onViewChange: (
-    view: 'movies' | 'games' | 'favorites',
+    view: 'movies' | 'games' | 'books' | 'music' | 'favorites'
   ) => void
 }
 
@@ -103,6 +105,8 @@ function CollectionDashboard({
   recentlyAdded,
   movies,
   games,
+  books,
+  music,
   favorites,
   onSelect,
   onViewChange,
@@ -112,10 +116,12 @@ function CollectionDashboard({
     number
   >()
 
-  ;[
-    ...movies,
-    ...games,
-  ].forEach((item) => {
+;[
+  ...movies,
+  ...games,
+  ...books,
+  ...music,
+].forEach((item) => {
     formatCounts.set(
       item.format,
       (formatCounts.get(item.format) ?? 0) + 1,
@@ -137,12 +143,22 @@ const [isTransitioning, setIsTransitioning] =
 
 const [randomMovies, setRandomMovies] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(movies).slice(0, 4)
+    shuffleMedia(movies).slice(0, 6)
   )
 
 const [randomGames, setRandomGames] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(games).slice(0, 4)
+    shuffleMedia(games).slice(0, 6)
+  )
+
+  const [randomBooks, setRandomBooks] =
+  useState<MediaItem[]>(() =>
+    shuffleMedia(books).slice(0, 6)
+  )
+
+const [randomMusic, setRandomMusic] =
+  useState<MediaItem[]>(() =>
+    shuffleMedia(music).slice(0, 6)
   )
 
 const [favoritePreview, setFavoritePreview] =
@@ -184,22 +200,21 @@ useEffect(() => {
   
 /* Movies - four unique selections */
 
+
 setRandomMovies((previous) =>
-  getNextMediaSelection(
-    movies,
-    previous,
-    4
-  )
+  getNextMediaSelection(movies, previous, 6)
 )
 
-/* Games - four unique selections */
-
 setRandomGames((previous) =>
-  getNextMediaSelection(
-    games,
-    previous,
-    4
-  )
+  getNextMediaSelection(games, previous, 6)
+)
+
+setRandomMusic((previous) =>
+  getNextMediaSelection(music, previous, 6)
+)
+
+setRandomBooks((previous) =>
+  getNextMediaSelection(books, previous, 6)
 )
 
 /* Favorites - six unique selections */
@@ -225,26 +240,36 @@ setFavoritePreview((previous) =>
   return () => {
     window.clearTimeout(swapTimeout)
   }
-}, [rotationIndex, movies, games, favorites])
+}, [rotationIndex, movies, games, books, music, favorites])
 
 
 /* =====================================================
    UPDATE ARTWORK WHEN COLLECTION CHANGES
    ===================================================== */
 
+
 useEffect(() => {
   setRandomMovies(
-    shuffleMedia(movies).slice(0, 4)
+    shuffleMedia(movies).slice(0, 6)
   )
 
   setRandomGames(
-    shuffleMedia(games).slice(0, 4)
+    shuffleMedia(games).slice(0, 6)
+  )
+
+  setRandomMusic(
+    shuffleMedia(music).slice(0, 6)
+  )
+
+  setRandomBooks(
+    shuffleMedia(books).slice(0, 6)
   )
 
   setFavoritePreview(
     shuffleMedia(favorites).slice(0, 6)
   )
-}, [movies, games, favorites])
+}, [movies, games, books, music, favorites])
+
 
 
   return (
@@ -255,12 +280,12 @@ useEffect(() => {
 <section className="dashboard-intro dashboard-intro-compact">
   <div className="dashboard-intro-heading">
     <h1>The Collection</h1>
-    <p>Your Movies, Games, and Entertainment </p>
+    <p>Your Movies, Games, Books, and Music </p>
   </div>
 
   <div className="dashboard-summary">
     <div className="dashboard-summary-stat">
-      <strong>{movies.length + games.length}</strong>
+      <strong>{movies.length + games.length + books.length + music.length}</strong>
       <span>Total Titles</span>
     </div>
 
@@ -294,16 +319,16 @@ useEffect(() => {
 {/* MOVIE POSTER COLLAGE */}
 
 <div
-  className={`category-art ${
-    isTransitioning ? 'artwork-fading' : ''
-  }`}
+  className={`category-art category-art-diagonal ${
+  isTransitioning ? 'artwork-fading' : ''
+}`}
 >  {randomMovies.map((item) => {
     const artwork = getArtwork(item)
 
     return (
       <div
         key={item.id}
-        className="category-art-item"
+        className="category-art-item category-diagonal-item"
       >
         {artwork ? (
           <img
@@ -347,9 +372,9 @@ useEffect(() => {
 {/* GAME POSTER COLLAGE */}
 
 <div
-  className={`category-art ${
-    isTransitioning ? 'artwork-fading' : ''
-  }`}
+ className={`category-art category-art-diagonal ${
+  isTransitioning ? 'artwork-fading' : ''
+}`}
 >
   {randomGames.map((item) => {
     const artwork = getArtwork(item)
@@ -357,7 +382,7 @@ useEffect(() => {
     return (
       <div
         key={item.id}
-        className="category-art-item"
+        className="category-art-item category-diagonal-item"
       >
         {artwork ? (
           <img
@@ -388,6 +413,99 @@ useEffect(() => {
               </em>
             </div>
           </button>
+
+
+{/* =================================================
+    MUSIC ARCHIVE
+    ================================================= */}
+
+<button
+  type="button"
+  className="dashboard-category-card dashboard-category-music"
+  onClick={() => onViewChange('music')}
+>
+  <div
+    className={`category-art category-art-diagonal ${
+      isTransitioning ? 'artwork-fading' : ''
+    }`}
+  >
+    {randomMusic.map((item) => {
+      const artwork = getArtwork(item)
+
+      return (
+        <div
+          key={item.id}
+          className="category-art-item category-diagonal-item"
+        >
+          {artwork ? (
+            <img
+              src={artwork}
+              alt=""
+              className="category-music-poster"
+              loading="lazy"
+            />
+          ) : (
+            <span>{item.title}</span>
+          )}
+        </div>
+      )
+    })}
+  </div>
+
+  <div className="category-overlay" />
+
+  <div className="category-content">
+    <strong>Music</strong>
+    <em>Browse shelf →</em>
+  </div>
+</button>
+
+{/* =================================================
+    BOOK ARCHIVE
+    ================================================= */}
+
+<button
+  type="button"
+  className="dashboard-category-card dashboard-category-books"
+  onClick={() => onViewChange('books')}
+>
+  <div
+    className={`category-art category-art-diagonal ${
+      isTransitioning ? 'artwork-fading' : ''
+    }`}
+  >
+    {randomBooks.map((item) => {
+      const artwork = getArtwork(item)
+
+      return (
+        <div
+          key={item.id}
+          className="category-art-item category-diagonal-item"
+        >
+          {artwork ? (
+            <img
+              src={artwork}
+              alt=""
+              className="category-book-poster"
+              loading="lazy"
+            />
+          ) : (
+            <span>{item.title}</span>
+          )}
+        </div>
+      )
+    })}
+  </div>
+
+  <div className="category-overlay" />
+
+  <div className="category-content">
+    <strong>Books</strong>
+    <em>Browse shelf →</em>
+  </div>
+</button>
+
+          
         </div>
       </section>
 
@@ -478,7 +596,7 @@ className={`recent-media-card recent-media-card-${item.type}`}
     ================================================= */}
 
 <RecentReviews
-  items={[...movies, ...games]}
+  items={[...movies, ...games, ...books, ...music]}
   onSelect={onSelect}
 />
 
