@@ -2657,8 +2657,11 @@ onClose()
               <section className="add-media-section">
 
                 <div className="add-media-section-heading">
-                  <span>04</span>
-
+<span>
+  {mediaType === 'book' || mediaType === 'music'
+    ? '05'
+    : '04'}
+</span>
                   <strong>
                     Appearance
                   </strong>
@@ -2842,20 +2845,7 @@ onClose()
 
                 </div>
 
-                {/* ADD BUTTON */}
-
-                <button
-                  type="button"
-                  className="manual-submit"
-                  onClick={
-                    handleManualAdd
-                  }
-                  disabled={
-                    !manualTitle.trim()
-                  }
-                >
-{isEditing ? 'Save Changes' : 'Add to Collection'}
-                </button>
+           
 
               </section>
 
@@ -2866,7 +2856,11 @@ onClose()
 
 <section className="add-media-section">
   <div className="add-media-section-heading">
-    <span>05</span>
+<span>
+  {mediaType === 'book' || mediaType === 'music'
+    ? '06'
+    : '05'}
+</span>
     <strong>Personal Review</strong>
   </div>
 
@@ -2930,6 +2924,21 @@ onClose()
 </section>
 
 
+
+{/* =================================================
+    SAVE MEDIA
+    ================================================= */}
+
+<div className="add-media-save-actions">
+  <button
+    type="button"
+    className="manual-submit"
+    onClick={() => void handleManualAdd()}
+    disabled={!manualTitle.trim()}
+  >
+    {isEditing ? 'Save Changes' : 'Add to Collection'}
+  </button>
+</div>
 
             </>
           )}
