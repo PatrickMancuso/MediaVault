@@ -18589,4 +18589,25 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 
 
+/* =========================================================
+   BROWSE ARCHIVES - MOVIE ARTWORK SIZE ONLY
+   ========================================================= */
+
+/* Increase Movie collage tile width */
+
+.dashboard-archives-section
+.dashboard-category-movies
+.category-art-diagonal {
+  --collage-tile-width: 165px;
+}
+
+/* Match the existing Game collage proportions */
+
+.dashboard-archives-section
+.dashboard-category-movies
+.category-art-diagonal
+.category-diagonal-item {
+  aspect-ratio: 3 / 4;
+}
+
 
