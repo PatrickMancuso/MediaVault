@@ -18346,3 +18346,210 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+/* =========================================================
+   MEDIAVAULT - SEAMLESS DIAGONAL BROWSE COLLAGE
+   ALL FOUR ARCHIVE CARDS
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   BROWSE CARD CONTAINER
+   --------------------------------------------------------- */
+
+.dashboard-archives-section .dashboard-category-card {
+  position: relative;
+
+  height: 390px;
+  min-height: 390px;
+
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ---------------------------------------------------------
+   COLLAGE SURFACE
+   --------------------------------------------------------- */
+
+.dashboard-archives-section .category-art-diagonal {
+  --collage-columns: 8;
+  --collage-tile-width: 145px;
+  --collage-gap: 2px;
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: max-content;
+  height: max-content;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      var(--collage-columns),
+      var(--collage-tile-width)
+    );
+
+  grid-auto-rows: auto;
+
+  gap: var(--collage-gap);
+
+  padding: 0;
+  margin: 0;
+
+  overflow: visible;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(-17deg);
+
+  transform-origin: center center;
+
+  opacity: 1;
+
+  transition:
+    opacity 650ms ease-in-out;
+}
+
+/* ---------------------------------------------------------
+   INDIVIDUAL COVER TILES
+   --------------------------------------------------------- */
+
+.dashboard-archives-section
+.category-art-diagonal
+.category-diagonal-item {
+  position: relative;
+
+  display: block;
+
+  width: var(--collage-tile-width);
+  height: auto;
+
+  min-width: 0;
+  min-height: 0;
+
+  margin: 0;
+  padding: 0;
+
+  aspect-ratio: 2 / 3;
+
+  overflow: hidden;
+
+  border: 0;
+  border-radius: 1px;
+
+  background: #161218;
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+/* ---------------------------------------------------------
+   COVER IMAGES
+   --------------------------------------------------------- */
+
+.dashboard-archives-section
+.category-art-diagonal
+.category-diagonal-item img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  border: 0;
+  border-radius: 0;
+
+  transform: none;
+}
+
+/* ---------------------------------------------------------
+   MOVIE / GAME / BOOK COLLAGES
+   --------------------------------------------------------- */
+
+.dashboard-category-movies .category-art-diagonal,
+.dashboard-category-games .category-art-diagonal,
+.dashboard-category-books .category-art-diagonal {
+  --collage-tile-width: 145px;
+}
+
+.dashboard-category-movies .category-diagonal-item,
+.dashboard-category-games .category-diagonal-item,
+.dashboard-category-books .category-diagonal-item {
+  aspect-ratio: 2 / 3;
+}
+
+/* ---------------------------------------------------------
+   MUSIC COLLAGE - SQUARE ARTWORK
+   --------------------------------------------------------- */
+
+.dashboard-category-music .category-art-diagonal {
+  --collage-tile-width: 160px;
+}
+
+.dashboard-category-music
+.category-art-diagonal
+.category-diagonal-item {
+  aspect-ratio: 1 / 1;
+}
+
+/* ---------------------------------------------------------
+   FADE TRANSITIONS
+   --------------------------------------------------------- */
+
+.dashboard-archives-section
+.category-art-diagonal.artwork-fading {
+  opacity: 0;
+}
+
+/* ---------------------------------------------------------
+   PRESERVE OVERLAY AND TEXT
+   --------------------------------------------------------- */
+
+.dashboard-archives-section .category-overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 10;
+  pointer-events: none;
+}
+
+.dashboard-archives-section .category-content {
+  position: absolute;
+  z-index: 20;
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+   --------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .dashboard-archives-section .dashboard-category-card {
+    height: 320px;
+    min-height: 320px;
+  }
+
+  .dashboard-archives-section .category-art-diagonal {
+    --collage-tile-width: 115px;
+  }
+
+  .dashboard-category-music .category-art-diagonal {
+    --collage-tile-width: 125px;
+  }
+}
+
+/* ---------------------------------------------------------
+   REDUCED MOTION
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-archives-section .category-art-diagonal {
+    transition: none;
+  }
+}
+
