@@ -649,7 +649,6 @@ setManualFormats(
   setManualDescription(editingMedia.description)
   setManualFavorite(editingMedia.favorite)
 
-setManualFavorite(editingMedia.favorite)
 
 setPersonalRating(
   editingMedia.personalRating ?? null
@@ -659,7 +658,6 @@ setPersonalReview(
   editingMedia.personalReview ?? ''
 )
 
-setManualOrientation(editingMedia.orientation)
 
   setManualOrientation(editingMedia.orientation)
   setSpineImage(editingMedia.spineImage)
@@ -701,6 +699,13 @@ const handleAutomaticSearch =
       setSearchResults([])
       return
     }
+
+    if (mediaType !== 'movie' && mediaType !== 'game') {
+  setAutomaticError(
+    'Automatic search for this category is coming soon.'
+  )
+  return
+}
 
     setIsSearching(true)
     setAutomaticError('')
@@ -784,10 +789,15 @@ const switchMediaType = (
   setManualFormat(formats[0].value)
   setManualFormats([])
 
-  setManualGenre('')
-  setManualGenres([])
+setManualGenre('')
+setManualGenres([])
 
-  setSearch('')
+setShowNewGenre(false)
+setShowNewFormat(false)
+setNewGenre('')
+setNewFormat('')
+
+setSearch('')
 }
 
 
@@ -839,6 +849,10 @@ const switchMediaType = (
      ========================================================= */
 
 const addCustomGenre = async () => {
+  if (mediaType !== 'movie' && mediaType !== 'game') {
+    return
+  }
+
   const label = newGenre.trim()
 
   if (!label) return
@@ -864,12 +878,13 @@ const addCustomGenre = async () => {
     },
   )
 
-  if (!savedOption) return
+if (!savedOption) return
 
-  setManualGenre(savedOption.label)
-  addSelectedGenre(savedOption.label)
-  setNewGenre('')
-  setShowNewGenre(false)
+setManualGenre(savedOption.label)
+addSelectedGenre(savedOption.label)
+
+setNewGenre('')
+setShowNewGenre(false)
 }
 
   /* =========================================================
@@ -877,6 +892,10 @@ const addCustomGenre = async () => {
      ========================================================= */
 
 const addCustomFormat = async () => {
+  if (mediaType !== 'movie' && mediaType !== 'game') {
+    return
+  }
+
   const label = newFormat.trim()
 
   if (!label) return
@@ -1174,11 +1193,11 @@ coverImage,
 
 source:
   editingMedia?.source ??
-  (mode === 'automatic'
-    ? mediaType === 'movie'
-      ? 'tmdb'
-      : 'igdb'
-    : 'manual'),
+  (mode === 'automatic' && mediaType === 'movie'
+    ? 'tmdb'
+    : mode === 'automatic' && mediaType === 'game'
+      ? 'igdb'
+      : 'manual'),
 
 externalId:
   editingMedia?.externalId ??
@@ -1451,6 +1470,10 @@ onClose()
             <div className="add-mode-switch">
               <button
                 type="button"
+                   disabled={
+      mediaType === 'book' ||
+      mediaType === 'music'
+    }
                 className={
                   mode === 'automatic'
                     ? 'active'
@@ -1792,12 +1815,14 @@ onClose()
                             .value,
                         )
                       }
-                      placeholder={
-                        mediaType ===
-                        'movie'
-                          ? 'Movie title'
-                          : 'Game title'
-                      }
+                placeholder={
+  {
+    movie: 'Movie title',
+    game: 'Game title',
+    book: 'Book title',
+    music: 'Album title',
+  }[mediaType]
+}
                     />
                   </label>
 
@@ -1846,26 +1871,36 @@ onClose()
       ))}
     </select>
 
-    <button
+   
+
+<button
   type="button"
   className="field-add-button"
-  onClick={() => addSelectedGenre(manualGenre)}
+  onClick={() =>
+    addSelectedGenre(manualGenre)
+  }
   disabled={!manualGenre}
   title="Add selected genre"
 >
   Add
 </button>
 
-    <button
-      type="button"
-      className="field-add-button"
-      onClick={() =>
-        setShowNewGenre((current) => !current)
-      }
-      title="Create custom genre"
-    >
-      +
-    </button>
+<button
+  type="button"
+  className="field-add-button"
+  disabled={
+    mediaType === 'book' ||
+    mediaType === 'music'
+  }
+  onClick={() =>
+    setShowNewGenre((current) => !current)
+  }
+  title="Create custom genre"
+>
+  +
+</button>
+
+
   </div>
 
   <div className="multi-selected-options">
@@ -1921,8 +1956,7 @@ onClose()
                   {/* FORMAT */}
 
                 <div className="multi-select-field">
-  <span>Physical Formats Owned</span>
-
+<span>Formats Owned</span>
   <div className="select-with-action">
     <select
       value={manualFormat}
@@ -1942,27 +1976,33 @@ onClose()
       ))}
     </select>
 
-    <button
-      type="button"
-      className="field-add-button"
-      onClick={() =>
-        addSelectedFormat(manualFormat)
-      }
-      title="Add selected format"
-    >
-      Add
-    </button>
 
-    <button
-      type="button"
-      className="field-add-button"
-      onClick={() =>
-        setShowNewFormat((current) => !current)
-      }
-      title="Create custom format"
-    >
-      +
-    </button>
+<button
+  type="button"
+  className="field-add-button"
+  onClick={() =>
+    addSelectedFormat(manualFormat)
+  }
+  title="Add selected format"
+>
+  Add
+</button>
+
+<button
+  type="button"
+  className="field-add-button"
+  disabled={
+    mediaType === 'book' ||
+    mediaType === 'music'
+  }
+  onClick={() =>
+    setShowNewFormat((current) => !current)
+  }
+  title="Create custom format"
+>
+  +
+</button>
+
   </div>
 
   <div className="multi-selected-options">
