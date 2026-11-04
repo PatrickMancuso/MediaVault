@@ -37,8 +37,18 @@ function MediaRow({
   }
 
   return (
-    <section className="media-row">
-      <div className="row-header">
+<section
+  className={`media-row ${
+    items.length > 0 &&
+    items.every((item) => item.type === 'music')
+      ? 'media-row-music'
+      : items.length > 0 &&
+          items.every((item) => item.type === 'book')
+        ? 'media-row-books'
+        : ''
+  }`}
+>
+  <div className="row-header">
         <div className="row-title-group">
           <h2>{title}</h2>
           <span>{items.length}</span>
