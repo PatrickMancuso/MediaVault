@@ -21,21 +21,37 @@ interface MediaDetailProps {
 
 
 
+
 const formatLabels: Record<string, string> = {
   vhs: 'VHS',
   dvd: 'DVD',
   bluray: 'Blu-ray',
   laserdisc: 'LaserDisc',
+
   nes: 'NES',
   ps1: 'PlayStation',
   xbox360: 'Xbox 360',
+
+  hardcover: 'Hardcover',
+  paperback: 'Paperback',
+  ebook: 'eBook',
+  audiobook: 'Audiobook',
+  'special edition': 'Special Edition',
+
+  vinyl: 'Vinyl',
+  cd: 'CD',
+  cassette: 'Cassette',
+  digital: 'Digital',
+  '8-track': '8-Track',
 }
 
-const mediaTypeLabels: Record<string, string> = {
+
+const mediaTypeLabels: Record<MediaItem['type'], string> = {
   movie: 'MOVIE',
   game: 'VIDEO GAME',
+  book: 'BOOK',
+  music: 'MUSIC',
 }
-
 function MediaDetail({
   media,
   onClose,
@@ -122,7 +138,7 @@ const displayFormats =
 const displayFormatLabels =
   displayFormats.map(
     (format) =>
-      formatLabels[format] ?? format,
+      formatLabels[format.toLowerCase()] ?? format,
   )
 
 
@@ -132,8 +148,10 @@ const displayFormatLabels =
     mediaTypeLabels[media.type] ??
     media.type
 
-  const isMovie =
-    media.type === 'movie'
+  const isMovie = media.type === 'movie'
+const isGame = media.type === 'game'
+const isBook = media.type === 'book'
+const isMusic = media.type === 'music'
 
   const rating =
     typeof media.rating === 'number'
@@ -202,7 +220,7 @@ onWheel={(event) => {
             ===================================================== */}
 
         <div
-          className="detail-cover"
+className={`detail-cover detail-cover-${media.type}`}
           style={
             media.coverImage
               ? {
@@ -250,12 +268,15 @@ onWheel={(event) => {
               PRIMARY METADATA
               =================================================== */}
 
-          <div
+         
+<div
   className={`detail-primary-info ${
     isMovie ? 'detail-primary-movie' : ''
   }`}
 >
-  {rating !== null && (
+  {/* EXTERNAL RATING */}
+
+  {rating !== null && (isMovie || isGame) && (
     <div className="detail-rating">
       <span>
         {isMovie ? 'TMDB RATING' : 'IGDB RATING'}
@@ -267,7 +288,9 @@ onWheel={(event) => {
     </div>
   )}
 
-  {isMovie ? (
+  {/* MOVIE INFORMATION */}
+
+  {isMovie && (
     <>
       {media.director && (
         <div className="detail-primary-item detail-director">
@@ -285,28 +308,69 @@ onWheel={(event) => {
         </div>
       ) : null}
     </>
-  ) : (
+  )}
+
+  {/* GAME INFORMATION */}
+
+  {isGame && (
     <>
       {media.developers?.length ? (
         <div className="detail-primary-item">
           <span>DEVELOPED BY</span>
-          <strong>
-            {media.developers.join(', ')}
-          </strong>
+          <strong>{media.developers.join(', ')}</strong>
         </div>
       ) : null}
 
       {media.publishers?.length ? (
         <div className="detail-primary-item">
           <span>PUBLISHED BY</span>
-          <strong>
-            {media.publishers.join(', ')}
-          </strong>
+          <strong>{media.publishers.join(', ')}</strong>
         </div>
       ) : null}
     </>
   )}
+
+  {/* BOOK INFORMATION */}
+
+  {isBook && (
+    <>
+      {media.authors?.length ? (
+        <div className="detail-primary-item">
+          <span>WRITTEN BY</span>
+          <strong>{media.authors.join(', ')}</strong>
+        </div>
+      ) : null}
+
+      {media.bookPublisher && (
+        <div className="detail-primary-item">
+          <span>PUBLISHED BY</span>
+          <strong>{media.bookPublisher}</strong>
+        </div>
+      )}
+    </>
+  )}
+
+  {/* MUSIC INFORMATION */}
+
+  {isMusic && (
+    <>
+      {media.artists?.length ? (
+        <div className="detail-primary-item">
+          <span>ARTIST</span>
+          <strong>{media.artists.join(', ')}</strong>
+        </div>
+      ) : null}
+
+      {media.recordLabel && (
+        <div className="detail-primary-item">
+          <span>RECORD LABEL</span>
+          <strong>{media.recordLabel}</strong>
+        </div>
+      )}
+    </>
+  )}
 </div>
+
 
 <div className="detail-divider" />
 
@@ -561,8 +625,8 @@ onWheel={(event) => {
 
             {showMoreDetails && (
               <div className="detail-more-content">
-                {isMovie ? (
-                  <>
+{isMovie && (
+  <>
              
 
                     
@@ -616,8 +680,10 @@ onWheel={(event) => {
                         </div>
                       )}
                   </>
-                ) : (
-                  <>
+)}
+
+{isGame && (
+  <>
                     {media.platforms &&
                       media.platforms.length >
                         0 && (
@@ -731,6 +797,97 @@ onWheel={(event) => {
             )}
           </div>
 
+
+  
+{/* BOOK DETAILS */}
+
+{isBook && (
+  <>
+    {media.isbn13 && (
+      <div className="detail-more-group">
+        <span>ISBN-13</span>
+        <strong>{media.isbn13}</strong>
+      </div>
+    )}
+
+    {media.isbn10 && (
+      <div className="detail-more-group">
+        <span>ISBN-10</span>
+        <strong>{media.isbn10}</strong>
+      </div>
+    )}
+
+    {media.pageCount != null && (
+      <div className="detail-more-group">
+        <span>PAGE COUNT</span>
+        <strong>{media.pageCount}</strong>
+      </div>
+    )}
+
+    {media.bookLanguage && (
+      <div className="detail-more-group">
+        <span>LANGUAGE</span>
+        <strong>{media.bookLanguage}</strong>
+      </div>
+    )}
+
+    {media.bookEdition && (
+      <div className="detail-more-group">
+        <span>EDITION</span>
+        <strong>{media.bookEdition}</strong>
+      </div>
+    )}
+  </>
+)}
+
+
+{/* MUSIC DETAILS */}
+
+{isMusic && (
+  <>
+    {media.albumType && (
+      <div className="detail-more-group">
+        <span>RELEASE TYPE</span>
+        <strong>{media.albumType}</strong>
+      </div>
+    )}
+
+    {media.catalogNumber && (
+      <div className="detail-more-group">
+        <span>CATALOG NUMBER</span>
+        <strong>{media.catalogNumber}</strong>
+      </div>
+    )}
+
+    {media.trackCount != null && (
+      <div className="detail-more-group">
+        <span>TRACK COUNT</span>
+        <strong>{media.trackCount}</strong>
+      </div>
+    )}
+
+    {media.tracks?.length ? (
+      <div className="detail-more-group">
+        <span>TRACK LIST</span>
+
+        <div className="detail-track-list">
+          {media.tracks.map((track) => (
+            <div
+              key={`${track.position}-${track.title}`}
+              className="detail-track-item"
+            >
+              <span>{track.position}.</span>
+              <strong>{track.title}</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : null}
+  </>
+)}
+
+  
+
           {/* ===================================================
               ACTIONS
               =================================================== */}
@@ -741,7 +898,12 @@ onWheel={(event) => {
   <div className="detail-footer-label">
     <strong>{media.title}</strong>
     <span>
-      {media.type === 'movie' ? 'Movie' : 'Game'}
+{{
+  movie: 'Movie',
+  game: 'Video Game',
+  book: 'Book',
+  music: 'Music',
+}[media.type]}
       {' · '}
       {media.year}
     </span>
