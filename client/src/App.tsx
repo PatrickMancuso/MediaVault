@@ -56,7 +56,7 @@ interface MediaItemRow {
   user_id: string
 
   title: string
-  type: 'movie' | 'game'
+type: MediaItem['type']
   format: string
 formats: string[]
 
@@ -76,11 +76,7 @@ description: string
 personal_review: string | null
 review_updated_at: string | null
 
-  source:
-    | 'tmdb'
-    | 'igdb'
-    | 'manual'
-    | null
+  source: MediaItem['source'] | null
 
   external_id: string | null
 
@@ -111,6 +107,30 @@ review_updated_at: string | null
     | MediaItem['videos']
     | null
 
+
+  
+metadata: {
+  authors?: string[]
+  isbn10?: string
+  isbn13?: string
+  bookPublisher?: string
+  pageCount?: number
+  bookLanguage?: string
+  bookEdition?: string
+
+  artists?: string[]
+  albumType?: string
+  recordLabel?: string
+  catalogNumber?: string
+  trackCount?: number
+
+  openLibraryWorkId?: string
+  openLibraryEditionId?: string
+  musicBrainzReleaseGroupId?: string
+  musicBrainzReleaseId?: string
+} | null
+
+
   created_at: string
   updated_at: string
 }
@@ -120,6 +140,12 @@ function rowToMediaItem(
 ): MediaItem {
   return {
     id: row.id,
+
+    
+/* Book and Music metadata */
+
+...(row.metadata ?? {}),
+
 
     title: row.title,
 
@@ -229,6 +255,32 @@ function mediaItemToRow(
   return {
     id: media.id,
     user_id: userId,
+
+    
+/* Book and Music metadata */
+
+metadata: {
+  authors: media.authors,
+  isbn10: media.isbn10,
+  isbn13: media.isbn13,
+  bookPublisher: media.bookPublisher,
+  pageCount: media.pageCount,
+  bookLanguage: media.bookLanguage,
+  bookEdition: media.bookEdition,
+  openLibraryWorkId: media.openLibraryWorkId,
+  openLibraryEditionId: media.openLibraryEditionId,
+
+  artists: media.artists,
+  albumType: media.albumType,
+  recordLabel: media.recordLabel,
+  catalogNumber: media.catalogNumber,
+  trackCount: media.trackCount,
+  musicBrainzReleaseGroupId:
+    media.musicBrainzReleaseGroupId,
+  musicBrainzReleaseId:
+    media.musicBrainzReleaseId,
+},
+
 
     title: media.title,
     type: media.type,
