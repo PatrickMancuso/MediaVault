@@ -771,8 +771,7 @@ className={`recent-media-card recent-media-card-${item.type}`}
             ([format, count]) => (
               <div key={format}>
                 <span>
-                  {formatLabels[format] ??
-                    format}
+{formatLabels[format.toLowerCase()] ?? format}
                 </span>
 
                 <strong>
