@@ -757,9 +757,10 @@ useEffect(() => {
      AUTOMATIC SEARCH
      ========================================================= */
 
+
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL ??
-  'http://localhost:3000'
+  import.meta.env.VITE_API_URL ?? ''
+
 
 const handleAutomaticSearch =
   async () => {
@@ -1399,16 +1400,18 @@ coverImage,
 
 
 
+
 source:
   editingMedia?.source ??
   (mode === 'automatic' && selectedAutomaticResult
-    ? {
+    ? ({
         movie: 'tmdb',
         game: 'igdb',
         book: 'openlibrary',
         music: 'musicbrainz',
-      }[mediaType]
+      } as const)[mediaType]
     : 'manual'),
+
 
 
 externalId:
