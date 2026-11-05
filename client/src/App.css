@@ -18668,3 +18668,24 @@ background: rgba(53, 38, 63, 0.75) !important;
   overflow: hidden;
   overflow-wrap: anywhere;
 }
+
+
+
+
+/* =====================================================
+   DIAGONAL COLLAGE - RESET LEGACY TILE POSITIONS
+   ===================================================== */
+
+.dashboard-archives-section
+.dashboard-category-card
+.category-art-diagonal
+.category-diagonal-item {
+  position: relative;
+
+  left: auto;
+  right: auto;
+  top: auto;
+  bottom: auto;
+
+  transform: none;
+}
