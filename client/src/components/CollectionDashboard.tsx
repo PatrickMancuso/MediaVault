@@ -322,7 +322,7 @@ useEffect(() => {
           ================================================= */}
 <section className="dashboard-intro dashboard-intro-compact">
   <div className="dashboard-intro-heading">
-    <h1>Browse the Archives</h1>
+    <h1>The Collection</h1>
   </div>
 
   <div className="dashboard-summary">
@@ -342,6 +342,8 @@ useEffect(() => {
       <section className="dashboard-section dashboard-archives-section">
   <div className="dashboard-section-header">
     <div>
+          <h1>Browse the Archives</h1>
+
     </div>
   </div>
 
