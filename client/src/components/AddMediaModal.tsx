@@ -1837,14 +1837,18 @@ if (saved) {
       : undefined
   }
 >
-  {!result.posterImage &&
-    !result.coverImage &&
-   {{
-  movie: 'FILM',
-  game: 'GAME',
-  book: 'BOOK',
-  music: 'MUSIC',
-}[mediaType]}
+
+
+{!result.posterImage &&
+  !result.coverImage &&
+  ({
+    movie: 'FILM',
+    game: 'GAME',
+    book: 'BOOK',
+    music: 'MUSIC',
+  }[mediaType])}
+
+
 </span>
 
             
