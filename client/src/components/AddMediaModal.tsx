@@ -61,12 +61,13 @@ interface ApiScreenshot {
   url: string
 }
 
+
 interface ApiSearchResult {
-  externalId: number
+  externalId: number | string
   title: string
-  releaseDate: string | null
+  releaseDate?: string | null
   year: number | null
-  description: string
+  description?: string
 
   posterImage?: string | null
   backdropImage?: string | null
@@ -88,7 +89,23 @@ interface ApiSearchResult {
 
   screenshots?: ApiScreenshot[]
   videos?: ApiVideo[]
+
+  // Open Library
+  authors?: string[]
+  isbn10?: string | null
+  isbn13?: string | null
+  bookPublisher?: string | null
+  pageCount?: number | null
+  bookLanguage?: string | null
+  openLibraryWorkId?: string
+  openLibraryEditionId?: string | null
+
+  // MusicBrainz
+  artists?: string[]
+  albumType?: string
+  musicBrainzReleaseGroupId?: string
 }
+
 
 interface ApiMovieDetails extends ApiSearchResult {
   source: 'tmdb'
@@ -753,22 +770,20 @@ const handleAutomaticSearch =
       return
     }
 
-    if (mediaType !== 'movie' && mediaType !== 'game') {
-  setAutomaticError(
-    'Automatic search for this category is coming soon.'
-  )
-  return
-}
 
     setIsSearching(true)
     setAutomaticError('')
     setSelectedAutomaticResult(null)
 
     try {
-      const endpoint =
-        mediaType === 'movie'
-          ? '/api/media/search/movie'
-          : '/api/media/search/game'
+      
+const endpoint = {
+  movie: '/api/media/search/movie',
+  game: '/api/media/search/game',
+  book: '/api/media/search/book',
+  music: '/api/media/search/music',
+}[mediaType]
+
 
       const response = await fetch(
         `${API_BASE_URL}${endpoint}?q=${encodeURIComponent(
@@ -776,13 +791,11 @@ const handleAutomaticSearch =
         )}`,
       )
 
-      if (!response.ok) {
-        throw new Error(
-          `${mediaType === 'movie'
-            ? 'Movie'
-            : 'Game'} search failed with status ${response.status}`,
-        )
-      }
+    if (!response.ok) {
+  throw new Error(
+    `${mediaType} search failed with status ${response.status}`
+  )
+}
 
       const data =
         await response.json()
@@ -825,11 +838,7 @@ const switchMediaType = (
 ) => {
   setMediaType(type)
 
-  if (type === 'book' || type === 'music') {
-  setMode('manual')
-} else {
-  setMode('automatic')
-}
+setMode('automatic')
 
   setSelectedAutomaticResult(null)
   setImportedMetadata(null)
@@ -1088,6 +1097,73 @@ setManualGenre(matchingGenres[0] ?? '')
       return
     }
 
+
+
+
+    /* =====================================================
+       BOOK - OPEN LIBRARY
+       ===================================================== */
+
+    if (mediaType === 'book') {
+      setManualTitle(result.title ?? '')
+      setManualYear(
+        result.year ? String(result.year) : ''
+      )
+      setManualDescription(result.description ?? '')
+      setCoverImage(result.coverImage ?? undefined)
+
+      setBookAuthors(
+        (result.authors ?? []).join(', ')
+      )
+
+      setBookIsbn(
+        result.isbn13 ?? result.isbn10 ?? ''
+      )
+
+      // Work-level search metadata may describe
+      // different editions. Leave edition-specific
+      // fields for the user to confirm.
+      setBookPublisher('')
+      setBookPageCount('')
+      setBookLanguage('')
+      setBookEdition('')
+
+      setManualGenres([])
+      setManualGenre('')
+
+      return
+    }
+
+    /* =====================================================
+       MUSIC - MUSICBRAINZ
+       ===================================================== */
+
+    if (mediaType === 'music') {
+      setManualTitle(result.title ?? '')
+      setManualYear(
+        result.year ? String(result.year) : ''
+      )
+      setManualDescription(result.description ?? '')
+      setCoverImage(result.coverImage ?? undefined)
+
+      setMusicArtists(
+        (result.artists ?? []).join(', ')
+      )
+
+      setMusicAlbumType(result.albumType ?? 'Album')
+      setMusicRecordLabel('')
+      setMusicCatalogNumber('')
+      setMusicTrackCount('')
+
+      setManualGenres([])
+      setManualGenre('')
+
+      return
+    }
+
+
+
+    
     /*
      * GAME
      * ----
@@ -1322,13 +1398,18 @@ coverImage,
 }),
 
 
+
 source:
   editingMedia?.source ??
-  (mode === 'automatic' && mediaType === 'movie'
-    ? 'tmdb'
-    : mode === 'automatic' && mediaType === 'game'
-      ? 'igdb'
-      : 'manual'),
+  (mode === 'automatic' && selectedAutomaticResult
+    ? {
+        movie: 'tmdb',
+        game: 'igdb',
+        book: 'openlibrary',
+        music: 'musicbrainz',
+      }[mediaType]
+    : 'manual'),
+
 
 externalId:
   editingMedia?.externalId ??
@@ -1606,10 +1687,7 @@ if (saved) {
             <div className="add-mode-switch">
               <button
                 type="button"
-                   disabled={
-      mediaType === 'book' ||
-      mediaType === 'music'
-    }
+                   
                 className={
                   mode === 'automatic'
                     ? 'active'
@@ -1668,11 +1746,12 @@ if (saved) {
       <strong>
         {isCustomizingAutomatic
           ? 'Customize Imported Media'
-          : `Find ${
-              mediaType === 'movie'
-                ? 'a Movie'
-                : 'a Game'
-            }`}
+         : {
+    movie: 'Find a Movie',
+    game: 'Find a Game',
+    book: 'Find a Book',
+    music: 'Find an Album',
+  }[mediaType]}
       </strong>
     </div>
 
@@ -1694,11 +1773,12 @@ if (saved) {
                 void handleAutomaticSearch()
               }
             }}
-            placeholder={
-              mediaType === 'movie'
-                ? 'Search for a movie...'
-                : 'Search for a game...'
-            }
+         placeholder={{
+  movie: 'Search for a movie...',
+  game: 'Search for a game...',
+  book: 'Search for a book or author...',
+  music: 'Search for an album or artist...',
+}[mediaType]}
           />
 
           <button
@@ -1759,21 +1839,31 @@ if (saved) {
 >
   {!result.posterImage &&
     !result.coverImage &&
-    (mediaType === 'movie'
-      ? 'FILM'
-      : 'GAME')}
+   {{
+  movie: 'FILM',
+  game: 'GAME',
+  book: 'BOOK',
+  music: 'MUSIC',
+}[mediaType]}
 </span>
 
-                <span className="result-info">
-                  <strong>
-                    {result.title}
-                  </strong>
+            
+<span className="result-info">
+  <strong>{result.title}</strong>
 
-                  <span>
-                    {result.year ??
-                      'Unknown year'}
-                  </span>
-                </span>
+  {(mediaType === 'book' || mediaType === 'music') && (
+    <span>
+      {mediaType === 'book'
+        ? result.authors?.join(', ') || 'Unknown author'
+        : result.artists?.join(', ') || 'Unknown artist'}
+    </span>
+  )}
+
+  <span>
+    {result.year ?? 'Unknown year'}
+  </span>
+</span>
+
 
                 <span className="result-check">
                   {selectedAutomaticResult?.externalId ===
@@ -1827,18 +1917,24 @@ if (saved) {
     />
   ) : (
     <span>
-      {mediaType === 'movie'
-        ? 'FILM'
-        : 'GAME'}
+      {{
+  movie: 'FILM',
+  game: 'GAME',
+  book: 'BOOK',
+  music: 'MUSIC',
+}[mediaType]}
     </span>
   )}
 </div>
 
             <div className="automatic-import-info">
               <span>
-                {mediaType === 'movie'
-  ? 'TMDB RESULT'
-  : 'IGDB RESULT'}
+              {{
+  movie: 'TMDB RESULT',
+  game: 'IGDB RESULT',
+  book: 'OPEN LIBRARY RESULT',
+  music: 'MUSICBRAINZ RESULT',
+}[mediaType]}
               </span>
 
               <strong>
