@@ -342,7 +342,7 @@ useEffect(() => {
       <section className="dashboard-section dashboard-archives-section">
   <div className="dashboard-section-header">
     <div>
-          <h1>Browse the Archives</h1>
+      <span>Browse the Archives</span>
 
     </div>
   </div>
