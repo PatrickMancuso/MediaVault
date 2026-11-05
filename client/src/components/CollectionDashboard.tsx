@@ -68,6 +68,11 @@ function shuffleMedia(items: MediaItem[]): MediaItem[] {
    BUILD DECORATIVE BROWSE COLLAGE
    ===================================================== */
 
+
+/* =====================================================
+   BUILD STABLE BROWSE COLLAGE
+   ===================================================== */
+
 function buildCollageItems(
   items: MediaItem[],
   count = 20
@@ -76,17 +81,16 @@ function buildCollageItems(
     return []
   }
 
-  const shuffled = shuffleMedia(items)
-
-  if (shuffled.length >= count) {
-    return shuffled.slice(0, count)
+  if (items.length >= count) {
+    return items.slice(0, count)
   }
 
   return Array.from(
     { length: count },
-    (_, index) => shuffled[index % shuffled.length]
+    (_, index) => items[index % items.length]
   )
 }
+
 
 
 /* =====================================================
