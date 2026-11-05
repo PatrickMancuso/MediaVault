@@ -193,22 +193,22 @@ const [isTransitioning, setIsTransitioning] =
 
 const [randomMovies, setRandomMovies] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(movies).slice(0, 30)
+    shuffleMedia(movies).slice(0, 20)
   )
 
 const [randomGames, setRandomGames] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(games).slice(0, 30)
+    shuffleMedia(games).slice(0, 20)
   )
 
   const [randomBooks, setRandomBooks] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(books).slice(0, 30)
+    shuffleMedia(books).slice(0, 20)
   )
 
 const [randomMusic, setRandomMusic] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(music).slice(0, 30)
+    shuffleMedia(music).slice(0, 20)
   )
 
 const [favoritePreview, setFavoritePreview] =
@@ -252,19 +252,19 @@ useEffect(() => {
 
 
 setRandomMovies((previous) =>
-  getNextMediaSelection(movies, previous, 30)
+  getNextMediaSelection(movies, previous, 20)
 )
 
 setRandomGames((previous) =>
-  getNextMediaSelection(games, previous, 30)
+  getNextMediaSelection(games, previous, 20)
 )
 
 setRandomMusic((previous) =>
-  getNextMediaSelection(music, previous, 30)
+  getNextMediaSelection(music, previous, 20)
 )
 
 setRandomBooks((previous) =>
-  getNextMediaSelection(books, previous, 30
+  getNextMediaSelection(books, previous, 20
 
   )
 )
@@ -302,19 +302,19 @@ setFavoritePreview((previous) =>
 
 useEffect(() => {
   setRandomMovies(
-    shuffleMedia(movies).slice(0, 30)
+    shuffleMedia(movies).slice(0, 20)
   )
 
   setRandomGames(
-    shuffleMedia(games).slice(0, 30)
+    shuffleMedia(games).slice(0, 20)
   )
 
   setRandomMusic(
-    shuffleMedia(music).slice(0, 30)
+    shuffleMedia(music).slice(0, 20)
   )
 
   setRandomBooks(
-    shuffleMedia(books).slice(0, 30)
+    shuffleMedia(books).slice(0, 20)
   )
 
   setFavoritePreview(
@@ -420,8 +420,8 @@ useEffect(() => {
       isTransitioning ? 'artwork-fading' : ''
     }`}
   >
-{buildCollageItems(randomMusic).map((item, index) => {
-  const artwork = getArtwork(item)
+{randomMusic.map((item, index) => {
+    const artwork = getArtwork(item)
 
       return (
         <div
