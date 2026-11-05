@@ -70,7 +70,7 @@ function shuffleMedia(items: MediaItem[]): MediaItem[] {
 
 function buildCollageItems(
   items: MediaItem[],
-  count = 48
+  count = 20
 ): MediaItem[] {
   if (items.length === 0) {
     return []
@@ -186,22 +186,22 @@ const [isTransitioning, setIsTransitioning] =
 
 const [randomMovies, setRandomMovies] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(movies).slice(0, 48)
+    shuffleMedia(movies).slice(0, 20)
   )
 
 const [randomGames, setRandomGames] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(games).slice(0, 48)
+    shuffleMedia(games).slice(0, 20)
   )
 
   const [randomBooks, setRandomBooks] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(books).slice(0, 48)
+    shuffleMedia(books).slice(0, 20)
   )
 
 const [randomMusic, setRandomMusic] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(music).slice(0, 48)
+    shuffleMedia(music).slice(0, 20)
   )
 
 const [favoritePreview, setFavoritePreview] =
@@ -245,19 +245,19 @@ useEffect(() => {
 
 
 setRandomMovies((previous) =>
-  getNextMediaSelection(movies, previous, 48)
+  getNextMediaSelection(movies, previous, 20)
 )
 
 setRandomGames((previous) =>
-  getNextMediaSelection(games, previous, 48)
+  getNextMediaSelection(games, previous, 20)
 )
 
 setRandomMusic((previous) =>
-  getNextMediaSelection(music, previous, 48)
+  getNextMediaSelection(music, previous, 20)
 )
 
 setRandomBooks((previous) =>
-  getNextMediaSelection(books, previous, 48)
+  getNextMediaSelection(books, previous, 20)
 )
 
 /* Favorites - six unique selections */
@@ -293,19 +293,19 @@ setFavoritePreview((previous) =>
 
 useEffect(() => {
   setRandomMovies(
-    shuffleMedia(movies).slice(0, 48)
+    shuffleMedia(movies).slice(0, 20)
   )
 
   setRandomGames(
-    shuffleMedia(games).slice(0, 48)
+    shuffleMedia(games).slice(0, 20)
   )
 
   setRandomMusic(
-    shuffleMedia(music).slice(0, 48)
+    shuffleMedia(music).slice(0, 20)
   )
 
   setRandomBooks(
-    shuffleMedia(books).slice(0, 48)
+    shuffleMedia(books).slice(0, 20)
   )
 
   setFavoritePreview(
