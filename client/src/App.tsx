@@ -137,6 +137,46 @@ metadata: {
   updated_at: string
 }
 
+
+
+/* =====================================================
+   DATABASE DATE NORMALIZATION
+   ===================================================== */
+
+function normalizeDatabaseDate(
+  value?: string | null
+): string | null {
+  if (!value) return null
+
+  const date = value.trim()
+
+  // Year only: 1963 -> 1963-01-01
+  if (/^\d{4}$/.test(date)) {
+    return `${date}-01-01`
+  }
+
+  // Year and month: 1963-05 -> 1963-05-01
+  if (/^\d{4}-(0[1-9]|1[0-2])$/.test(date)) {
+    return `${date}-01`
+  }
+
+  // Complete date: validate before saving
+  if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    const parsed = new Date(`${date}T00:00:00Z`)
+
+    if (
+      !Number.isNaN(parsed.getTime()) &&
+      parsed.toISOString().slice(0, 10) === date
+    ) {
+      return date
+    }
+  }
+
+  // Reject unsupported dates
+  return null
+}
+
+
 function rowToMediaItem(
   row: MediaItemRow,
 ): MediaItem {
@@ -329,8 +369,10 @@ description: media.description,
     logo_image:
       media.logoImage ?? null,
 
-    release_date:
-      media.releaseDate ?? null,
+   
+release_date:
+  normalizeDatabaseDate(media.releaseDate),
+
 
     rating:
       media.rating ?? null,
