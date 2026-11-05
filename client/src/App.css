@@ -18881,3 +18881,170 @@ background: rgba(53, 38, 63, 0.75) !important;
   object-fit: cover;
   object-position: center;
 }
+
+
+
+
+/* =====================================================
+   MEDIAVAULT - BROWSE CARD TEXT READABILITY
+   ===================================================== */
+
+/* Dark gradient concentrated behind category labels */
+
+.collection-dashboard
+.dashboard-category-card
+.category-overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      0deg,
+      rgba(5, 8, 9, 0.88) 0%,
+      rgba(5, 8, 9, 0.55) 15%,
+      rgba(5, 8, 9, 0.12) 42%,
+      transparent 65%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(5, 8, 9, 0.38) 0%,
+      rgba(5, 8, 9, 0.08) 45%,
+      transparent 75%
+    );
+
+  transition: background 250ms ease;
+}
+
+
+
+
+/* =====================================================
+   BROWSE CARD - CATEGORY LABELS
+   ===================================================== */
+
+.collection-dashboard
+.dashboard-category-card
+.category-content {
+  position: absolute;
+
+  left: 22px;
+  bottom: 19px;
+
+  z-index: 5;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  gap: 6px;
+
+  pointer-events: none;
+}
+
+.collection-dashboard
+.dashboard-category-card
+.category-content strong {
+  display: block;
+
+  color: #fff8f1;
+
+  font-size: clamp(27px, 2.2vw, 35px);
+  font-weight: 800;
+
+  line-height: 1;
+  letter-spacing: -0.8px;
+
+  text-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.95),
+    0 5px 18px rgba(0, 0, 0, 0.8);
+}
+
+.collection-dashboard
+.dashboard-category-card
+.category-content em {
+  display: block;
+
+  color: #f3b17b;
+
+  font-size: 12px;
+  font-weight: 700;
+  font-style: normal;
+
+  line-height: 1.3;
+
+  text-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.95),
+    0 3px 10px rgba(0, 0, 0, 0.8);
+}
+
+
+
+
+/* =====================================================
+   BROWSE CARD - HOVER READABILITY
+   ===================================================== */
+
+.collection-dashboard
+.dashboard-category-card:hover
+.category-overlay {
+  background:
+    linear-gradient(
+      0deg,
+      rgba(5, 8, 9, 0.94) 0%,
+      rgba(5, 8, 9, 0.68) 18%,
+      rgba(5, 8, 9, 0.16) 45%,
+      transparent 68%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(5, 8, 9, 0.48) 0%,
+      rgba(5, 8, 9, 0.1) 48%,
+      transparent 75%
+    );
+}
+
+.collection-dashboard
+.dashboard-category-card:hover
+.category-content strong {
+  color: #ffffff;
+}
+
+.collection-dashboard
+.dashboard-category-card:hover
+.category-content em {
+  color: #ffc08a;
+}
+
+
+
+
+
+
+
+
+
+/* Optional purple accent above category titles */
+
+.collection-dashboard
+.dashboard-category-card
+.category-content::before {
+  content: "";
+
+  display: block;
+
+  width: 32px;
+  height: 3px;
+
+  margin-bottom: 4px;
+
+  border-radius: 2px;
+
+  background: #c494de;
+
+  box-shadow:
+    0 0 12px rgba(196, 148, 222, 0.35);
+}
