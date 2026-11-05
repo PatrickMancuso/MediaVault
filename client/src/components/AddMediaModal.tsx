@@ -1421,30 +1421,12 @@ externalId:
     : undefined),
 
 
+
 releaseDate:
   editingMedia?.releaseDate ??
   importedMetadata?.releaseDate ??
   undefined,
 
-  if (!rawDate) return undefined
-
-  // Year only: 1963 -> 1963-01-01
-  if (/^\d{4}$/.test(rawDate)) {
-    return `${rawDate}-01-01`
-  }
-
-  // Year and month: 1963-05 -> 1963-05-01
-  if (/^\d{4}-\d{2}$/.test(rawDate)) {
-    return `${rawDate}-01`
-  }
-
-  // Complete date: preserve it
-  if (/^\d{4}-\d{2}-\d{2}$/.test(rawDate)) {
-    return rawDate
-  }
-
-  return undefined
-})(),
 
 
 rating:
