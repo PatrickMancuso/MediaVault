@@ -76,7 +76,7 @@ function shuffleMedia(items: MediaItem[]): MediaItem[] {
 
 function buildCollageItems(
   items: MediaItem[],
-  count = 20
+  count = 32
 ): MediaItem[] {
   if (items.length === 0) {
     return []
