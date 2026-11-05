@@ -35,11 +35,11 @@ function DiagonalArchiveArtwork({
   isTransitioning,
 }: DiagonalArchiveArtworkProps) {
   return (
-    <div
-      className={`category-art category-art-diagonal ${
-        isTransitioning ? 'artwork-fading' : ''
-      }`}
-    >
+   <div
+  className={`category-art category-art-diagonal movie-game-collage ${
+    isTransitioning ? 'artwork-fading' : ''
+  }`}
+>
       {buildCollageItems(items).map((item, index) => {
         const artwork = getArtwork(item)
 
