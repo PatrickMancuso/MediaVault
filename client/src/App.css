@@ -18771,3 +18771,113 @@ background: rgba(53, 38, 63, 0.75) !important;
   margin-bottom: 12px;
   padding-bottom: 12px;
 }
+
+
+
+
+/* =====================================================
+   COLLECTION HEADER - INTEGRATED SUBTITLE
+   ===================================================== */
+
+.collection-dashboard .dashboard-intro-compact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+}
+
+.collection-dashboard .dashboard-intro-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.collection-dashboard .dashboard-intro-heading h1 {
+  margin: 0;
+}
+
+.collection-dashboard .dashboard-intro-heading
+.dashboard-intro-subtitle {
+  margin: 0;
+
+  color: rgba(233, 164, 109, 0.85);
+
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+}
+
+.collection-dashboard .dashboard-archives-section {
+  margin-top: 0;
+  margin-bottom: 34px;
+}
+
+.collection-dashboard .dashboard-archives-section
+.dashboard-category-grid {
+  margin-top: 0;
+}
+
+
+
+
+/* =====================================================
+   MUSIC BROWSE - COLLAGE COVERAGE
+   ===================================================== */
+
+.dashboard-archives-section
+.dashboard-category-music
+.category-art-diagonal {
+  --collage-columns: 8;
+  --collage-tile-width: 200px;
+
+  grid-template-columns:
+    repeat(var(--collage-columns), var(--collage-tile-width));
+
+  grid-auto-rows: 200px;
+
+  left: 50%;
+  top: 50%;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(-17deg);
+}
+
+
+
+/* =====================================================
+   BOOK BROWSE - LARGER COVERS
+   ===================================================== */
+
+.dashboard-archives-section
+.dashboard-category-books
+.category-art-diagonal {
+  --collage-tile-width: 170px;
+
+  grid-auto-rows: 255px;
+}
+
+.dashboard-archives-section
+.dashboard-category-books
+.category-diagonal-item {
+  width: 170px;
+  height: 255px;
+
+  aspect-ratio: 2 / 3;
+}
+
+.dashboard-archives-section
+.dashboard-category-books
+.category-book-poster {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+}

@@ -183,8 +183,8 @@ function CollectionDashboard({
    DASHBOARD - ROTATING ARTWORK
    ===================================================== */
 
-const ROTATION_INTERVAL = 35000
-const FADE_DURATION = 1400
+const ROTATION_INTERVAL = 30000
+const FADE_DURATION = 1200
 
 const [rotationIndex, setRotationIndex] = useState(0)
 
@@ -193,22 +193,22 @@ const [isTransitioning, setIsTransitioning] =
 
 const [randomMovies, setRandomMovies] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(movies).slice(0, 20)
+    shuffleMedia(movies).slice(0, 25)
   )
 
 const [randomGames, setRandomGames] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(games).slice(0, 20)
+    shuffleMedia(games).slice(0, 25)
   )
 
   const [randomBooks, setRandomBooks] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(books).slice(0, 20)
+    shuffleMedia(books).slice(0, 25)
   )
 
 const [randomMusic, setRandomMusic] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(music).slice(0, 20)
+    shuffleMedia(music).slice(0, 25)
   )
 
 const [favoritePreview, setFavoritePreview] =
@@ -252,19 +252,19 @@ useEffect(() => {
 
 
 setRandomMovies((previous) =>
-  getNextMediaSelection(movies, previous, 20)
+  getNextMediaSelection(movies, previous, 25)
 )
 
 setRandomGames((previous) =>
-  getNextMediaSelection(games, previous, 20)
+  getNextMediaSelection(games, previous, 25)
 )
 
 setRandomMusic((previous) =>
-  getNextMediaSelection(music, previous, 20)
+  getNextMediaSelection(music, previous, 25)
 )
 
 setRandomBooks((previous) =>
-  getNextMediaSelection(books, previous, 20
+  getNextMediaSelection(books, previous, 25
 
   )
 )
@@ -302,19 +302,19 @@ setFavoritePreview((previous) =>
 
 useEffect(() => {
   setRandomMovies(
-    shuffleMedia(movies).slice(0, 20)
+    shuffleMedia(movies).slice(0, 25)
   )
 
   setRandomGames(
-    shuffleMedia(games).slice(0, 20)
+    shuffleMedia(games).slice(0, 25)
   )
 
   setRandomMusic(
-    shuffleMedia(music).slice(0, 20)
+    shuffleMedia(music).slice(0, 25)
   )
 
   setRandomBooks(
-    shuffleMedia(books).slice(0, 20)
+    shuffleMedia(books).slice(0, 25)
   )
 
   setFavoritePreview(
@@ -329,34 +329,32 @@ useEffect(() => {
       {/* =================================================
           INTRO
           ================================================= */}
+
 <section className="dashboard-intro dashboard-intro-compact">
   <div className="dashboard-intro-heading">
     <h1>The Collection</h1>
+    <p className="dashboard-intro-subtitle">
+      Browse the Archives
+    </p>
   </div>
 
   <div className="dashboard-summary">
     <div className="dashboard-summary-stat">
-      <strong>{movies.length + games.length + books.length + music.length}</strong>
+      <strong>
+        {movies.length + games.length + books.length + music.length}
+      </strong>
       <span>Total Titles</span>
     </div>
-
-  
   </div>
 </section>
+
       
       {/* =================================================
           MOVIES / GAMES
           ================================================= */}
 
-      <section className="dashboard-section dashboard-archives-section">
-  <div className="dashboard-section-header">
-    <div>
-      <span>Browse the Archives</span>
-
-    </div>
-  </div>
-
-        <div className="dashboard-category-grid">
+<section className="dashboard-section dashboard-archives-section">
+  <div className="dashboard-category-grid">
        
 {/* =================================================
     MOVIE ARCHIVE
@@ -420,8 +418,8 @@ useEffect(() => {
       isTransitioning ? 'artwork-fading' : ''
     }`}
   >
-{randomMusic.map((item, index) => {
-    const artwork = getArtwork(item)
+{buildCollageItems(randomMusic, 32).map((item, index) => {
+      const artwork = getArtwork(item)
 
       return (
         <div
