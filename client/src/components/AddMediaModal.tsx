@@ -211,6 +211,45 @@ function rankGameSearchResults(
 }
 
 
+/* =====================================================
+   MUSICBRAINZ DATE NORMALIZATION
+   ===================================================== */
+
+function normalizeMusicReleaseDate(
+  value?: string | null
+): string | undefined {
+  if (!value) return undefined
+
+  const date = value.trim()
+
+  // Year only: 1963
+  if (/^\d{4}$/.test(date)) {
+    return `${date}-01-01`
+  }
+
+  // Year and month: 1963-05
+  if (/^\d{4}-(0[1-9]|1[0-2])$/.test(date)) {
+    return `${date}-01`
+  }
+
+  // Full date: 1963-05-24
+  if (/^\d{4}-(0[1-9]|1[0-2])-\d{2}$/.test(date)) {
+    const parsed = new Date(`${date}T00:00:00Z`)
+
+    if (
+      !Number.isNaN(parsed.getTime()) &&
+      parsed.toISOString().slice(0, 10) === date
+    ) {
+      return date
+    }
+  }
+
+  // Do not send invalid dates to Supabase.
+  return undefined
+}
+
+
+
 type AddMode =
   | 'automatic'
   | 'manual'
@@ -1421,11 +1460,18 @@ externalId:
     : undefined),
 
 
-
 releaseDate:
-  editingMedia?.releaseDate ??
-  importedMetadata?.releaseDate ??
-  undefined,
+  mediaType === 'music'
+    ? normalizeMusicReleaseDate(
+        editingMedia?.releaseDate ??
+        importedMetadata?.releaseDate
+      )
+    : (
+        editingMedia?.releaseDate ??
+        importedMetadata?.releaseDate ??
+        undefined
+      ),
+
 
 
 
