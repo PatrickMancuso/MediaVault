@@ -1,3 +1,4 @@
+import CollageArtwork from './CollageArtwork'
 import { useEffect, useState } from 'react'
 import type { MediaItem } from '../data/sampleMedia'
 
@@ -484,16 +485,11 @@ key={`${item.id}-${index}`}
 key={`${item.id}-${index}`}
           className="category-art-item category-diagonal-item"
         >
-          {artwork ? (
-            <img
-              src={artwork}
-              alt=""
-              className="category-music-poster"
-              loading="lazy"
-            />
-          ) : (
-            <span>{item.title}</span>
-          )}
+       <CollageArtwork
+  src={artwork}
+  title={item.title}
+  className="category-music-poster"
+/>
         </div>
       )
     })}
