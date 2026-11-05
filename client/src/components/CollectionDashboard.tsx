@@ -375,7 +375,7 @@ useEffect(() => {
 
   <div className="category-content">
     <strong>Movies</strong>
-    <em>Browse shelf →</em>
+    <em>View Shelf →</em>
   </div>
 </button>
 
@@ -398,7 +398,7 @@ useEffect(() => {
 
   <div className="category-content">
     <strong>Games</strong>
-    <em>Browse shelf →</em>
+    <em>View Shelf →</em>
   </div>
 </button>
 
@@ -440,7 +440,7 @@ key={`${item.id}-${index}`}
 
   <div className="category-content">
     <strong>Music</strong>
-    <em>Browse shelf →</em>
+    <em>View Shelf →</em>
   </div>
 </button>
 
@@ -485,7 +485,7 @@ key={`${item.id}-${index}`}
 
   <div className="category-content">
     <strong>Books</strong>
-    <em>Browse shelf →</em>
+    <em>View shelf →</em>
   </div>
 </button>
 
