@@ -76,7 +76,7 @@ function shuffleMedia(items: MediaItem[]): MediaItem[] {
 
 function buildCollageItems(
   items: MediaItem[],
-  count = 32
+  count = 35
 ): MediaItem[] {
   if (items.length === 0) {
     return []
@@ -191,22 +191,22 @@ const [isTransitioning, setIsTransitioning] =
 
 const [randomMovies, setRandomMovies] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(movies).slice(0, 20)
+    shuffleMedia(movies).slice(0, 30)
   )
 
 const [randomGames, setRandomGames] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(games).slice(0, 20)
+    shuffleMedia(games).slice(0, 30)
   )
 
   const [randomBooks, setRandomBooks] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(books).slice(0, 20)
+    shuffleMedia(books).slice(0, 30)
   )
 
 const [randomMusic, setRandomMusic] =
   useState<MediaItem[]>(() =>
-    shuffleMedia(music).slice(0, 20)
+    shuffleMedia(music).slice(0, 30)
   )
 
 const [favoritePreview, setFavoritePreview] =
@@ -250,19 +250,21 @@ useEffect(() => {
 
 
 setRandomMovies((previous) =>
-  getNextMediaSelection(movies, previous, 20)
+  getNextMediaSelection(movies, previous, 30)
 )
 
 setRandomGames((previous) =>
-  getNextMediaSelection(games, previous, 20)
+  getNextMediaSelection(games, previous, 30)
 )
 
 setRandomMusic((previous) =>
-  getNextMediaSelection(music, previous, 20)
+  getNextMediaSelection(music, previous, 30)
 )
 
 setRandomBooks((previous) =>
-  getNextMediaSelection(books, previous, 20)
+  getNextMediaSelection(books, previous, 30
+
+  )
 )
 
 /* Favorites - six unique selections */
@@ -298,19 +300,19 @@ setFavoritePreview((previous) =>
 
 useEffect(() => {
   setRandomMovies(
-    shuffleMedia(movies).slice(0, 20)
+    shuffleMedia(movies).slice(0, 30)
   )
 
   setRandomGames(
-    shuffleMedia(games).slice(0, 20)
+    shuffleMedia(games).slice(0, 30)
   )
 
   setRandomMusic(
-    shuffleMedia(music).slice(0, 20)
+    shuffleMedia(music).slice(0, 30)
   )
 
   setRandomBooks(
-    shuffleMedia(books).slice(0, 20)
+    shuffleMedia(books).slice(0, 30)
   )
 
   setFavoritePreview(
