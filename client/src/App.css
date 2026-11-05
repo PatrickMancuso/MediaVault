@@ -18885,45 +18885,9 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 
 
-/* =====================================================
-   MEDIAVAULT - BROWSE CARD TEXT READABILITY
-   ===================================================== */
-
-/* Dark gradient concentrated behind category labels */
-
-.collection-dashboard
-.dashboard-category-card
-.category-overlay {
-  position: absolute;
-  inset: 0;
-
-  z-index: 2;
-
-  pointer-events: none;
-
-  background:
-    linear-gradient(
-      0deg,
-      rgba(5, 8, 9, 0.88) 0%,
-      rgba(5, 8, 9, 0.55) 15%,
-      rgba(5, 8, 9, 0.12) 42%,
-      transparent 65%
-    ),
-    linear-gradient(
-      90deg,
-      rgba(5, 8, 9, 0.38) 0%,
-      rgba(5, 8, 9, 0.08) 45%,
-      transparent 75%
-    );
-
-  transition: background 250ms ease;
-}
-
-
-
 
 /* =====================================================
-   BROWSE CARD - CATEGORY LABELS
+   MEDIAVAULT - REFINED BROWSE LABELS
    ===================================================== */
 
 .collection-dashboard
@@ -18932,7 +18896,7 @@ background: rgba(53, 38, 63, 0.75) !important;
   position: absolute;
 
   left: 22px;
-  bottom: 19px;
+  bottom: 20px;
 
   z-index: 5;
 
@@ -18940,111 +18904,121 @@ background: rgba(53, 38, 63, 0.75) !important;
   flex-direction: column;
   align-items: flex-start;
 
-  gap: 6px;
+  gap: 5px;
 
   pointer-events: none;
 }
 
+/* Category title */
+
 .collection-dashboard
 .dashboard-category-card
 .category-content strong {
-  display: block;
+  color: #fff7ef;
 
-  color: #fff8f1;
+  font-size: 29px;
+  font-weight: 600;
 
-  font-size: clamp(27px, 2.2vw, 35px);
-  font-weight: 800;
-
-  line-height: 1;
-  letter-spacing: -0.8px;
+  line-height: 1.05;
+  letter-spacing: -0.7px;
 
   text-shadow:
-    0 2px 5px rgba(0, 0, 0, 0.95),
-    0 5px 18px rgba(0, 0, 0, 0.8);
+    0 2px 8px rgba(0, 0, 0, 0.95),
+    0 5px 20px rgba(0, 0, 0, 0.85);
 }
+
+/* Browse shelf link */
 
 .collection-dashboard
 .dashboard-category-card
 .category-content em {
-  display: block;
+  color: #f2b481;
 
-  color: #f3b17b;
-
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 500;
   font-style: normal;
 
-  line-height: 1.3;
+  letter-spacing: 0.1px;
 
   text-shadow:
-    0 1px 4px rgba(0, 0, 0, 0.95),
-    0 3px 10px rgba(0, 0, 0, 0.8);
+    0 1px 5px rgba(0, 0, 0, 0.95);
 }
+
 
 
 
 
 /* =====================================================
-   BROWSE CARD - HOVER READABILITY
+   BROWSE CARDS - LOCALIZED DARK GRADIENT
    ===================================================== */
+
+.collection-dashboard
+.dashboard-category-card
+.category-overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 2;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse 78% 75% at 0% 100%,
+      rgba(3, 5, 7, 0.97) 0%,
+      rgba(3, 5, 7, 0.85) 28%,
+      rgba(3, 5, 7, 0.48) 58%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to top,
+      rgba(3, 5, 7, 0.38),
+      transparent 48%
+    );
+
+  opacity: 1;
+
+  transition: opacity 250ms ease;
+}
+
+/* Strengthen contrast on hover */
 
 .collection-dashboard
 .dashboard-category-card:hover
 .category-overlay {
-  background:
-    linear-gradient(
-      0deg,
-      rgba(5, 8, 9, 0.94) 0%,
-      rgba(5, 8, 9, 0.68) 18%,
-      rgba(5, 8, 9, 0.16) 45%,
-      transparent 68%
-    ),
-    linear-gradient(
-      90deg,
-      rgba(5, 8, 9, 0.48) 0%,
-      rgba(5, 8, 9, 0.1) 48%,
-      transparent 75%
-    );
-}
-
-.collection-dashboard
-.dashboard-category-card:hover
-.category-content strong {
-  color: #ffffff;
-}
-
-.collection-dashboard
-.dashboard-category-card:hover
-.category-content em {
-  color: #ffc08a;
+  opacity: 1;
 }
 
 
 
 
 
-
-
-
-
-/* Optional purple accent above category titles */
+/* =====================================================
+   COLLECTION - COMPACT INTRO SPACING
+   ===================================================== */
 
 .collection-dashboard
-.dashboard-category-card
-.category-content::before {
-  content: "";
+.dashboard-intro-compact {
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+}
 
-  display: block;
+.collection-dashboard
+.dashboard-archives-section {
+  margin-top: 0;
+  padding-top: 0;
+}
 
-  width: 32px;
-  height: 3px;
+.collection-dashboard
+.dashboard-archives-section
+.dashboard-category-grid {
+  margin-top: 0;
+  padding-top: 0;
+}
 
-  margin-bottom: 4px;
+/* Remove inherited section spacing between intro and browse */
 
-  border-radius: 2px;
-
-  background: #c494de;
-
-  box-shadow:
-    0 0 12px rgba(196, 148, 222, 0.35);
+.collection-dashboard
+.dashboard-intro-compact +
+.dashboard-archives-section {
+  margin-top: 0;
 }
