@@ -1421,10 +1421,10 @@ externalId:
     : undefined),
 
 
-releaseDate: (() => {
-  const rawDate =
-    editingMedia?.releaseDate ??
-    importedMetadata?.releaseDate
+releaseDate:
+  editingMedia?.releaseDate ??
+  importedMetadata?.releaseDate ??
+  undefined,
 
   if (!rawDate) return undefined
 
