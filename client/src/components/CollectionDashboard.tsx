@@ -2,6 +2,8 @@ import CollageArtwork from './CollageArtwork'
 import { useEffect, useState } from 'react'
 import type { MediaItem } from '../data/sampleMedia'
 
+import DiagonalArchiveArtwork from './DiagonalArchiveArtwork'
+
 import RecentReviews from './RecentReviews'
 
 interface CollectionDashboardProps {
@@ -355,114 +357,53 @@ useEffect(() => {
   </div>
 
         <div className="dashboard-category-grid">
-          <button
-            type="button"
-            className="dashboard-category-card dashboard-category-movies"
-            onClick={() =>
-              onViewChange('movies')
-            }
-          >
-            
-{/* GAME POSTER COLLAGE */}
+       
+{/* =================================================
+    MOVIE ARCHIVE
+    ================================================= */}
 
-
-{/* MOVIE POSTER COLLAGE */}
-
-<div
-  className={`category-art category-art-diagonal ${
-  isTransitioning ? 'artwork-fading' : ''
-}`}
->  {buildCollageItems(randomMovies).map((item, index) => {
-    const artwork = getArtwork(item)
-
-    return (
-      <div
-key={`${item.id}-${index}`}
-        className="category-art-item category-diagonal-item"
-      >
-        {artwork ? (
-          <img
-            src={artwork}
-            alt=""
-            className="category-movie-poster"
-            loading="lazy"
-          />
-        ) : (
-          <span>{item.title}</span>
-        )}
-      </div>
-    )
-  })}
-</div>
-
-
-
-            <div className="category-overlay" />
-
-            <div className="category-content">
-
-              <strong>Movies</strong>
-
-            
-
-              <em>
-                Browse shelf →
-              </em>
-            </div>
-          </button>
-
-          <button
-            type="button"
-            className="dashboard-category-card dashboard-category-games"
-            onClick={() =>
-              onViewChange('games')
-            }
-          >
-            
-{/* GAME POSTER COLLAGE */}
-
-<div
- className={`category-art category-art-diagonal ${
-  isTransitioning ? 'artwork-fading' : ''
-}`}
+<button
+  type="button"
+  className="dashboard-category-card dashboard-category-movies"
+  onClick={() => onViewChange('movies')}
 >
-  {buildCollageItems(randomGames).map((item, index) => {
-    const artwork = getArtwork(item)
+  <DiagonalArchiveArtwork
+    items={randomMovies}
+    type="movie"
+    isTransitioning={isTransitioning}
+  />
 
-    return (
-      <div
-key={`${item.id}-${index}`}
-        className="category-art-item category-diagonal-item"
-      >
-        {artwork ? (
-          <img
-            src={artwork}
-            alt=""
-            className="category-game-poster"
-            loading="lazy"
-          />
-        ) : (
-          <span>{item.title}</span>
-        )}
-      </div>
-    )
-  })}
+  <div className="category-overlay" />
 
-            </div>
+  <div className="category-content">
+    <strong>Movies</strong>
+    <em>Browse shelf →</em>
+  </div>
+</button>
 
-            <div className="category-overlay" />
+{/* =================================================
+    GAME ARCHIVE
+    ================================================= */}
 
-            <div className="category-content">
+<button
+  type="button"
+  className="dashboard-category-card dashboard-category-games"
+  onClick={() => onViewChange('games')}
+>
+  <DiagonalArchiveArtwork
+    items={randomGames}
+    type="game"
+    isTransitioning={isTransitioning}
+  />
 
-              <strong>Games</strong>
+  <div className="category-overlay" />
 
-             
+  <div className="category-content">
+    <strong>Games</strong>
+    <em>Browse shelf →</em>
+  </div>
+</button>
 
-              <em>
-                Browse shelf →
-              </em>
-            </div>
-          </button>
 
 
 {/* =================================================
