@@ -19444,3 +19444,94 @@ background: rgba(53, 38, 63, 0.75) !important;
   margin: 0;
   line-height: 1.1;
 }
+
+
+
+
+/* =====================================================
+   FAVORITES - VIEW ALL ALIGNMENT
+   ===================================================== */
+
+.collection-dashboard .favorites-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.collection-dashboard
+.favorites-section-header
+.dashboard-text-button {
+  align-self: flex-end;
+
+  margin: 0 0 7px;
+  padding: 0;
+
+  color: #e9ae7d;
+
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+
+  text-decoration: none;
+
+  transition: color 180ms ease;
+}
+
+.collection-dashboard
+.favorites-section-header
+.dashboard-text-button:hover {
+  color: #ffd0a6;
+}
+
+
+
+/* =====================================================
+   RECENTLY ADDED - SQUARE MUSIC CARDS
+   ===================================================== */
+
+/* Music artwork container */
+
+.collection-dashboard
+.recent-media-card-music
+.recent-media-art {
+  width: 100%;
+
+  height: auto;
+  min-height: 0;
+  max-height: none;
+
+  aspect-ratio: 1 / 1;
+
+  overflow: hidden;
+}
+
+/* Album artwork */
+
+.collection-dashboard
+.recent-media-card-music
+.recent-media-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Keep the music card aligned with other entries */
+
+/* =====================================================
+   RECENTLY ADDED - BOTTOM ALIGNED MUSIC
+   ===================================================== */
+
+.collection-dashboard
+.recent-media-card-music {
+  align-self: end;
+}
+
+.collection-dashboard
+.recent-media-card-music
+.recent-media-art {
+  margin-top: auto;
+}
