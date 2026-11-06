@@ -19120,3 +19120,30 @@ background: rgba(53, 38, 63, 0.75) !important;
   position: relative;
   top: 1px;
 }
+
+
+
+/* =====================================================
+   BROWSE ARCHIVES - BALANCED CONTAINER SPACING
+   ===================================================== */
+
+.collection-dashboard
+.dashboard-archives-section
+.dashboard-category-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  column-gap: 30px;
+  row-gap: 30px;
+
+  align-items: start;
+}
+
+.collection-dashboard
+.dashboard-archives-section
+.dashboard-category-card {
+  width: 100%;
+  min-width: 0;
+}
