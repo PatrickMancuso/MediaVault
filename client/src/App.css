@@ -19424,3 +19424,23 @@ background: rgba(53, 38, 63, 0.75) !important;
   object-position: center;
 }
 
+
+
+
+
+/* =====================================================
+   FAVORITES - HEADING SPACING
+   ===================================================== */
+
+.collection-dashboard .favorites-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  gap: 16px;
+}
+
+.collection-dashboard .favorites-heading h2 {
+  margin: 0;
+  line-height: 1.1;
+}
