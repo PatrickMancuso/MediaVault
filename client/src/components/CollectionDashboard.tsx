@@ -6,6 +6,32 @@ import DiagonalArchiveArtwork from './DiagonalArchiveArtwork'
 
 import RecentReviews from './RecentReviews'
 
+
+
+type FavoriteCategory =
+  | 'movie'
+  | 'game'
+  | 'music'
+  | 'book'
+
+const FAVORITE_CATEGORIES: FavoriteCategory[] = [
+  'movie',
+  'game',
+  'music',
+  'book',
+]
+
+const FAVORITE_LABELS: Record<
+  FavoriteCategory,
+  string
+> = {
+  movie: 'Movies',
+  game: 'Games',
+  music: 'Music',
+  book: 'Books',
+}
+
+
 interface CollectionDashboardProps {
   recentlyAdded: MediaItem[]
   movies: MediaItem[]
@@ -211,10 +237,27 @@ const [randomMusic, setRandomMusic] =
     shuffleMedia(music).slice(0, 25)
   )
 
-const [favoritePreview, setFavoritePreview] =
-  useState<MediaItem[]>(() =>
-    shuffleMedia(favorites).slice(0, 6)
+
+const [favoriteCategoryIndex, setFavoriteCategoryIndex] =
+  useState(0)
+
+const availableFavoriteCategories =
+  FAVORITE_CATEGORIES.filter((category) =>
+    favorites.some((item) => item.type === category)
   )
+
+const activeFavoriteCategory =
+  availableFavoriteCategories[
+    favoriteCategoryIndex %
+      Math.max(availableFavoriteCategories.length, 1)
+  ]
+
+const favoritePreview = activeFavoriteCategory
+  ? favorites
+      .filter((item) => item.type === activeFavoriteCategory)
+      .slice(0, 6)
+  : []
+
 
 /* =====================================================
    ROTATION TIMER
@@ -271,13 +314,7 @@ setRandomBooks((previous) =>
 
 /* Favorites - six unique selections */
 
-setFavoritePreview((previous) =>
-  getNextMediaSelection(
-    favorites,
-    previous,
-    6
-  )
-)
+setFavoriteCategoryIndex((current) => current + 1)
 
 
     // Stage 3: Wait for the new images to render
@@ -317,10 +354,8 @@ useEffect(() => {
     shuffleMedia(books).slice(0, 25)
   )
 
-  setFavoritePreview(
-    shuffleMedia(favorites).slice(0, 6)
-  )
-}, [movies, games, books, music, favorites])
+ 
+}, [movies, games, books, music])
 
 
 
@@ -589,23 +624,57 @@ className={`recent-media-card recent-media-card-${item.type}`}
           FAVORITES
           ================================================= */}
 
-      {favoritePreview.length > 0 && (
-        <section className="dashboard-section">
-          <div className="dashboard-section-header">
-            <div>
-              <h2>Favorites</h2>
-            </div>
+{availableFavoriteCategories.length > 0 && (
+          <section className="dashboard-section">
+    
+<div className="dashboard-section-header">
+  <div className="favorites-heading">
+    <h2>Favorites</h2>
 
-            <button
-              type="button"
-              className="dashboard-text-button"
-              onClick={() =>
-                onViewChange('favorites')
-              }
-            >
-              View all →
-            </button>
-          </div>
+    <span className="favorites-category-label">
+      {activeFavoriteCategory
+        ? FAVORITE_LABELS[activeFavoriteCategory]
+        : ''}
+    </span>
+  </div>
+
+  <div className="favorites-header-actions">
+    <button
+      type="button"
+      className="favorites-nav-button"
+      onClick={() =>
+        setFavoriteCategoryIndex((current) =>
+          (current - 1 +
+            availableFavoriteCategories.length) %
+          availableFavoriteCategories.length
+        )
+      }
+      aria-label="Previous favorites category"
+    >
+      ‹
+    </button>
+
+    <button
+      type="button"
+      className="favorites-nav-button"
+      onClick={() =>
+        setFavoriteCategoryIndex((current) => current + 1)
+      }
+      aria-label="Next favorites category"
+    >
+      ›
+    </button>
+
+    <button
+      type="button"
+      className="dashboard-text-button"
+      onClick={() => onViewChange('favorites')}
+    >
+      View all →
+    </button>
+  </div>
+</div>
+
 
 <div
   className={`favorite-grid ${
@@ -620,7 +689,9 @@ className={`recent-media-card recent-media-card-${item.type}`}
                   <button
                     key={item.id}
                     type="button"
-                    className="favorite-card"
+className={`favorite-card ${
+  item.type === 'music' ? 'favorite-card-music' : ''
+}`}
                     onClick={() =>
                       onSelect(item)
                     }
