@@ -19558,3 +19558,342 @@ background: rgba(53, 38, 63, 0.75) !important;
 .site-header .header-add-media:hover span {
   color: #ffffff;
 }
+
+
+
+
+/* =====================================================
+   MEDIAVAULT - COLLECTION OVERVIEW
+   ===================================================== */
+
+.collection-dashboard .collection-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+
+  padding: 28px;
+
+  border: 1px solid rgba(190, 151, 205, 0.2);
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #241a2e 0%,
+      #1c1725 48%,
+      #15131c 100%
+    );
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+/* =====================================================
+   OVERVIEW HEADER
+   ===================================================== */
+
+.collection-overview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.collection-overview-header h2 {
+  margin: 0;
+
+  color: #f5eff7;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.collection-overview-header p {
+  margin: 6px 0 0;
+
+  color: rgba(224, 207, 230, 0.55);
+  font-size: 12px;
+}
+
+.collection-overview-total {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.collection-overview-total strong {
+  color: #e4b6f0;
+  font-size: 29px;
+  font-weight: 750;
+  line-height: 1;
+}
+
+.collection-overview-total span {
+  color: rgba(224, 207, 230, 0.55);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+/* =====================================================
+   OVERVIEW SUMMARY CARDS
+   ===================================================== */
+
+.collection-overview-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.overview-stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+
+  min-width: 0;
+  padding: 18px 20px;
+
+  border: 1px solid rgba(200, 165, 214, 0.17);
+  border-radius: 7px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(91, 61, 107, 0.4),
+      rgba(41, 30, 52, 0.7)
+    );
+}
+
+.overview-stat-card > span {
+  color: rgba(230, 212, 235, 0.7);
+  font-size: 11px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.overview-stat-card > strong {
+  color: #fff6ff;
+  font-size: 30px;
+  font-weight: 750;
+  line-height: 1.1;
+}
+
+.overview-stat-card > small {
+  color: rgba(223, 203, 230, 0.48);
+  font-size: 11px;
+}
+
+/* =====================================================
+   OVERVIEW PANELS
+   ===================================================== */
+
+.collection-overview-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  padding: 22px;
+
+  border: 1px solid rgba(190, 151, 205, 0.15);
+  border-radius: 8px;
+
+  background: rgba(16, 13, 22, 0.45);
+}
+
+.overview-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.overview-panel-heading h3 {
+  margin: 0;
+
+  color: #f1e8f3;
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.overview-panel-heading > span {
+  color: rgba(224, 207, 230, 0.45);
+  font-size: 11px;
+}
+
+/* =====================================================
+   COLLECTION BREAKDOWN
+   ===================================================== */
+
+.overview-category-bar {
+  display: flex;
+  width: 100%;
+  height: 18px;
+
+  gap: 3px;
+  overflow: hidden;
+
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.overview-category-segment {
+  min-width: 0;
+  height: 100%;
+
+  transition: filter 180ms ease;
+}
+
+.overview-category-segment:hover {
+  filter: brightness(1.2);
+}
+
+.overview-category-legend {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.overview-category-legend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.overview-category-dot {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+
+  margin-top: 5px;
+  border-radius: 50%;
+}
+
+.overview-category-legend-item > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.overview-category-legend-item span {
+  color: rgba(231, 214, 236, 0.7);
+  font-size: 12px;
+}
+
+.overview-category-legend-item strong {
+  color: #fff6ff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.overview-category-legend-item small {
+  color: rgba(231, 214, 236, 0.45);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+/* =====================================================
+   FORMAT BAR CHART
+   ===================================================== */
+
+.overview-format-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.overview-format-row {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.overview-format-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.overview-format-label span {
+  color: rgba(244, 234, 247, 0.85);
+  font-size: 12px;
+}
+
+.overview-format-label strong {
+  color: #f3e5f7;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.overview-format-track {
+  width: 100%;
+  height: 9px;
+
+  overflow: hidden;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.overview-format-fill {
+  height: 100%;
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #785a98,
+      #bc8ac8
+    );
+
+  transition: width 350ms ease;
+}
+
+/* =====================================================
+   RESPONSIVE OVERVIEW
+   ===================================================== */
+
+@media (max-width: 850px) {
+  .collection-dashboard .collection-overview {
+    padding: 20px;
+  }
+
+  .collection-overview-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .overview-category-legend {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .collection-dashboard .collection-overview {
+    padding: 16px;
+    gap: 18px;
+  }
+
+  .collection-overview-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .collection-overview-header h2 {
+    font-size: 20px;
+  }
+
+  .collection-overview-total strong {
+    font-size: 24px;
+  }
+
+  .collection-overview-panel {
+    padding: 16px;
+  }
+
+  .overview-category-legend {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
