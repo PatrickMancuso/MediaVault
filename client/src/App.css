@@ -19147,3 +19147,70 @@ background: rgba(53, 38, 63, 0.75) !important;
   width: 100%;
   min-width: 0;
 }
+
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   MEDIAVAULT - FAVORITES GRID REFINEMENT
+   ===================================================== */
+
+.collection-dashboard .favorite-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(6, minmax(0, 1fr));
+
+  column-gap: 18px;
+  row-gap: 18px;
+
+  width: 100%;
+
+  margin-left: 0;
+  margin-right: 0;
+
+  padding-left: 0;
+  padding-right: 0;
+
+  justify-content: stretch;
+  align-items: start;
+}
+
+.collection-dashboard .favorite-card {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+
+  margin: 0;
+}
+
+
+
+/* =====================================================
+   FAVORITES - ARTWORK SIZING
+   ===================================================== */
+
+.collection-dashboard .favorite-card .favorite-art {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+
+  height: auto;
+
+  overflow: hidden;
+}
+
+.collection-dashboard .favorite-card .favorite-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+}
