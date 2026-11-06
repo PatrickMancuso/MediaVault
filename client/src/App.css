@@ -19535,3 +19535,26 @@ background: rgba(53, 38, 63, 0.75) !important;
 .recent-media-art {
   margin-top: auto;
 }
+
+
+
+
+/* =====================================================
+   HEADER - ADD MEDIA BUTTON TEXT
+   ===================================================== */
+
+.site-header .header-add-media {
+  color: #ffffff;
+}
+
+.site-header .header-add-media span {
+  color: #ffffff;
+  opacity: 1;
+}
+
+/* Keep text white on hover */
+
+.site-header .header-add-media:hover,
+.site-header .header-add-media:hover span {
+  color: #ffffff;
+}
