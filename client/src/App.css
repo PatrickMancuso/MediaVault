@@ -19038,3 +19038,69 @@ background: rgba(53, 38, 63, 0.75) !important;
   position: relative;
   top: 2px;
 }
+
+
+
+
+
+/* =====================================================
+   BROWSE ARCHIVES - CONTAINER SPACING
+   ===================================================== */
+
+.collection-dashboard
+.dashboard-archives-section
+.dashboard-category-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  column-gap: 22px;
+  row-gap: 22px;
+}
+
+/* Keep cards contained within their grid cells */
+
+.collection-dashboard
+.dashboard-archives-section
+.dashboard-category-card {
+  min-width: 0;
+  width: 100%;
+}
+
+
+
+
+/* =====================================================
+   COLLECTION HEADER - TIGHTER BROWSE SPACING
+   ===================================================== */
+
+.collection-dashboard
+.dashboard-intro.dashboard-intro-compact {
+  margin-bottom: 0;
+  padding-bottom: 12px;
+}
+
+.collection-dashboard
+.dashboard-archives-section {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.collection-dashboard
+.dashboard-intro-compact +
+.dashboard-archives-section {
+  margin-top: 0;
+}
+
+/* Remove additional top spacing from the Browse grid */
+
+.collection-dashboard
+.dashboard-archives-section
+.dashboard-category-grid {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+
+
