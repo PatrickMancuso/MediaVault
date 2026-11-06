@@ -5,6 +5,7 @@ import type { MediaItem } from '../data/sampleMedia'
 import DiagonalArchiveArtwork from './DiagonalArchiveArtwork'
 
 import RecentReviews from './RecentReviews'
+import CollectionOverview from './CollectionOverview'
 
 
 
@@ -187,22 +188,7 @@ function CollectionDashboard({
   onSelect,
   onViewChange,
 }: CollectionDashboardProps) {
-  const formatCounts = new Map<
-    string,
-    number
-  >()
 
-;[
-  ...movies,
-  ...games,
-  ...books,
-  ...music,
-].forEach((item) => {
-    formatCounts.set(
-      item.format,
-      (formatCounts.get(item.format) ?? 0) + 1,
-    )
-  })
 
 
 /* =====================================================
@@ -779,71 +765,15 @@ className={`favorite-card ${
           COLLECTION OVERVIEW
           ================================================= */}
 
-      <section className="dashboard-overview">
-        <div className="overview-heading">
-          <h2>Overview</h2>
-        </div>
+      
+<CollectionOverview
+  movies={movies}
+  games={games}
+  books={books}
+  music={music}
+  favorites={favorites}
+/>
 
-        <div className="overview-stats">
-          <div>
-            <span>Movies</span>
-            <strong>
-              {movies.length}
-            </strong>
-          </div>
-
-          <div>
-            <span>Games</span>
-            <strong>
-              {games.length}
-            </strong>
-          </div>
-
-          
-<div>
-  <span>Books</span>
-  <strong>{books.length}</strong>
-</div>
-
-<div>
-  <span>Music</span>
-  <strong>{music.length}</strong>
-</div>
-
-
-          <div>
-            <span>Favorites</span>
-            <strong>
-              {favorites.length}
-            </strong>
-          </div>
-
-          <div>
-            <span>Formats</span>
-            <strong>
-              {formatCounts.size}
-            </strong>
-          </div>
-        </div>
-
-        <div className="overview-formats">
-          {Array.from(
-            formatCounts.entries(),
-          ).map(
-            ([format, count]) => (
-              <div key={format}>
-                <span>
-{formatLabels[format.toLowerCase()] ?? format}
-                </span>
-
-                <strong>
-                  {count}
-                </strong>
-              </div>
-            ),
-          )}
-        </div>
-      </section>
     </div>
   )
 }
