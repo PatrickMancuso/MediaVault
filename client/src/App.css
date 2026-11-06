@@ -19029,15 +19029,7 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
-/* =====================================================
-   BOOKS BROWSE - VERTICAL ALIGNMENT
-   ===================================================== */
 
-.collection-dashboard
-.dashboard-category-card.dashboard-category-books {
-  position: relative;
-  top: 2px;
-}
 
 
 
