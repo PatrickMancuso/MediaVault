@@ -19096,3 +19096,20 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 
 
+
+/* =====================================================
+   COLLECTION - REDUCE INTRO TO BROWSE GAP
+   ===================================================== */
+
+.collection-dashboard
+.dashboard-intro-compact {
+  margin-bottom: 0;
+}
+
+/* Offset the parent flex gap for this section only */
+
+.collection-dashboard
+.dashboard-intro-compact +
+.dashboard-archives-section {
+  margin-top: -18px;
+}
