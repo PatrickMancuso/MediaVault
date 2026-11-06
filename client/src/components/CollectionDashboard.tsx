@@ -238,7 +238,15 @@ const [randomMusic, setRandomMusic] =
   )
 
 
+
+/* =====================================================
+   FAVORITES - CATEGORY ROTATION
+   ===================================================== */
+
 const [favoriteCategoryIndex, setFavoriteCategoryIndex] =
+  useState(0)
+
+const [favoriteShuffleIndex, setFavoriteShuffleIndex] =
   useState(0)
 
 const availableFavoriteCategories =
@@ -247,16 +255,40 @@ const availableFavoriteCategories =
   )
 
 const activeFavoriteCategory =
-  availableFavoriteCategories[
-    favoriteCategoryIndex %
-      Math.max(availableFavoriteCategories.length, 1)
-  ]
+  availableFavoriteCategories.length > 0
+    ? availableFavoriteCategories[
+        favoriteCategoryIndex %
+          availableFavoriteCategories.length
+      ]
+    : undefined
 
-const favoritePreview = activeFavoriteCategory
-  ? favorites
-      .filter((item) => item.type === activeFavoriteCategory)
-      .slice(0, 6)
-  : []
+
+const [favoritePreview, setFavoritePreview] =
+  useState<MediaItem[]>([])
+
+useEffect(() => {
+  if (!activeFavoriteCategory) {
+    setFavoritePreview([])
+    return
+  }
+
+  const categoryFavorites = favorites.filter(
+    (item) => item.type === activeFavoriteCategory
+  )
+
+  const count =
+    activeFavoriteCategory === 'music' ? 5 : 6
+
+  setFavoritePreview(
+    shuffleMedia(categoryFavorites).slice(0, count)
+  )
+}, [
+  activeFavoriteCategory,
+  favoriteShuffleIndex,
+  favorites,
+])
+
+
 
 
 /* =====================================================
@@ -315,7 +347,7 @@ setRandomBooks((previous) =>
 /* Favorites - six unique selections */
 
 setFavoriteCategoryIndex((current) => current + 1)
-
+setFavoriteShuffleIndex((current) => current + 1)
 
     // Stage 3: Wait for the new images to render
     // before starting the fade-in.
@@ -627,60 +659,71 @@ className={`recent-media-card recent-media-card-${item.type}`}
 {availableFavoriteCategories.length > 0 && (
           <section className="dashboard-section">
     
-<div className="dashboard-section-header">
+
+<div className="dashboard-section-header favorites-section-header">
   <div className="favorites-heading">
     <h2>Favorites</h2>
 
-    <span className="favorites-category-label">
-      {activeFavoriteCategory
-        ? FAVORITE_LABELS[activeFavoriteCategory]
-        : ''}
-    </span>
-  </div>
+    <div
+      className="favorites-category-tabs"
+      role="group"
+      aria-label="Favorite media categories"
+    >
+      {FAVORITE_CATEGORIES.map((category) => {
+        const isAvailable =
+          availableFavoriteCategories.includes(category)
 
-  <div className="favorites-header-actions">
-    <button
-      type="button"
-      className="favorites-nav-button"
-      onClick={() =>
-        setFavoriteCategoryIndex((current) =>
-          (current - 1 +
-            availableFavoriteCategories.length) %
-          availableFavoriteCategories.length
+        if (!isAvailable) return null
+
+        return (
+          <button
+            key={category}
+            type="button"
+            className={`favorites-category-tab ${
+              activeFavoriteCategory === category
+                ? 'active'
+                : ''
+            }`}
+            onClick={() => {
+              setFavoriteCategoryIndex(
+                availableFavoriteCategories.indexOf(category)
+              )
+
+              setFavoriteShuffleIndex(
+                (current) => current + 1
+              )
+            }}
+            aria-pressed={
+              activeFavoriteCategory === category
+            }
+          >
+            {FAVORITE_LABELS[category]}
+          </button>
         )
-      }
-      aria-label="Previous favorites category"
-    >
-      ‹
-    </button>
-
-    <button
-      type="button"
-      className="favorites-nav-button"
-      onClick={() =>
-        setFavoriteCategoryIndex((current) => current + 1)
-      }
-      aria-label="Next favorites category"
-    >
-      ›
-    </button>
-
-    <button
-      type="button"
-      className="dashboard-text-button"
-      onClick={() => onViewChange('favorites')}
-    >
-      View all →
-    </button>
+      })}
+    </div>
   </div>
+
+  <button
+    type="button"
+    className="dashboard-text-button"
+    onClick={() => onViewChange('favorites')}
+  >
+    View all →
+  </button>
 </div>
+
 
 
 <div
   className={`favorite-grid ${
+    activeFavoriteCategory === 'music'
+      ? 'favorite-grid-music'
+      : ''
+  } ${
     isTransitioning ? 'artwork-fading' : ''
   }`}
->            {favoritePreview.map(
+>         {favoritePreview.map(
               (item) => {
                 const artwork =
                   getArtwork(item)

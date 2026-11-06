@@ -19307,3 +19307,120 @@ background: rgba(53, 38, 63, 0.75) !important;
 .dashboard-text-button {
   margin-left: 12px;
 }
+
+
+
+
+/* =====================================================
+   FAVORITES - CATEGORY TABS
+   ===================================================== */
+
+.collection-dashboard .favorites-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.collection-dashboard .favorites-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.collection-dashboard .favorites-heading h2 {
+  margin: 0;
+}
+
+.collection-dashboard .favorites-category-tabs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.collection-dashboard .favorites-category-tab {
+  position: relative;
+
+  appearance: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0 0 7px;
+
+  background: transparent;
+  color: rgba(255, 232, 213, 0.48);
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+
+  cursor: pointer;
+
+  transition:
+    color 180ms ease;
+}
+
+.collection-dashboard .favorites-category-tab:hover {
+  color: rgba(255, 239, 225, 0.9);
+}
+
+.collection-dashboard .favorites-category-tab.active {
+  color: #e7ad7c;
+}
+
+.collection-dashboard .favorites-category-tab.active::after {
+  content: "";
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 2px;
+  border-radius: 2px;
+
+  background: #c995d8;
+}
+
+
+
+/* =====================================================
+   FAVORITES - FIVE LARGE MUSIC COVERS
+   ===================================================== */
+
+.collection-dashboard .favorite-grid.favorite-grid-music {
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+
+  column-gap: 22px;
+}
+
+.collection-dashboard
+.favorite-grid-music
+.favorite-card {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+.collection-dashboard
+.favorite-grid-music
+.favorite-art {
+  width: 100%;
+  height: auto;
+
+  aspect-ratio: 1 / 1;
+}
+
+.collection-dashboard
+.favorite-grid-music
+.favorite-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+}
+
