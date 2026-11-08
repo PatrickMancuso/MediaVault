@@ -128,8 +128,13 @@ const formatActivityDate = (date: string) =>
     year: 'numeric',
   })
 
-function FeedPage() {
-  const [activities, setActivities] =
+interface FeedPageProps {
+  onFindCollectors: () => void
+}
+
+function FeedPage({
+  onFindCollectors,
+}: FeedPageProps) {  const [activities, setActivities] =
     useState<ActivityItem[]>([])
 
   const [activeFilter, setActiveFilter] =
@@ -281,18 +286,49 @@ function FeedPage() {
           <h2>Unable to load activity</h2>
           <p role="alert">{error}</p>
         </div>
-      ) : filteredActivities.length === 0 ? (
-        <div className="feed-empty">
-          <h2>No activity yet</h2>
+) : filteredActivities.length === 0 ? (
+  <div className="feed-empty feed-empty-onboarding">
 
-          <p>
-            {activeFilter === 'all'
-              ? "Your friends' recent additions and reviews will appear here."
-              : activeFilter === 'addition'
-                ? 'No recent additions from your friends.'
-                : 'No recent reviews from your friends.'}
-          </p>
+    {activities.length === 0 ? (
+      <>
+        <div className="feed-empty-icon">
+          ♧
         </div>
+
+        <h2>Your feed is looking a little empty</h2>
+
+        <p>
+          Connect with other collectors to see
+          their latest additions and reviews.
+          Discover people who share your interests
+          and start building your feed.
+        </p>
+
+        <button
+          type="button"
+          className="feed-discover-button"
+          onClick={onFindCollectors}
+        >
+          Find Collectors →
+        </button>
+      </>
+    ) : (
+      <>
+        <h2>
+          {activeFilter === 'addition'
+            ? 'No recent additions'
+            : 'No recent reviews'}
+        </h2>
+
+        <p>
+          {activeFilter === 'addition'
+            ? 'Your friends have not added any new titles recently.'
+            : 'Your friends have not posted any recent reviews.'}
+        </p>
+      </>
+    )}
+
+  </div>
      
 ) : (
   <div className="feed-activity-list">
