@@ -20210,3 +20210,209 @@ background: rgba(53, 38, 63, 0.75) !important;
   }
 
 }
+
+
+
+
+
+/* =====================================================
+   MOBILE - FULL WIDTH BROWSE CARDS
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+
+    column-gap: 0;
+    row-gap: 16px;
+
+    width: 100%;
+  }
+
+  .collection-dashboard
+  .dashboard-category-card {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+
+    height: 190px;
+    min-height: 190px;
+
+    margin: 0;
+  }
+
+}
+
+
+
+
+
+/* =====================================================
+   MOBILE - FAVORITES HORIZONTAL SCROLL
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  .collection-dashboard .favorite-grid,
+  .collection-dashboard .favorite-grid.favorite-grid-music {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+
+    grid-template-columns: none;
+
+    gap: 14px;
+
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    padding: 4px 0 12px;
+
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .collection-dashboard .favorite-grid .favorite-card {
+    flex: 0 0 46%;
+    width: 46%;
+    min-width: 46%;
+    max-width: 46%;
+
+    margin: 0;
+
+    scroll-snap-align: start;
+  }
+
+  .collection-dashboard
+  .favorite-grid
+  .favorite-card
+  .favorite-art {
+    width: 100%;
+    height: auto;
+
+    aspect-ratio: 2 / 3;
+  }
+
+  .collection-dashboard
+  .favorite-grid-music
+  .favorite-card-music
+  .favorite-art {
+    aspect-ratio: 1 / 1;
+  }
+
+  .collection-dashboard
+  .favorite-grid
+  .favorite-card
+  .favorite-image {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+  }
+
+  .collection-dashboard
+  .favorite-grid
+  .favorite-card {
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+}
+
+
+
+
+
+
+/* =====================================================
+   MOBILE - HEADER CONTENT CLEARANCE
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  .room-content {
+    padding-top: 165px;
+  }
+
+}
+
+
+
+
+
+
+/* =====================================================
+   MOBILE - SIMPLIFIED COLLECTION INTRO
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  .collection-dashboard
+  .dashboard-intro-compact h1,
+  .collection-dashboard
+  .dashboard-intro-compact p {
+    display: none;
+  }
+
+  .collection-dashboard
+  .dashboard-intro-compact {
+    padding: 0;
+    margin: 0 0 10px;
+
+    min-height: 0;
+  }
+
+}
+
+
+
+
+
+
+/* =====================================================
+   MOBILE - FAVORITES TAB SPACING
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  .collection-dashboard
+  .favorites-category-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+
+    gap: 14px;
+    white-space: nowrap;
+  }
+
+  .collection-dashboard
+  .favorites-category-tab {
+    flex: 0 0 auto;
+    font-size: 11px;
+  }
+
+  .collection-dashboard
+  .favorites-section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .collection-dashboard
+  .favorites-section-header
+  .dashboard-text-button {
+    align-self: flex-end;
+    margin: 0;
+  }
+
+}
+
