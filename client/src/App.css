@@ -20141,3 +20141,57 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+
+/* =====================================================
+   MEDIAVAULT - MOBILE DASHBOARD WIDTH
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  .room {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .room-content {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .room-content > .collection-dashboard {
+    width: calc(100% - 24px);
+    max-width: none;
+    min-width: 0;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    padding: 16px;
+    box-sizing: border-box;
+  }
+
+  .collection-dashboard .dashboard-intro,
+  .collection-dashboard .dashboard-archives-section,
+  .collection-dashboard .dashboard-category-grid {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .collection-dashboard .dashboard-category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .collection-dashboard .dashboard-category-card {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+}
+
+
