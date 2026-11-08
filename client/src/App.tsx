@@ -21,6 +21,7 @@ import FindCollectors from './components/FindCollectors'
 import PublicProfilePage from './components/PublicProfilePage'
 import FeedPage from './components/FeedPage'
 import InboxPage from './components/InboxPage'
+import SettingsPage from './components/SettingsPage'
 
 import type { MediaItem } from './data/sampleMedia'
 import './App.css'
@@ -36,6 +37,7 @@ type View =
   | 'collectors'
   | 'feed'
   | 'inbox'
+  | 'settings'
 
 interface CustomOption {
   id: string
@@ -1844,6 +1846,10 @@ if (!user) {
 ) : activeView === 'inbox' ? (
 
   <InboxPage />
+
+) : activeView === 'settings' ? (
+
+  <SettingsPage />
 
 ) : activeView === 'feed' ? (
 
