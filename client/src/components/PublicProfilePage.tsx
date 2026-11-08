@@ -10,6 +10,8 @@ interface PublicProfile {
   avatar_path: string | null
   top_movies: string[]
   top_games: string[]
+  top_books: string[]
+  top_music: string[]
 }
 
 interface PublicMedia {
@@ -114,6 +116,11 @@ const [friendshipSaving, setFriendshipSaving] =
 
 const [friendshipError, setFriendshipError] =
   useState('')
+
+  type TopFiveType = 'movie' | 'game' | 'music' | 'book'
+
+const [activeTopFive, setActiveTopFive] =
+  useState<TopFiveType>('movie')
   
   const [collectionType, setCollectionType] =
   useState<'movie' | 'game'>('movie')
@@ -364,43 +371,73 @@ const handleFriendshipAction = async (
     [media]
   )
 
-  const topMovies = useMemo(
-    () =>
-      (profile?.top_movies ?? [])
-        .map((id) => movies.find((item) => item.id === id))
-        .filter((item): item is PublicMedia => Boolean(item)),
-    [profile, movies]
+/* =====================================================
+   UNIFIED PUBLIC TOP FIVE
+   ===================================================== */
+
+const topFiveColumns: Record<
+  TopFiveType,
+  'top_movies' | 'top_games' | 'top_music' | 'top_books'
+> = {
+  movie: 'top_movies',
+  game: 'top_games',
+  music: 'top_music',
+  book: 'top_books',
+}
+
+const activeTopFiveItems = (
+  profile?.[topFiveColumns[activeTopFive]] ?? []
+)
+  .map((id) =>
+    media.find(
+      (item) =>
+        item.id === id &&
+        item.type === activeTopFive
+    )
+  )
+  .filter(
+    (item): item is PublicMedia => Boolean(item)
   )
 
-  const topGames = useMemo(
-    () =>
-      (profile?.top_games ?? [])
-        .map((id) => games.find((item) => item.id === id))
-        .filter((item): item is PublicMedia => Boolean(item)),
-    [profile, games]
-  )
+const renderMediaGrid = (items: PublicMedia[]) => (
+  <div className="profile-top-five-grid">
+    {Array.from({ length: 5 }, (_, index) => {
+      const item = items[index]
 
-  const renderMediaGrid = (items: PublicMedia[]) => (
-    <div className="public-media-grid">
-      {items.map((item) => (
-        <div className="public-media-card" key={item.id}>
-          <div className="public-media-art">
+      return item ? (
+        <div
+          key={item.id}
+          className="profile-top-five-item"
+          title={item.title}
+        >
+          <div className="profile-top-five-cover">
             {item.cover_image ? (
-              <img src={item.cover_image} alt={item.title} />
+              <img
+                src={item.cover_image}
+                alt={item.title}
+                loading="lazy"
+              />
             ) : (
               <span>{item.title}</span>
             )}
           </div>
 
-          <strong>{item.title}</strong>
-          <small>
-{item.year} · {getFormatDisplayName(item.format)}         
-          </small>
+          <span className="profile-top-five-title">
+            {item.title}
+          </span>
         </div>
-      ))}
-    </div>
-  )
-
+      ) : (
+        <div
+          key={`empty-${activeTopFive}-${index}`}
+          className="profile-top-five-empty"
+        >
+          <span>#{index + 1}</span>
+          <small>Not selected</small>
+        </div>
+      )
+    })}
+  </div>
+)
 
 
   
@@ -646,19 +683,44 @@ const renderCompactCollection = () => (
         </div>
       </div>
 
-      <div className="profile-favorites-section">
-        <div className="profile-section-heading">
-          <h2>Top 5 Movies</h2>
-        </div>
-        {renderMediaGrid(topMovies)}
-      </div>
+      {/* =====================================================
+    PUBLIC PROFILE - UNIFIED TOP FIVE
+    ===================================================== */}
 
-      <div className="profile-favorites-section">
-        <div className="profile-section-heading">
-          <h2>Top 5 Games</h2>
-        </div>
-        {renderMediaGrid(topGames)}
-      </div>
+<div className="profile-favorites-section profile-top-five-unified">
+
+  <div className="profile-section-heading">
+    <h2>Top 5 Favorites</h2>
+  </div>
+
+  <div
+    className="profile-top-five-tabs"
+    role="group"
+    aria-label="Top 5 category"
+  >
+    {([
+      ['movie', 'Movies'],
+      ['game', 'Games'],
+      ['music', 'Music'],
+      ['book', 'Books'],
+    ] as const).map(([type, label]) => (
+      <button
+        key={type}
+        type="button"
+        className={
+          activeTopFive === type ? 'active' : ''
+        }
+        aria-pressed={activeTopFive === type}
+        onClick={() => setActiveTopFive(type)}
+      >
+        {label}
+      </button>
+    ))}
+  </div>
+
+  {renderMediaGrid(activeTopFiveItems)}
+
+</div>
 
     
 {/* =====================================================
