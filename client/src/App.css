@@ -20195,3 +20195,18 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+
+
+/* =====================================================
+   MOBILE - PREVENT BACKGROUND GLOW OVERFLOW
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  .room-content > .room-glow {
+    display: none;
+  }
+
+}
