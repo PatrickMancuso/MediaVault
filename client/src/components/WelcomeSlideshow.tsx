@@ -13,7 +13,7 @@ const slides = [
     image: dashboardImage,
     title: 'Your Collection',
     description:
-      'See your movies, games, favorites, and recent reviews in one place.',
+      'See your movies, games, music, books, and recent reviews in one place.',
   },
   {
     image: moviesImage,
@@ -32,7 +32,7 @@ const slides = [
   image: addMediaImage,
   title: 'Add to Your Collection',
   description:
-    'Search for movies or games and import their details automatically.',
+    'Search for media and import their details automatically.',
 },
   {
     image: gamesImage,
