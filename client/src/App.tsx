@@ -718,6 +718,53 @@ const music = useMemo(
 )
 
 
+  
+/* =====================================================
+   DYNAMIC LIBRARY CATEGORY VISIBILITY
+   ===================================================== */
+
+const availableMediaTypes = useMemo(
+  () => ({
+    movies: movies.length > 0,
+    games: games.length > 0,
+    music: music.length > 0,
+    books: books.length > 0,
+  }),
+  [movies.length, games.length, music.length, books.length]
+)
+
+  
+
+/* =====================================================
+   PREVENT NAVIGATION TO EMPTY LIBRARIES
+   ===================================================== */
+
+useEffect(() => {
+  if (collectionLoading) return
+
+  const libraryViews = [
+    'movies',
+    'games',
+    'music',
+    'books',
+  ] as const
+
+  if (
+    libraryViews.some(
+      (view) =>
+        view === activeView &&
+        !availableMediaTypes[view]
+    )
+  ) {
+    setActiveView('collection')
+  }
+}, [
+  activeView,
+  availableMediaTypes,
+  collectionLoading,
+])
+
+
   const favorites = useMemo(
     () =>
       collection.filter(
@@ -1026,13 +1073,38 @@ const handlePasswordRecoveryComplete = () => {
     return
   }
 
-  setCollection((current) =>
-    current.filter(
-      (item) => item.id !== mediaToRemove.id,
-    ),
-  )
 
-  setSelectedMedia(null)
+setCollection((current) =>
+  current.filter(
+    (item) => item.id !== mediaToRemove.id
+  )
+)
+
+/* Return home if the last item in the
+   currently viewed category was removed. */
+
+const remainingCategoryItems = collection.filter(
+  (item) =>
+    item.type === mediaToRemove.type &&
+    item.id !== mediaToRemove.id
+)
+
+const categoryView = {
+  movie: 'movies',
+  game: 'games',
+  book: 'books',
+  music: 'music',
+} as const
+
+if (
+  remainingCategoryItems.length === 0 &&
+  activeView === categoryView[mediaToRemove.type]
+) {
+  setActiveView('collection')
+}
+
+setSelectedMedia(null)
+
 }
 
 const handleEditMedia = (
@@ -1712,9 +1784,13 @@ if (!user) {
 
   return (
     <div className="room">
+
+
 <Header
   activeView={activeView}
   onViewChange={setActiveView}
+  availableMediaTypes={availableMediaTypes}
+  collectionLoading={collectionLoading}
   onAddMedia={() =>
     setIsAddMediaOpen(true)
   }
@@ -1723,11 +1799,10 @@ if (!user) {
       setIsAuthModalOpen(true)
     }
   }}
-
-  userEmail={
-    user?.email ?? null
-  }
+  userEmail={user?.email ?? null}
 />
+
+
 
       <main className="room-content">
 <div className="room-glow room-glow-left" />
