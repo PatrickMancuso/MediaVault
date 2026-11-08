@@ -21341,3 +21341,68 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 }
 
+
+
+
+/* =====================================================
+   DYNAMIC COLLECTION BROWSE LAYOUT
+   ===================================================== */
+
+@media (min-width: 761px) {
+
+  /* One category fills the available width */
+
+  .collection-dashboard
+  .dashboard-category-grid.category-count-1 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Two categories sit side by side */
+
+  .collection-dashboard
+  .dashboard-category-grid.category-count-2 {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  /* Three categories: two above, one below */
+
+  .collection-dashboard
+  .dashboard-category-grid.category-count-3 {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .collection-dashboard
+  .dashboard-category-grid.category-count-3
+  > .dashboard-category-card:last-child {
+    grid-column: 1 / -1;
+  }
+
+  /* Four categories retain the current layout */
+
+  .collection-dashboard
+  .dashboard-category-grid.category-count-4 {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+/* Mobile always uses a single column */
+
+@media (max-width: 760px) {
+
+  .collection-dashboard
+  .dashboard-category-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .collection-dashboard
+  .dashboard-category-grid
+  > .dashboard-category-card {
+    grid-column: auto;
+  }
+
+}
+
