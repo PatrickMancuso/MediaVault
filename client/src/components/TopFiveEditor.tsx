@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import type { MediaItem } from '../data/sampleMedia'
 
 interface TopFiveEditorProps {
-  type: 'movie' | 'game'
+type: 'movie' | 'game' | 'book' | 'music'
   items: MediaItem[]
   selectedIds: string[]
   onClose: () => void
@@ -25,8 +25,17 @@ function TopFiveEditor({
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
-  const mediaLabel =
-    type === 'movie' ? 'Movies' : 'Games'
+const mediaLabels: Record<
+  'movie' | 'game' | 'book' | 'music',
+  string
+> = {
+  movie: 'Movies',
+  game: 'Games',
+  book: 'Books',
+  music: 'Music',
+}
+
+const mediaLabel = mediaLabels[type]
 
   /* =====================================================
      FILTER AVAILABLE TITLES
