@@ -21784,3 +21784,165 @@ background: rgba(53, 38, 63, 0.75) !important;
     padding: 9px 1px 11px;
   }
 }
+
+
+
+
+/* =========================================
+   TOP 5 FAVORITES - SECTION CONTAINER
+   Personal + Public Profiles
+   ========================================= */
+
+.profile-top-five-unified {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 26px 28px 30px;
+  margin-top: 28px;
+
+  background: rgba(17, 14, 22, 0.88);
+  border: 1px solid rgba(194, 145, 212, 0.22);
+  border-radius: 10px;
+
+  box-shadow:
+    0 12px 36px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+/* =========================================
+   TOP 5 - HEADING
+   ========================================= */
+
+.profile-top-five-unified .profile-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin: 0 0 20px;
+  padding: 0;
+}
+
+.profile-top-five-unified .profile-section-heading h2 {
+  margin: 0;
+
+  color: #f5edf6;
+  font-size: 24px;
+  font-weight: 750;
+  letter-spacing: -0.4px;
+}
+
+/* =========================================
+   TOP 5 - TAB CONTAINER
+   ========================================= */
+
+.profile-top-five-unified .profile-top-five-tabs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  padding: 5px;
+  margin: 0 0 24px;
+
+  background: rgba(67, 43, 76, 0.55);
+  border: 1px solid rgba(193, 146, 210, 0.23);
+  border-radius: 7px;
+}
+
+/* Individual tabs */
+
+.profile-top-five-unified .profile-top-five-tabs button {
+  position: relative;
+  appearance: none;
+
+  padding: 10px 17px;
+  margin: 0;
+
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 5px;
+
+  color: #b9a9bf;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Hover */
+
+.profile-top-five-unified .profile-top-five-tabs button:hover {
+  color: #f0ddf5;
+  background: rgba(184, 125, 205, 0.14);
+}
+
+/* Active tab */
+
+.profile-top-five-unified .profile-top-five-tabs button.active {
+  color: #f8eafa;
+  font-weight: 700;
+
+  background: linear-gradient(
+    180deg,
+    rgba(133, 83, 150, 0.7),
+    rgba(83, 49, 98, 0.75)
+  );
+
+  border-color: rgba(210, 158, 230, 0.32);
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+}
+
+/* Remove the old underline */
+
+.profile-top-five-unified
+.profile-top-five-tabs button.active::after {
+  display: none;
+}
+
+/* Keyboard focus */
+
+.profile-top-five-unified
+.profile-top-five-tabs button:focus-visible {
+  outline: 2px solid #d7a5e8;
+  outline-offset: 2px;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 700px) {
+  .profile-top-five-unified {
+    padding: 20px 16px 24px;
+  }
+
+  .profile-top-five-unified .profile-section-heading h2 {
+    font-size: 21px;
+  }
+
+  .profile-top-five-unified .profile-top-five-tabs {
+    width: 100%;
+    gap: 4px;
+  }
+
+  .profile-top-five-unified .profile-top-five-tabs button {
+    flex: 1 1 auto;
+    padding: 10px 12px;
+    font-size: 12px;
+    text-align: center;
+  }
+}
