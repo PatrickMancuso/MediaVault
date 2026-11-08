@@ -256,3 +256,28 @@ textarea {
 button {
   -webkit-tap-highlight-color: transparent;
 }
+
+
+
+
+
+/* =====================================================
+   MOBILE ONLY - RESPONSIVE WIDTH FIX
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  body {
+    overflow-x: clip;
+  }
+
+}
+
