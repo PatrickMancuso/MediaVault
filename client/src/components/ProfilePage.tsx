@@ -67,14 +67,25 @@ const [isPublic, setIsPublic] = useState(false)
   onEditorOpened,
 ])
 
-    const [topMovieIds, setTopMovieIds] =
+type TopFiveType = 'movie' | 'game' | 'book' | 'music'
+
+const [topMovieIds, setTopMovieIds] =
   useState<string[]>([])
 
 const [topGameIds, setTopGameIds] =
   useState<string[]>([])
 
+const [topBookIds, setTopBookIds] =
+  useState<string[]>([])
+
+const [topMusicIds, setTopMusicIds] =
+  useState<string[]>([])
+
+const [activeTopFive, setActiveTopFive] =
+  useState<TopFiveType>('movie')
+
 const [editingTopFive, setEditingTopFive] =
-  useState<'movie' | 'game' | null>(null)
+  useState<TopFiveType | null>(null)
 
   /* =====================================================
      LOAD PROFILE FROM SUPABASE
@@ -90,7 +101,7 @@ const [editingTopFive, setEditingTopFive] =
       const { data, error } = await supabase
         .from('profiles')
 .select(
-  'display_name, bio, avatar_path, top_movies, top_games, username, is_public'
+  'display_name, bio, avatar_path, top_movies, top_games, top_books, top_music, username, is_public'
 )
         .eq('user_id', userId)
         .maybeSingle()
@@ -118,6 +129,8 @@ const [editingTopFive, setEditingTopFive] =
 setIsPublic(data?.is_public ?? false)
       setTopMovieIds(data?.top_movies ?? [])
 setTopGameIds(data?.top_games ?? [])
+      setTopBookIds(data?.top_books ?? [])
+setTopMusicIds(data?.top_music ?? [])
 
       setProfileLoading(false)
     }
@@ -189,6 +202,22 @@ setTopGameIds(data?.top_games ?? [])
     [collection],
   )
 
+  const books = useMemo(
+  () =>
+    collection.filter(
+      (item) => item.type === 'book'
+    ),
+  [collection],
+)
+
+const music = useMemo(
+  () =>
+    collection.filter(
+      (item) => item.type === 'music'
+    ),
+  [collection],
+)
+
 
   /* =====================================================
    PROFILE - REVIEW STATISTICS
@@ -235,36 +264,35 @@ const totalReviews = useMemo(
       : 'None yet'
   }, [collection])
 
-  /* =====================================================
-     TOP FIVE PREVIEWS
-     ===================================================== */
 
-  // Temporary: uses favorited titles until manual
-  // Top 5 selection and ranking are implemented.
 
- const topMovies = useMemo(
-  () =>
-    topMovieIds
-      .map((id) =>
-        movies.find((item) => item.id === id)
-      )
-      .filter(
-        (item): item is MediaItem => Boolean(item)
-      ),
-  [topMovieIds, movies],
-)
+/* =====================================================
+   UNIFIED TOP FIVE DATA
+   ===================================================== */
 
-const topGames = useMemo(
-  () =>
-    topGameIds
-      .map((id) =>
-        games.find((item) => item.id === id)
-      )
-      .filter(
-        (item): item is MediaItem => Boolean(item)
-      ),
-  [topGameIds, games],
-)
+const topFiveIds: Record<TopFiveType, string[]> = {
+  movie: topMovieIds,
+  game: topGameIds,
+  book: topBookIds,
+  music: topMusicIds,
+}
+
+const topFiveCollections: Record<TopFiveType, MediaItem[]> = {
+  movie: movies,
+  game: games,
+  book: books,
+  music: music,
+}
+
+const activeTopFiveItems = topFiveIds[activeTopFive]
+  .map((id) =>
+    topFiveCollections[activeTopFive].find(
+      (item) => item.id === id
+    )
+  )
+  .filter(
+    (item): item is MediaItem => Boolean(item)
+  )
 
   /* =====================================================
      DISPLAY NAME
@@ -414,7 +442,7 @@ setIsPublic(changes.isPublic)
 
   const renderTopFive = (
     items: MediaItem[],
-    type: 'movies' | 'games',
+type: 'movies' | 'games' | 'books' | 'music',
   ) => (
     <div className="profile-top-five-grid">
       {Array.from({ length: 5 }, (_, index) => {
@@ -469,61 +497,60 @@ setIsPublic(changes.isPublic)
    ===================================================== */
 
 const handleSaveTopFive = async (
-  type: 'movie' | 'game',
+  type: TopFiveType,
   ids: string[],
 ): Promise<void> => {
   const eligibleIds = new Set(
     collection
-      .filter((item) => item.type === type)
-      .map((item) => item.id)
+      .filter(item => item.type === type)
+      .map(item => item.id)
   )
 
   if (
     ids.length > 5 ||
     new Set(ids).size !== ids.length ||
-    ids.some((id) => !eligibleIds.has(id))
+    ids.some(id => !eligibleIds.has(id))
   ) {
     throw new Error(
       'Please select up to five unique titles from your collection.'
     )
   }
 
+  const columns: Record<TopFiveType, string> = {
+    movie: 'top_movies',
+    game: 'top_games',
+    book: 'top_books',
+    music: 'top_music',
+  }
 
-const column =
-  type === 'movie'
-    ? 'top_movies'
-    : 'top_games'
+  const column = columns[type]
 
-const { data, error } = await supabase
-  .from('profiles')
-  .upsert(
-    {
-      user_id: userId,
-      [column]: ids,
-    },
-    {
-      onConflict: 'user_id',
-    }
-  )
-  .select('top_movies, top_games')
-  .single()
+  const { data, error } = await supabase
+    .from('profiles')
+    .upsert(
+      {
+        user_id: userId,
+        [column]: ids,
+      },
+      {
+        onConflict: 'user_id',
+      }
+    )
+    .select('top_movies, top_games, top_books, top_music')
+    .single()
 
-if (error) {
-  console.error(
-    'Failed to save Top 5:',
-    error
-  )
+  if (error) {
+    console.error('Failed to save Top 5:', error)
 
-  throw new Error(
-    'Unable to save your Top 5.'
-  )
-}
+    throw new Error(
+      'Unable to save your Top 5.'
+    )
+  }
 
-if (type === 'movie') {
   setTopMovieIds(data.top_movies ?? [])
-} else {
   setTopGameIds(data.top_games ?? [])
-}
+  setTopBookIds(data.top_books ?? [])
+  setTopMusicIds(data.top_music ?? [])
 }
 
 
@@ -632,47 +659,61 @@ if (type === 'movie') {
 
       </div>
 
-      {/* TOP FIVE MOVIES */}
+{/* =====================================================
+    UNIFIED TOP FIVE FAVORITES
+    ===================================================== */}
 
-      <div className="profile-favorites-section">
-        <div className="profile-section-heading">
-  <h2>Top 5 Movies</h2>
+<div className="profile-favorites-section profile-top-five-unified">
 
-  <button
-    type="button"
-    className="profile-edit-top-five"
-    onClick={() => setEditingTopFive('movie')}
+  <div className="profile-section-heading">
+    <h2>Top 5 Favorites</h2>
+
+    <button
+      type="button"
+      className="profile-edit-top-five"
+      onClick={() => setEditingTopFive(activeTopFive)}
+    >
+      Edit Top 5
+    </button>
+  </div>
+
+  <div
+    className="profile-top-five-tabs"
+    role="group"
+    aria-label="Top 5 category"
   >
-    Edit Top 5
-  </button>
+    {([
+      ['movie', 'Movies'],
+      ['game', 'Games'],
+      ['music', 'Music'],
+      ['book', 'Books'],
+    ] as const).map(([type, label]) => (
+      <button
+        key={type}
+        type="button"
+        className={
+          activeTopFive === type ? 'active' : ''
+        }
+        aria-pressed={activeTopFive === type}
+        onClick={() => setActiveTopFive(type)}
+      >
+        {label}
+      </button>
+    ))}
+  </div>
+
+  {renderTopFive(
+    activeTopFiveItems,
+    activeTopFive === 'movie'
+      ? 'movies'
+      : activeTopFive === 'game'
+        ? 'games'
+        : activeTopFive === 'book'
+          ? 'books'
+          : 'music'
+  )}
+
 </div>
-
-        {renderTopFive(
-          topMovies,
-          'movies'
-        )}
-      </div>
-
-      {/* TOP FIVE GAMES */}
-
-      <div className="profile-favorites-section">
-              <div className="profile-section-heading">
-  <h2>Top 5 Games</h2>
-
-  <button
-    type="button"
-    className="profile-edit-top-five"
-    onClick={() => setEditingTopFive('game')}
-  >
-    Edit Top 5
-  </button>
-</div>
-
-        {renderTopFive(
-          topGames,
-          'games'
-        )}
-      </div>
 
       {/* PROFILE ERROR */}
 
@@ -704,14 +745,10 @@ if (type === 'movie') {
 
 
 {editingTopFive && (
-  <TopFiveEditor
-    type={editingTopFive}
-    items={collection}
-    selectedIds={
-      editingTopFive === 'movie'
-        ? topMovieIds
-        : topGameIds
-    }
+<TopFiveEditor
+  type={editingTopFive}
+  items={collection}
+  selectedIds={topFiveIds[editingTopFive]}
     onClose={() => setEditingTopFive(null)}
     onSave={(ids: string[]) =>
   handleSaveTopFive(editingTopFive, ids)
