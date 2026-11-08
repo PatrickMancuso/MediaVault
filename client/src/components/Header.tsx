@@ -12,6 +12,7 @@ type View =
   | 'collectors'
   | 'feed'
   | 'inbox'
+  | 'settings'
 
 
 interface HeaderProps {
@@ -430,6 +431,18 @@ function Header({
                   <span>Favorites</span>
                   <span aria-hidden="true">›</span>
                 </button>
+
+                {/* SETTINGS */}
+
+<button
+  type="button"
+  className="account-menu-item"
+  role="menuitem"
+  onClick={() => navigateTo('settings')}
+>
+  <span>Settings</span>
+  <span aria-hidden="true">›</span>
+</button>
 
               </div>
             )}
