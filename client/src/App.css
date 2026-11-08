@@ -21051,3 +21051,144 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+
+/* =====================================================
+   MEDIAVAULT - DESKTOP BROWSE REFINEMENT
+   Larger artwork, calmer spacing, smaller containers
+   ===================================================== */
+
+@media (min-width: 761px) {
+
+  /* =========================================
+     1. BROWSE GRID - OUTER SPACING
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-grid {
+    display: grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    width: calc(100% - 40px);
+    max-width: none;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    column-gap: 32px;
+    row-gap: 32px;
+
+    align-items: start;
+  }
+
+
+  /* =========================================
+     2. BROWSE CARD DIMENSIONS
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-card {
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+
+    height: 350px;
+    min-height: 350px;
+
+    overflow: hidden;
+  }
+
+
+  /* =========================================
+     3. MOVIE COLLAGE - LARGER ARTWORK
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-movies
+  .category-art-diagonal {
+    --collage-tile-width: 190px;
+
+    grid-template-columns:
+      repeat(8, 190px);
+
+    grid-auto-rows: 253.33px;
+
+    gap: 2px;
+  }
+
+  .collection-dashboard
+  .dashboard-category-movies
+  .category-diagonal-item {
+    width: 190px;
+    height: 253.33px;
+
+    aspect-ratio: 3 / 4;
+  }
+
+
+  /* =========================================
+     4. GAME COLLAGE - MATCH MOVIE SCALE
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-games
+  .category-art-diagonal {
+    --collage-tile-width: 190px;
+
+    grid-template-columns:
+      repeat(8, 190px);
+
+    grid-auto-rows: 253.33px;
+
+    gap: 2px;
+  }
+
+  .collection-dashboard
+  .dashboard-category-games
+  .category-diagonal-item {
+    width: 190px;
+    height: 253.33px;
+
+    aspect-ratio: 3 / 4;
+  }
+
+
+  /* =========================================
+     5. PRESERVE EXISTING COLLAGE POSITION
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-archives-section
+  .category-art-diagonal {
+    left: 50%;
+    top: 50%;
+
+    transform:
+      translate(-50%, -50%)
+      rotate(-17deg);
+
+    transform-origin: center center;
+  }
+
+
+  /* =========================================
+     6. KEEP CATEGORY TEXT ABOVE ARTWORK
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-category-card
+  .category-content {
+    position: absolute;
+    z-index: 20;
+  }
+
+}
+
