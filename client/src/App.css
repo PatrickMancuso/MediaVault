@@ -21238,3 +21238,71 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 }
 
+
+
+
+/* =====================================================
+   MEDIAVAULT - DESKTOP COLLECTION REFINEMENTS
+   Spacing, music positioning, and transparency
+   ===================================================== */
+
+@media (min-width: 761px) {
+
+  /* =========================================
+     1. MOVE COLLECTION CLOSER TO HEADER
+     ========================================= */
+
+  .room-content {
+    padding-top: 115px;
+  }
+
+  .room-content > .collection-dashboard {
+    margin-top: 0;
+  }
+
+
+  /* =========================================
+     2. REDUCE COLLECTION HEADER SPACING
+     ========================================= */
+
+  .collection-dashboard {
+    padding-top: 22px;
+  }
+
+  .collection-dashboard
+  .dashboard-intro-compact {
+    margin-top: 0;
+    margin-bottom: 8px;
+
+    padding-top: 0;
+    padding-bottom: 12px;
+  }
+
+  .collection-dashboard
+  .dashboard-archives-section {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+
+  /* =========================================
+     3. MOVE MUSIC COLLAGE UPWARD
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-category-music
+  .category-art-diagonal {
+    top: calc(50% - 45px);
+  }
+
+
+  /* =========================================
+     4. MAIN COLLECTION PANEL TRANSPARENCY
+     ========================================= */
+
+  .room-content > .collection-dashboard {
+    background: rgba(12, 16, 17, 0.86);
+  }
+
+}
+
