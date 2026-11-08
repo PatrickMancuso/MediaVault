@@ -21406,3 +21406,38 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 }
 
+
+
+
+
+/* =====================================================
+   LIBRARY DROPDOWN - EMPTY AND LOADING STATES
+   ===================================================== */
+
+.library-dropdown-empty {
+  padding: 15px 17px;
+
+  color: rgba(225, 211, 229, 0.65);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.library-dropdown-add {
+  display: block;
+
+  margin-top: 9px;
+  padding: 0;
+
+  background: transparent;
+  border: none;
+
+  color: #d5a0df;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.library-dropdown-add:hover {
+  color: #f0c7f6;
+}
