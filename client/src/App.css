@@ -21681,3 +21681,106 @@ background: rgba(53, 38, 63, 0.75) !important;
   }
 }
 
+
+/* =========================================
+   TOP 5 FAVORITES - CATEGORY TABS
+   Personal Profile + Public Profile
+   ========================================= */
+
+.profile-top-five-tabs {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+
+  margin-top: 18px;
+  margin-bottom: 20px;
+  padding: 0;
+
+  border: none;
+  background: transparent;
+}
+
+/* Individual category buttons */
+
+.profile-top-five-tabs button {
+  position: relative;
+  appearance: none;
+
+  padding: 10px 2px 12px;
+  margin: 0;
+
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+
+  background: transparent;
+  color: #a99aaa;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+/* Hover */
+
+.profile-top-five-tabs button:hover {
+  color: #e4c1f0;
+  background: transparent;
+}
+
+/* Active category */
+
+.profile-top-five-tabs button.active {
+  color: #d9a2ec;
+  background: transparent;
+  font-weight: 700;
+}
+
+/* Active underline */
+
+.profile-top-five-tabs button.active::after {
+  content: '';
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 2px;
+
+  background: #c58cda;
+  border-radius: 2px;
+
+  box-shadow:
+    0 0 8px rgba(197, 140, 218, 0.35);
+}
+
+/* Keyboard accessibility */
+
+.profile-top-five-tabs button:focus-visible {
+  outline: 2px solid #c58cda;
+  outline-offset: 4px;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .profile-top-five-tabs {
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    margin-bottom: 18px;
+  }
+
+  .profile-top-five-tabs button {
+    font-size: 12px;
+    padding: 9px 1px 11px;
+  }
+}
