@@ -19900,3 +19900,244 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 
 
+
+
+
+/* =====================================================
+   MEDIAVAULT - MOBILE HEADER REBUILD
+   Desktop styling remains unchanged
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  /* Header container */
+
+  .site-header {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+  }
+
+  .site-header .header-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand actions"
+      "nav nav";
+
+    align-items: center;
+
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+
+    margin: 0;
+    padding: 10px 14px 8px;
+
+    column-gap: 10px;
+    row-gap: 10px;
+  }
+
+  /* =========================================
+     LOGO
+     ========================================= */
+
+  .site-header .brand-console {
+    grid-area: brand;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: fit-content;
+    max-width: 100%;
+    min-width: 0;
+    height: 42px;
+
+    margin: 0;
+    padding: 0 12px;
+
+    white-space: nowrap;
+  }
+
+  .site-header .brand-mark {
+    font-size: 15px;
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+
+  .site-header .brand-caption {
+    display: none;
+  }
+
+  .site-header .brand-light {
+    flex-shrink: 0;
+  }
+
+  /* =========================================
+     HEADER ACTIONS
+     ========================================= */
+
+  .site-header .header-actions {
+    grid-area: actions;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    width: auto;
+    min-width: 0;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-header .header-add-media,
+  .site-header .header-account {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 42px;
+
+    width: 42px;
+    min-width: 42px;
+    max-width: 42px;
+    height: 42px;
+    min-height: 42px;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Show only the plus icon */
+
+  .site-header .header-add-media > span:not(.header-add-icon) {
+    display: none;
+  }
+
+  .site-header .header-add-icon {
+    display: block;
+
+    color: #fff;
+    font-size: 23px;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  /* Hamburger */
+
+  .site-header .header-hamburger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+  }
+
+  .site-header .header-hamburger span {
+    width: 18px;
+    height: 2px;
+  }
+
+  /* =========================================
+     SECOND ROW - NAVIGATION
+     ========================================= */
+
+  .site-header .main-nav {
+    grid-area: nav;
+
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    align-items: stretch;
+    justify-content: stretch;
+
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+
+    gap: 4px;
+
+    margin: 0;
+    padding: 0;
+
+    overflow: visible;
+  }
+
+  .site-header .main-nav > .nav-item,
+  .site-header .main-nav > .header-library-wrapper {
+    display: flex;
+
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-header .main-nav .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-width: 0;
+    height: 38px;
+    min-height: 38px;
+
+    margin: 0;
+    padding: 5px 2px;
+
+    border-radius: 5px;
+
+    font-size: 12px;
+  }
+
+  .site-header .main-nav .nav-label {
+    white-space: nowrap;
+    font-size: 12px;
+  }
+
+  .site-header .main-nav .nav-indicator {
+    flex-shrink: 0;
+  }
+
+  /* =========================================
+     DROPDOWNS
+     ========================================= */
+
+  .site-header .header-library-wrapper,
+  .site-header .header-account-wrapper {
+    position: relative;
+  }
+
+  .site-header .library-dropdown {
+    top: calc(100% + 6px);
+    left: 0;
+
+    transform: none;
+
+    width: min(180px, calc(100vw - 28px));
+    z-index: 1100;
+  }
+
+  .site-header .account-menu {
+    top: calc(100% + 6px);
+    right: 0;
+    left: auto;
+
+    width: min(190px, calc(100vw - 28px));
+    z-index: 1100;
+  }
+
+}
+
+
