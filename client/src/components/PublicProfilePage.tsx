@@ -123,8 +123,8 @@ const [activeTopFive, setActiveTopFive] =
   useState<TopFiveType>('movie')
   
   const [collectionType, setCollectionType] =
-  useState<'movie' | 'game'>('movie')
-
+useState<'movie' | 'game' | 'book' | 'music'>('movie')
+  
 const [collectionDisplay, setCollectionDisplay] =
   useState<'covers' | 'list'>('covers')
 
@@ -360,6 +360,16 @@ const handleFriendshipAction = async (
     [media]
   )
 
+  const books = useMemo(
+  () => media.filter((item) => item.type === 'book'),
+  [media]
+)
+
+const music = useMemo(
+  () => media.filter((item) => item.type === 'music'),
+  [media]
+)
+
 
   const totalReviews = useMemo(
     () =>
@@ -445,11 +455,10 @@ const renderMediaGrid = (items: PublicMedia[]) => (
    PUBLIC PROFILE - COMPACT COLLECTION
    ===================================================== */
 
-const collectionItems = (
-  collectionType === 'movie' ? movies : games
-).slice().sort((a, b) =>
-  a.title.localeCompare(b.title)
-)
+const collectionItems = media
+  .filter((item) => item.type === collectionType)
+  .slice()
+  .sort((a, b) => a.title.localeCompare(b.title))
 
 const renderCompactCollection = () => (
   <div className="public-collection-scroll">
@@ -741,35 +750,28 @@ const renderCompactCollection = () => (
 
       {/* MOVIES / GAMES */}
 
-      <div className="public-collection-toggle">
-        <button
-          type="button"
-          className={
-            collectionType === 'movie'
-              ? 'active'
-              : ''
-          }
-          onClick={() =>
-            setCollectionType('movie')
-          }
-        >
-          Movies ({movies.length})
-        </button>
-
-        <button
-          type="button"
-          className={
-            collectionType === 'game'
-              ? 'active'
-              : ''
-          }
-          onClick={() =>
-            setCollectionType('game')
-          }
-        >
-          Games ({games.length})
-        </button>
-      </div>
+      <div
+  className="public-collection-toggle"
+  role="group"
+  aria-label="Collection category"
+>
+  {([
+    ['movie', 'Movies', movies.length],
+    ['game', 'Games', games.length],
+    ['music', 'Music', music.length],
+    ['book', 'Books', books.length],
+  ] as const).map(([type, label, count]) => (
+    <button
+      key={type}
+      type="button"
+      className={collectionType === type ? 'active' : ''}
+      aria-pressed={collectionType === type}
+      onClick={() => setCollectionType(type)}
+    >
+      {label} ({count})
+    </button>
+  ))}
+</div>
 
       {/* COVERS / LIST */}
 
