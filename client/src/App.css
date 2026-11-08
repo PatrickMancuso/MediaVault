@@ -21488,3 +21488,52 @@ background: rgba(53, 38, 63, 0.75) !important;
   }
 
 }
+
+
+
+/* =====================================================
+   ADD MEDIA - SEARCH WAKE-UP NOTICE
+   ===================================================== */
+
+.add-media-search-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin-top: 12px;
+  padding: 11px 13px;
+
+  background: rgba(30, 23, 36, 0.38);
+  border: 1px solid rgba(191, 150, 206, 0.2);
+  border-radius: 7px;
+
+  color: rgba(231, 215, 235, 0.72);
+
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.add-media-search-notice-icon {
+  flex-shrink: 0;
+
+  color: #d2a2de;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.add-media-search-notice p {
+  margin: 0;
+}
+
+.add-media-search-notice strong {
+  color: #f1e7f4;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .add-media-search-notice {
+    padding: 10px 11px;
+    font-size: 11px;
+  }
+}
+
