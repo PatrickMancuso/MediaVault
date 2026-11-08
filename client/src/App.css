@@ -21537,3 +21537,147 @@ background: rgba(53, 38, 63, 0.75) !important;
   }
 }
 
+
+
+
+/* =========================================
+   MEDIAVAULT - SOCIAL ONBOARDING
+   ========================================= */
+
+/* Activity empty state */
+
+.feed-empty-onboarding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  padding: 48px 24px;
+}
+
+.feed-empty-onboarding h2 {
+  margin: 0;
+  color: #f3edf5;
+  font-size: 21px;
+}
+
+.feed-empty-onboarding p {
+  max-width: 440px;
+  margin: 0;
+  color: #b8aabd;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.feed-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 5px;
+  border-radius: 50%;
+  background: rgba(157, 91, 181, 0.16);
+  border: 1px solid rgba(191, 133, 211, 0.3);
+  color: #d7a5e8;
+  font-size: 26px;
+}
+
+.feed-discover-button,
+.collectors-edit-profile-button {
+  min-height: 39px;
+  padding: 0 18px;
+  border: 1px solid rgba(200, 144, 221, 0.42);
+  border-radius: 5px;
+  color: #f7ecfa;
+  background: linear-gradient(
+    180deg,
+    #70457f,
+    #38223f
+  );
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.feed-discover-button {
+  margin-top: 12px;
+}
+
+.feed-discover-button:hover,
+.collectors-edit-profile-button:hover {
+  transform: translateY(-2px);
+  border-color: #d7a5e8;
+  background: linear-gradient(
+    180deg,
+    #86539a,
+    #4c2c58
+  );
+}
+
+/* Find Collectors visibility notice */
+
+.collectors-visibility-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 22px 0;
+  padding: 20px 22px;
+  border: 1px solid rgba(180, 123, 203, 0.28);
+  border-radius: 7px;
+  background: linear-gradient(
+    110deg,
+    rgba(91, 55, 108, 0.24),
+    rgba(30, 23, 35, 0.86)
+  );
+}
+
+.collectors-visibility-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.collectors-visibility-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #c998df;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1.2px;
+}
+
+.collectors-visibility-content h2 {
+  margin: 0 0 7px;
+  color: #f3edf5;
+  font-size: 17px;
+}
+
+.collectors-visibility-content p {
+  margin: 0;
+  color: #b8aabd;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.collectors-edit-profile-button {
+  flex-shrink: 0;
+}
+
+@media (max-width: 650px) {
+  .collectors-visibility-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .collectors-edit-profile-button {
+    width: 100%;
+  }
+}
+
