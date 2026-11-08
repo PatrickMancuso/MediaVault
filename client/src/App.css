@@ -20416,3 +20416,155 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 }
 
+
+
+
+
+
+
+/* =====================================================
+   MEDIAVAULT - MOBILE HOMEPAGE REFINEMENTS
+   Applies only to screens 600px and below
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  /* =========================================
+     1. HEADER / DASHBOARD SPACING
+     ========================================= */
+
+  .room-content {
+    padding-top: 145px;
+  }
+
+  .room-content > .collection-dashboard {
+    margin-top: 0;
+  }
+
+  /* =========================================
+     2. REMOVE COLLECTION INTRO
+     ========================================= */
+
+  .collection-dashboard .dashboard-intro-compact {
+    display: none;
+  }
+
+  /* Remove leftover spacing from the intro */
+
+  .collection-dashboard .dashboard-archives-section {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  /* =========================================
+     3. BROWSE - SINGLE COLUMN
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-grid {
+    display: grid;
+
+    grid-template-columns: minmax(0, 1fr);
+
+    column-gap: 0;
+    row-gap: 16px;
+
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .collection-dashboard
+  .dashboard-category-card {
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+
+    height: 190px;
+    min-height: 190px;
+
+    margin: 0;
+
+    overflow: hidden;
+  }
+
+  /* =========================================
+     4. MOVIES / GAMES - SMALLER ARTWORK
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-category-movies
+  .movie-game-collage,
+  .collection-dashboard
+  .dashboard-category-games
+  .movie-game-collage {
+    --collage-tile-width: 110px;
+  }
+
+  /* =========================================
+     5. MUSIC - SMALLER SQUARE ALBUM ART
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-category-music
+  .category-diagonal-item {
+    width: 110px;
+    height: 110px;
+  }
+
+  .collection-dashboard
+  .dashboard-category-music
+  .category-music-poster {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  /* =========================================
+     6. BOOKS - SMALLER COVER ART
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-category-books
+  .category-diagonal-item {
+    width: 110px;
+    height: 155px;
+  }
+
+  .collection-dashboard
+  .dashboard-category-books
+  .category-book-poster {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  /* =========================================
+     7. BROWSE CARD TEXT
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-category-card h3 {
+    font-size: 24px;
+    line-height: 1.1;
+  }
+
+  /* =========================================
+     8. KEEP BACKGROUND GLOWS DISABLED
+     ========================================= */
+
+  .room-content > .room-glow {
+    display: none;
+  }
+
+}
+
+
+
+
+
