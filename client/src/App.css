@@ -21192,3 +21192,49 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 }
 
+
+
+
+/* =====================================================
+   DESKTOP - MATCH MOVIE/GAME ARTWORK TO BOOKS
+   ===================================================== */
+
+@media (min-width: 761px) {
+
+  /* Movie and Game collage grid */
+
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-movies
+  .category-art-diagonal,
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-games
+  .category-art-diagonal {
+    --collage-tile-width: 170px;
+
+    grid-template-columns: repeat(8, 170px);
+    grid-template-rows: repeat(5, 226.67px);
+    grid-auto-rows: 226.67px;
+
+    gap: 2px;
+  }
+
+  /* Individual artwork tiles */
+
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-movies
+  .category-diagonal-item,
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-games
+  .category-diagonal-item {
+    width: 170px;
+    height: 226.67px;
+
+    aspect-ratio: 3 / 4;
+  }
+
+}
+
