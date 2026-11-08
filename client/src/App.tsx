@@ -430,6 +430,9 @@ function App() {
   const [activeView, setActiveView] =
     useState<View>('collection')
 
+  const [openProfileEditor, setOpenProfileEditor] =
+  useState(false)
+
 const [selectedCollectorId, setSelectedCollectorId] =
   useState<string | null>(null)
 
@@ -1823,11 +1826,17 @@ if (!user) {
       onBack={() => setSelectedCollectorId(null)}
     />
   ) : (
-    <FindCollectors
-      onSelectCollector={(userId) => {
-        setSelectedCollectorId(userId)
-      }}
-    />
+ <FindCollectors
+  onSelectCollector={(userId) => {
+    setSelectedCollectorId(userId)
+  }}
+
+  onEditProfile={() => {
+    setOpenProfileEditor(true)
+    setSelectedCollectorId(null)
+    setActiveView('profile')
+  }}
+/>
 
   )
 
@@ -1838,7 +1847,12 @@ if (!user) {
 
 ) : activeView === 'feed' ? (
 
-  <FeedPage />
+  <FeedPage
+    onFindCollectors={() => {
+      setSelectedCollectorId(null)
+      setActiveView('collectors')
+    }}
+  />
 
 ) : activeView === 'profile' ? (
 
