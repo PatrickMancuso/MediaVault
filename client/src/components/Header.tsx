@@ -13,13 +13,25 @@ type View =
   | 'feed'
   | 'inbox'
 
+
 interface HeaderProps {
   activeView: View
   onViewChange: (view: View) => void
   onAddMedia: () => void
   onAccount: () => void
   userEmail?: string | null
+
+  availableMediaTypes: {
+    movies: boolean
+    games: boolean
+    music: boolean
+    books: boolean
+  }
+
+  collectionLoading: boolean
 }
+
+
 
 function Header({
   activeView,
@@ -27,7 +39,10 @@ function Header({
   onAddMedia,
   onAccount,
   userEmail,
+  availableMediaTypes,
+  collectionLoading,
 }: HeaderProps) {
+
   const [isAccountMenuOpen, setIsAccountMenuOpen] =
     useState(false)
 
@@ -42,6 +57,10 @@ function Header({
   activeView === 'games' ||
   activeView === 'books' ||
   activeView === 'music'
+
+  const hasAnyMedia = Object.values(
+  availableMediaTypes
+).some(Boolean)
 
   /* =====================================================
      CLOSE DROPDOWNS
@@ -192,65 +211,89 @@ function Header({
               <span className="nav-indicator" />
             </button>
 
-            {isLibraryMenuOpen && (
-              <div className="library-dropdown">
-                <button
-                  type="button"
-                  className={`library-dropdown-item ${
-                    activeView === 'movies'
-                      ? 'active'
-                      : ''
-                  }`}
-                  onClick={() => navigateTo('movies')}
-                >
-                  <span>Movies</span>
-                  <span aria-hidden="true">›</span>
-                </button>
+            
+{isLibraryMenuOpen && (
+  <div className="library-dropdown">
 
-                <button
-                  type="button"
-                  className={`library-dropdown-item ${
-                    activeView === 'games'
-                      ? 'active'
-                      : ''
-                  }`}
-                  onClick={() => navigateTo('games')}
-                >
-                  <span>Games</span>
-                  <span aria-hidden="true">›</span>
-                </button>
+    {collectionLoading ? (
+      <div className="library-dropdown-empty">
+        Loading library...
+      </div>
+    ) : (
+      <>
+        {availableMediaTypes.movies && (
+          <button
+            type="button"
+            className={`library-dropdown-item ${
+              activeView === 'movies' ? 'active' : ''
+            }`}
+            onClick={() => navigateTo('movies')}
+          >
+            <span>Movies</span>
+            <span aria-hidden="true">›</span>
+          </button>
+        )}
 
-                
+        {availableMediaTypes.games && (
+          <button
+            type="button"
+            className={`library-dropdown-item ${
+              activeView === 'games' ? 'active' : ''
+            }`}
+            onClick={() => navigateTo('games')}
+          >
+            <span>Games</span>
+            <span aria-hidden="true">›</span>
+          </button>
+        )}
 
-{/* BOOKS */}
+        {availableMediaTypes.music && (
+          <button
+            type="button"
+            className={`library-dropdown-item ${
+              activeView === 'music' ? 'active' : ''
+            }`}
+            onClick={() => navigateTo('music')}
+          >
+            <span>Music</span>
+            <span aria-hidden="true">›</span>
+          </button>
+        )}
 
-<button
-  type="button"
-  className={`library-dropdown-item ${
-    activeView === 'books' ? 'active' : ''
-  }`}
-  onClick={() => navigateTo('books')}
->
-  <span>Books</span>
-  <span aria-hidden="true">›</span>
-</button>
+        {availableMediaTypes.books && (
+          <button
+            type="button"
+            className={`library-dropdown-item ${
+              activeView === 'books' ? 'active' : ''
+            }`}
+            onClick={() => navigateTo('books')}
+          >
+            <span>Books</span>
+            <span aria-hidden="true">›</span>
+          </button>
+        )}
 
-{/* MUSIC */}
+{!hasAnyMedia && (
+  <div className="library-dropdown-empty">
+            Your library is empty.
+            <button
+              type="button"
+              className="library-dropdown-add"
+              onClick={() => {
+                setIsLibraryMenuOpen(false)
+                onAddMedia()
+              }}
+            >
+              Add your first title →
+            </button>
+          </div>
+        )}
+      </>
+    )}
 
-<button
-  type="button"
-  className={`library-dropdown-item ${
-    activeView === 'music' ? 'active' : ''
-  }`}
-  onClick={() => navigateTo('music')}
->
-  <span>Music</span>
-  <span aria-hidden="true">›</span>
-</button>
+  </div>
+)}
 
-
-              </div>
-            )}
           </div>
 
           {/* FEED */}
