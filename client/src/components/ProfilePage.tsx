@@ -12,14 +12,17 @@ interface ProfilePageProps {
   collection: MediaItem[]
   onSignOut: () => void
   onSelectMedia: (item: MediaItem) => void
+  openEditorOnMount?: boolean
+  onEditorOpened?: () => void
 }
-
 function ProfilePage({
   userId,
   userEmail,
   collection,
   onSignOut,
   onSelectMedia,
+  openEditorOnMount = false,
+  onEditorOpened,
 }: ProfilePageProps) {
 
   /* =====================================================
@@ -40,11 +43,29 @@ const [isPublic, setIsPublic] = useState(false)
 
   const [editing, setEditing] = useState(false)
 
+  
+
   const [profileLoading, setProfileLoading] =
     useState(true)
 
   const [profileError, setProfileError] =
     useState('')
+
+  useEffect(() => {
+  if (
+    openEditorOnMount &&
+    !profileLoading &&
+    !profileError
+  ) {
+    setEditing(true)
+    onEditorOpened?.()
+  }
+}, [
+  openEditorOnMount,
+  profileLoading,
+  profileError,
+  onEditorOpened,
+])
 
     const [topMovieIds, setTopMovieIds] =
   useState<string[]>([])
