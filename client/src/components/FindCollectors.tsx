@@ -12,10 +12,12 @@ interface Collector {
 
 interface FindCollectorsProps {
   onSelectCollector: (userId: string) => void
+  onEditProfile: () => void
 }
 
 function FindCollectors({
   onSelectCollector,
+  onEditProfile,
 }: FindCollectorsProps) {
   const [search, setSearch] = useState('')
   const [collectors, setCollectors] =
