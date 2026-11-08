@@ -37,9 +37,9 @@ function WelcomePage({
             </h1>
 
             <p>
-              Give your movies and games a home.
-              Organize your collection, explore your
-              favorites, and keep track of the media
+              Give your movies, books, music, and games a home.
+              Organize your collection, review your
+              favorites, connect with friends, and keep track of the media
               that matters to you.
             </p>
 
@@ -70,7 +70,7 @@ function WelcomePage({
             <span>01</span>
             <h3>Build Your Archive</h3>
             <p>
-              Add movies and games with automatic
+              Add movies, music, books, and games with automatic
               metadata or enter your own details.
             </p>
           </div>
