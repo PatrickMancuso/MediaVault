@@ -190,6 +190,20 @@ function CollectionDashboard({
 }: CollectionDashboardProps) {
 
 
+  
+/* =====================================================
+   ACTIVE MEDIA CATEGORIES
+   ===================================================== */
+
+const activeCategoryCount = [
+  movies.length > 0,
+  games.length > 0,
+  music.length > 0,
+  books.length > 0,
+].filter(Boolean).length
+
+
+
 
 /* =====================================================
    DASHBOARD - ROTATING ARTWORK
@@ -407,59 +421,70 @@ useEffect(() => {
           ================================================= */}
 
 <section className="dashboard-section dashboard-archives-section">
-  <div className="dashboard-category-grid">
+
+<div
+  className={`dashboard-category-grid category-count-${activeCategoryCount}`}
+>
        
 {/* =================================================
     MOVIE ARCHIVE
     ================================================= */}
 
-<button
-  type="button"
-  className="dashboard-category-card dashboard-category-movies"
-  onClick={() => onViewChange('movies')}
->
-  <DiagonalArchiveArtwork
-    items={randomMovies}
-    type="movie"
-    isTransitioning={isTransitioning}
-  />
+{movies.length > 0 && (
+  <button
+    type="button"
+    className="dashboard-category-card dashboard-category-movies"
+    onClick={() => onViewChange('movies')}
+  >
+    <DiagonalArchiveArtwork
+      items={randomMovies}
+      type="movie"
+      isTransitioning={isTransitioning}
+    />
 
-  <div className="category-overlay" />
+    <div className="category-overlay" />
 
-  <div className="category-content">
-    <strong>Movies</strong>
-    <em>View Shelf →</em>
-  </div>
-</button>
+    <div className="category-content">
+      <strong>Movies</strong>
+      <em>View Shelf →</em>
+    </div>
+  </button>
+)}
+
 
 {/* =================================================
     GAME ARCHIVE
     ================================================= */}
 
-<button
-  type="button"
-  className="dashboard-category-card dashboard-category-games"
-  onClick={() => onViewChange('games')}
->
-  <DiagonalArchiveArtwork
-    items={randomGames}
-    type="game"
-    isTransitioning={isTransitioning}
-  />
 
-  <div className="category-overlay" />
+{games.length > 0 && (
+  <button
+    type="button"
+    className="dashboard-category-card dashboard-category-games"
+    onClick={() => onViewChange('games')}
+  >
+    <DiagonalArchiveArtwork
+      items={randomGames}
+      type="game"
+      isTransitioning={isTransitioning}
+    />
 
-  <div className="category-content">
-    <strong>Games</strong>
-    <em>View Shelf →</em>
-  </div>
-</button>
+    <div className="category-overlay" />
+
+    <div className="category-content">
+      <strong>Games</strong>
+      <em>View Shelf →</em>
+    </div>
+  </button>
+)}
+
 
 
 
 {/* =================================================
     MUSIC ARCHIVE
     ================================================= */}
+{music.length > 0 && (
 
 <button
   type="button"
@@ -496,10 +521,12 @@ key={`${item.id}-${index}`}
     <em>View Shelf →</em>
   </div>
 </button>
+  )}
 
 {/* =================================================
     BOOK ARCHIVE
     ================================================= */}
+{books.length > 0 && (
 
 <button
   type="button"
@@ -542,7 +569,7 @@ key={`${item.id}-${index}`}
   </div>
 </button>
 
-          
+       )}   
         </div>
       </section>
 
