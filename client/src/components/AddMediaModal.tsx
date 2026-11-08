@@ -1845,13 +1845,39 @@ if (saved) {
               !search.trim()
             }
           >
-            {isSearching
-              ? 'Searching...'
-              : 'Search'}
-          </button>
-        </div>
+         
+{isSearching
+  ? 'Searching...'
+  : 'Search'}
+</button>
+</div>
 
-        <div className="automatic-results">
+{/* =========================================
+    SERVER WAKE-UP NOTICE
+    ========================================= */}
+
+<div
+  className="add-media-search-notice"
+  role="note"
+>
+  <span
+    className="add-media-search-notice-icon"
+    aria-hidden="true"
+  >
+    ◷
+  </span>
+
+  <p>
+    <strong>First search may take a moment.</strong>
+    {' '}
+    If the server has been inactive, your first
+    search may take around 30 seconds while it
+    wakes up. Searches should be faster afterward.
+  </p>
+</div>
+
+<div className="automatic-results">
+
           {searchResults.map(
             (result) => (
               <button
