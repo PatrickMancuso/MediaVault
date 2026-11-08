@@ -20959,3 +20959,19 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 
 
+/* =====================================================
+   MOBILE - TIGHTER HEADER TO DASHBOARD SPACING
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  .room-content {
+    padding-top: 145px;
+  }
+
+  .room-content > .collection-dashboard {
+    margin-top: 0;
+  }
+
+}
+
