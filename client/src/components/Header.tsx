@@ -293,14 +293,17 @@ function Header({
 
           {/* ADD MEDIA */}
 
-          <button
-            type="button"
-            className="header-add-media"
-            onClick={onAddMedia}
-          >
-            <span className="header-add-icon">+</span>
-            <span>Add Media</span>
-          </button>
+         
+<button
+  type="button"
+  className="header-add-media"
+  onClick={onAddMedia}
+  aria-label="Add media"
+>
+  <span className="header-add-icon">+</span>
+  <span>Add Media</span>
+</button>
+
 
           {/* HAMBURGER DROPDOWN */}
 
