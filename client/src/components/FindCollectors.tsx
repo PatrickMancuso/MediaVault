@@ -26,6 +26,58 @@ function FindCollectors({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const [profileVisibility, setProfileVisibility] =
+  useState<'loading' | 'public' | 'private' | 'error'>(
+    'loading'
+  )
+
+  useEffect(() => {
+  let cancelled = false
+
+  const checkProfileVisibility = async () => {
+    setProfileVisibility('loading')
+
+    const { data: authData, error: authError } =
+      await supabase.auth.getUser()
+
+    if (cancelled) return
+
+    if (authError || !authData.user) {
+      setProfileVisibility('error')
+      return
+    }
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('is_public')
+      .eq('user_id', authData.user.id)
+      .maybeSingle()
+
+    if (cancelled) return
+
+    if (error) {
+      console.error(
+        'Unable to check profile visibility:',
+        error
+      )
+      setProfileVisibility('error')
+      return
+    }
+
+    setProfileVisibility(
+      data?.is_public === true
+        ? 'public'
+        : 'private'
+    )
+  }
+
+  void checkProfileVisibility()
+
+  return () => {
+    cancelled = true
+  }
+}, [])
+
   useEffect(() => {
     let cancelled = false
 
@@ -72,6 +124,32 @@ function FindCollectors({
           and explore their profiles.
         </p>
       </div>
+
+      {profileVisibility === 'private' && (
+  <div className="collectors-visibility-banner">
+    <div className="collectors-visibility-content">
+      <span className="collectors-visibility-label">
+        PROFILE VISIBILITY
+      </span>
+
+      <h2>Your profile is currently private</h2>
+
+      <p>
+        Other collectors cannot discover your profile.
+        Make your profile public to share your collection
+        and connect with the community.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      className="collectors-edit-profile-button"
+      onClick={onEditProfile}
+    >
+      Edit Profile →
+    </button>
+  </div>
+)}
 
       <input
         type="search"
