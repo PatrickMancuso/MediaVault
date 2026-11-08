@@ -20975,3 +20975,79 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 }
 
+
+
+
+/* =====================================================
+   MOBILE - MUSIC & BOOKS COLLAGE GRID FIX
+   Match grid tracks to actual artwork dimensions
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  /* =========================================
+     MUSIC - SQUARE ALBUM ARTWORK
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-category-music
+  .category-art-diagonal {
+    grid-template-columns: repeat(8, 110px);
+    grid-template-rows: repeat(4, 110px);
+
+    gap: 2px;
+  }
+
+  .collection-dashboard
+  .dashboard-category-music
+  .category-diagonal-item {
+    width: 110px;
+    height: 110px;
+  }
+
+  .collection-dashboard
+  .dashboard-category-music
+  .category-diagonal-item img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+
+  /* =========================================
+     BOOKS - PORTRAIT COVER ARTWORK
+     ========================================= */
+
+  .collection-dashboard
+  .dashboard-category-books
+  .category-art-diagonal {
+    grid-template-columns: repeat(8, 110px);
+    grid-template-rows: repeat(5, 155px);
+
+    gap: 2px;
+  }
+
+  .collection-dashboard
+  .dashboard-category-books
+  .category-diagonal-item {
+    width: 110px;
+    height: 155px;
+  }
+
+  .collection-dashboard
+  .dashboard-category-books
+  .category-diagonal-item img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+}
+
+
