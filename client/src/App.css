@@ -21306,3 +21306,38 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 }
 
+
+
+
+
+/* =====================================================
+   MEDIAVAULT - HEADER COLOR & MUSIC POSITION
+   ===================================================== */
+
+/* =========================================
+   1. HEADER - NEUTRAL CHARCOAL
+   ========================================= */
+
+.site-header {
+  background: rgba(18, 18, 21, 0.97);
+
+  border-bottom: 1px solid rgba(160, 125, 180, 0.18);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* =========================================
+   2. DESKTOP - MUSIC COLLAGE POSITION
+   ========================================= */
+
+@media (min-width: 761px) {
+
+  .collection-dashboard
+  .dashboard-category-music
+  .category-art-diagonal {
+    top: calc(50% - 80px);
+  }
+
+}
+
