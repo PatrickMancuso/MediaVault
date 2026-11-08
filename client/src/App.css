@@ -21441,3 +21441,50 @@ background: rgba(53, 38, 63, 0.75) !important;
 .library-dropdown-add:hover {
   color: #f0c7f6;
 }
+
+
+
+
+/* =====================================================
+   DESKTOP - FIXED BROWSE GRID POSITIONS
+   Prevent category cards from stretching
+   ===================================================== */
+
+@media (min-width: 761px) {
+
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    align-items: start;
+  }
+
+  /* Never stretch a card across both columns */
+
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-grid
+  > .dashboard-category-card {
+    grid-column: auto;
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Override the earlier three-category rule */
+
+  .collection-dashboard
+  .dashboard-category-grid.category-count-3
+  > .dashboard-category-card:last-child {
+    grid-column: auto;
+  }
+
+  /* One category also stays half-width */
+
+  .collection-dashboard
+  .dashboard-category-grid.category-count-1 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
