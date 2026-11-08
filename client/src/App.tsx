@@ -1856,14 +1856,17 @@ if (!user) {
 
 ) : activeView === 'profile' ? (
 
-
-  <ProfilePage
-    userId={user.id}
-    userEmail={user.email ?? ''}
-    collection={collection}
-    onSignOut={() => void handleSignOut()}
-    onSelectMedia={handleSelect}
-  />
+<ProfilePage
+  userId={user.id}
+  userEmail={user.email ?? ''}
+  collection={collection}
+  onSignOut={() => void handleSignOut()}
+  onSelectMedia={handleSelect}
+  openEditorOnMount={openProfileEditor}
+  onEditorOpened={() => {
+    setOpenProfileEditor(false)
+  }}
+/>
 
 ) : activeView === 'collection' ? (
 
