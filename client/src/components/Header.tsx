@@ -57,7 +57,8 @@ function Header({
   activeView === 'movies' ||
   activeView === 'games' ||
   activeView === 'books' ||
-  activeView === 'music'
+  activeView === 'music' ||
+  activeView === 'favorites'
 
   const hasAnyMedia = Object.values(
   availableMediaTypes
