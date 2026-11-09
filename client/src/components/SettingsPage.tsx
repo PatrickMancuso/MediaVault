@@ -1,31 +1,17 @@
 
-import { useState } from 'react'
-
 type DashboardLayout = 'standard' | 'compact'
 
-function SettingsPage() {
-  const [dashboardLayout, setDashboardLayout] =
-    useState<DashboardLayout>(() => {
-      const saved = localStorage.getItem(
-        'mediavault-dashboard-layout'
-      )
-
-      return saved === 'compact'
-        ? 'compact'
-        : 'standard'
-    })
-
-  const handleLayoutChange = (
+interface SettingsPageProps {
+  dashboardLayout: DashboardLayout
+  onDashboardLayoutChange: (
     layout: DashboardLayout
-  ) => {
-    setDashboardLayout(layout)
+  ) => void
+}
 
-    localStorage.setItem(
-      'mediavault-dashboard-layout',
-      layout
-    )
-  }
-
+function SettingsPage({
+  dashboardLayout,
+  onDashboardLayoutChange,
+}: SettingsPageProps) {
   return (
     <section className="settings-page">
 
@@ -48,6 +34,7 @@ function SettingsPage() {
       <div className="settings-section">
         <div className="settings-section-heading">
           <h2>Dashboard</h2>
+
           <p>
             Control how your collection appears
             on the home page.
@@ -66,6 +53,8 @@ function SettingsPage() {
 
           <div className="settings-layout-options">
 
+            {/* STANDARD LAYOUT */}
+
             <button
               type="button"
               className={`settings-layout-choice ${
@@ -74,7 +63,7 @@ function SettingsPage() {
                   : ''
               }`}
               onClick={() =>
-                handleLayoutChange('standard')
+                onDashboardLayoutChange('standard')
               }
               aria-pressed={
                 dashboardLayout === 'standard'
@@ -91,6 +80,8 @@ function SettingsPage() {
               <small>2 × 2 grid</small>
             </button>
 
+            {/* COMPACT LAYOUT */}
+
             <button
               type="button"
               className={`settings-layout-choice ${
@@ -99,7 +90,7 @@ function SettingsPage() {
                   : ''
               }`}
               onClick={() =>
-                handleLayoutChange('compact')
+                onDashboardLayoutChange('compact')
               }
               aria-pressed={
                 dashboardLayout === 'compact'
@@ -125,6 +116,7 @@ function SettingsPage() {
       <div className="settings-section">
         <div className="settings-section-heading">
           <h2>Appearance</h2>
+
           <p>
             Additional personalization options
             will be available here.
@@ -137,4 +129,3 @@ function SettingsPage() {
 }
 
 export default SettingsPage
-
