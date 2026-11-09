@@ -424,6 +424,10 @@ useEffect(() => {
 
 <section className="dashboard-section dashboard-archives-section">
 
+  <p style={{ color: '#ffffff', fontSize: '14px' }}>
+  Current dashboard layout: {dashboardLayout}
+</p>
+
 <div
   className={`dashboard-category-grid category-count-${activeCategoryCount} ${
     dashboardLayout === 'compact'
