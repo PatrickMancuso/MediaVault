@@ -22412,3 +22412,30 @@ background: rgba(53, 38, 63, 0.75) !important;
     !important;
 }
 
+
+
+
+/* =========================================
+   DASHBOARD - CONSISTENT SECTION SPACING
+   ========================================= */
+
+.collection-dashboard {
+  row-gap: 16px;
+}
+
+/* Remove older section-specific spacing adjustments */
+
+.collection-dashboard
+.dashboard-archives-section:has(
+  .dashboard-category-grid-compact
+) {
+  margin-bottom: 0;
+}
+
+/* Consistent spacing between dashboard sections */
+
+.collection-dashboard > .dashboard-section {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
