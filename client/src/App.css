@@ -21956,3 +21956,49 @@ background: rgba(53, 38, 63, 0.75) !important;
   margin: 7px 12px;
   background: rgba(196, 150, 215, 0.2);
 }
+
+
+
+
+
+/* =========================================
+   DASHBOARD - COMPACT BROWSE LAYOUT
+   ========================================= */
+
+.dashboard-category-grid.dashboard-category-grid-compact {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+/* Preserve artwork and card interactions */
+
+.dashboard-category-grid-compact .dashboard-category-card {
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Slightly smaller category headings */
+
+.dashboard-category-grid-compact
+.category-content strong {
+  font-size: clamp(17px, 1.6vw, 26px);
+}
+
+/* Tablet: return to two columns */
+
+@media (max-width: 1000px) {
+  .dashboard-category-grid.dashboard-category-grid-compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile: stack cards */
+
+@media (max-width: 600px) {
+  .dashboard-category-grid.dashboard-category-grid-compact {
+    grid-template-columns: 1fr;
+  }
+}
+
