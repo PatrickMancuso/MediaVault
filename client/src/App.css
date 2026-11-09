@@ -22359,3 +22359,56 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 
 
+
+
+
+
+/* =========================================
+   COMPACT DASHBOARD - BLACK BORDERS
+   ========================================= */
+
+/* Black dividers between categories */
+
+.collection-dashboard
+.dashboard-category-grid-compact
+> .dashboard-category-card:not(:last-child) {
+  border-right: 3px solid #000 !important;
+}
+
+/* Black outer border */
+
+.collection-dashboard
+.dashboard-category-grid.dashboard-category-grid-compact {
+  border: 2px solid #000 !important;
+}
+
+/* =========================================
+   COMPACT DASHBOARD - HOVER FIX
+   ========================================= */
+
+/* Prevent cards from moving and clipping */
+
+.collection-dashboard
+.dashboard-category-grid-compact
+> .dashboard-category-card {
+  transform: none !important;
+  box-shadow: none !important;
+
+  transition:
+    filter 200ms ease,
+    box-shadow 200ms ease !important;
+}
+
+/* Subtle highlight on hover */
+
+.collection-dashboard
+.dashboard-category-grid-compact
+> .dashboard-category-card:hover {
+  transform: none !important;
+  filter: brightness(1.12);
+
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.65)
+    !important;
+}
+
