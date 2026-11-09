@@ -22269,8 +22269,8 @@ background: rgba(53, 38, 63, 0.75) !important;
     grid-template-columns:
       repeat(4, minmax(0, 1fr)) !important;
 
-    grid-template-rows: 300px !important;
-    grid-auto-rows: 300px !important;
+    grid-template-rows: 420px !important;
+    grid-auto-rows: 420px !important;
 
     gap: 0 !important;
 
@@ -22291,7 +22291,7 @@ background: rgba(53, 38, 63, 0.75) !important;
     width: 100% !important;
     min-width: 0 !important;
 
-    height: 300px !important;
+    height: 420px !important;
     min-height: 0 !important;
 
     margin: 0 !important;
