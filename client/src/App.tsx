@@ -977,6 +977,18 @@ const clearLibraryFilters = () => {
      HANDLERS
      ========================================================= */
 
+
+  const handleDashboardLayoutChange = (
+  layout: 'standard' | 'compact'
+) => {
+  setDashboardLayout(layout)
+
+  localStorage.setItem(
+    'mediavault-dashboard-layout',
+    layout
+  )
+}
+
   const handleSelect = (
     item: MediaItem,
   ) => {
@@ -1882,11 +1894,11 @@ if (!user) {
 
 ) : activeView === 'settings' ? (
 
-<SettingsPage
-  dashboardLayout={dashboardLayout}
-  onDashboardLayoutChange={handleDashboardLayoutChange}
-/>
-  
+  <SettingsPage
+    dashboardLayout={dashboardLayout}
+    onDashboardLayoutChange={handleDashboardLayoutChange}
+  />
+
 ) : activeView === 'feed' ? (
 
   <FeedPage
