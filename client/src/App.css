@@ -21381,11 +21381,7 @@ background: rgba(53, 38, 63, 0.75) !important;
 
   /* Four categories retain the current layout */
 
-  .collection-dashboard
-  .dashboard-category-grid.category-count-4 {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
+
 
 }
 
@@ -21450,16 +21446,7 @@ background: rgba(53, 38, 63, 0.75) !important;
    Prevent category cards from stretching
    ===================================================== */
 
-@media (min-width: 761px) {
 
-  .collection-dashboard
-  .dashboard-archives-section
-  .dashboard-category-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    align-items: start;
-  }
 
   /* Never stretch a card across both columns */
 
@@ -22262,4 +22249,71 @@ background: rgba(53, 38, 63, 0.75) !important;
   }
 
 }
+
+
+
+
+
+/* =========================================
+   DASHBOARD - COMPACT LAYOUT
+   Overrides fixed desktop grid rules
+   ========================================= */
+
+@media (min-width: 1001px) {
+
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-grid.category-count-4.dashboard-category-grid-compact {
+    display: grid !important;
+
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr)) !important;
+
+    grid-template-rows: 300px !important;
+    grid-auto-rows: 300px !important;
+
+    gap: 0 !important;
+
+    width: 100%;
+    overflow: hidden;
+
+    border: 1px solid rgba(194, 145, 212, 0.3);
+    border-radius: 9px;
+  }
+
+  .collection-dashboard
+  .dashboard-archives-section
+  .dashboard-category-grid-compact
+  > .dashboard-category-card {
+    grid-column: auto !important;
+    grid-row: auto !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    height: 300px !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+
+    border: none !important;
+    border-radius: 0 !important;
+
+    overflow: hidden;
+  }
+
+  .collection-dashboard
+  .dashboard-category-grid-compact
+  > .dashboard-category-card:not(:last-child) {
+    border-right:
+      1px solid rgba(218, 178, 230, 0.28) !important;
+  }
+
+  .collection-dashboard
+  .dashboard-category-grid-compact
+  .category-content strong {
+    font-size: clamp(17px, 1.5vw, 25px);
+  }
+}
+
 
