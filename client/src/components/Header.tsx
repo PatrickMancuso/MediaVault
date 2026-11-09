@@ -275,6 +275,8 @@ function Header({
           </button>
         )}
 
+<div className="library-dropdown-divider" />
+        
         {/* FAVORITES */}
 
 <button
