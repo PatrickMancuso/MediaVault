@@ -21946,3 +21946,13 @@ background: rgba(53, 38, 63, 0.75) !important;
     text-align: center;
   }
 }
+
+
+
+/* Library dropdown separator */
+
+.library-dropdown-divider {
+  height: 1px;
+  margin: 7px 12px;
+  background: rgba(196, 150, 215, 0.2);
+}
