@@ -432,17 +432,23 @@ function App() {
   const [activeView, setActiveView] =
     useState<View>('collection')
 
+  /* =========================================
+     DASHBOARD PERSONALIZATION
+     ========================================= */
+
   const [dashboardLayout, setDashboardLayout] =
-  useState<'standard' | 'compact'>(() => {
-    return localStorage.getItem(
-      'mediavault-dashboard-layout'
-    ) === 'compact'
-      ? 'compact'
-      : 'standard'
-  })
+    useState<'standard' | 'compact'>(() => {
+      const saved = localStorage.getItem(
+        'mediavault-dashboard-layout'
+      )
+
+      return saved === 'compact'
+        ? 'compact'
+        : 'standard'
+    })
 
   const [openProfileEditor, setOpenProfileEditor] =
-  useState(false)
+    useState(false)
 
 const [selectedCollectorId, setSelectedCollectorId] =
   useState<string | null>(null)
@@ -1876,8 +1882,11 @@ if (!user) {
 
 ) : activeView === 'settings' ? (
 
-  <SettingsPage />
-
+<SettingsPage
+  dashboardLayout={dashboardLayout}
+  onDashboardLayoutChange={handleDashboardLayoutChange}
+/>
+  
 ) : activeView === 'feed' ? (
 
   <FeedPage
