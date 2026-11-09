@@ -274,6 +274,19 @@ function Header({
           </button>
         )}
 
+        {/* FAVORITES */}
+
+<button
+  type="button"
+  className={`library-dropdown-item ${
+    activeView === 'favorites' ? 'active' : ''
+  }`}
+  onClick={() => navigateTo('favorites')}
+>
+  <span>Favorites</span>
+  <span aria-hidden="true">›</span>
+</button>
+
 {!hasAnyMedia && (
   <div className="library-dropdown-empty">
             Your library is empty.
@@ -417,18 +430,6 @@ function Header({
                   onClick={() => navigateTo('collectors')}
                 >
                   <span>Find Collectors</span>
-                  <span aria-hidden="true">›</span>
-                </button>
-
-                {/* FAVORITES */}
-
-                <button
-                  type="button"
-                  className="account-menu-item"
-                  role="menuitem"
-                  onClick={() => navigateTo('favorites')}
-                >
-                  <span>Favorites</span>
                   <span aria-hidden="true">›</span>
                 </button>
 
