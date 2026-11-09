@@ -22439,3 +22439,24 @@ background: rgba(53, 38, 63, 0.75) !important;
   margin-bottom: 0;
 }
 
+
+
+
+/* =========================================
+   DASHBOARD - RECENT REVIEWS / FAVORITES GAP
+   ========================================= */
+
+/* Pull Favorites closer to Recent Reviews */
+
+.collection-dashboard
+.dashboard-recent-reviews {
+  margin-bottom: -24px !important;
+}
+
+/* Prevent extra spacing above Favorites */
+
+.collection-dashboard
+.dashboard-recent-reviews + .dashboard-section {
+  margin-top: 0 !important;
+}
+
