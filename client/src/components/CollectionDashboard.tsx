@@ -40,6 +40,7 @@ interface CollectionDashboardProps {
   books: MediaItem[]
   music: MediaItem[]
   favorites: MediaItem[]
+  dashboardLayout: 'standard' | 'compact'
   onSelect: (media: MediaItem) => void
   onViewChange: (
     view: 'movies' | 'games' | 'books' | 'music' | 'favorites'
@@ -187,6 +188,7 @@ function CollectionDashboard({
   favorites,
   onSelect,
   onViewChange,
+  dashboardLayout,
 }: CollectionDashboardProps) {
 
 
@@ -423,7 +425,11 @@ useEffect(() => {
 <section className="dashboard-section dashboard-archives-section">
 
 <div
-  className={`dashboard-category-grid category-count-${activeCategoryCount}`}
+  className={`dashboard-category-grid category-count-${activeCategoryCount} ${
+    dashboardLayout === 'compact'
+      ? 'dashboard-category-grid-compact'
+      : ''
+  }`}
 >
        
 {/* =================================================
