@@ -22354,7 +22354,7 @@ background: rgba(53, 38, 63, 0.75) !important;
 .dashboard-archives-section:has(
   .dashboard-category-grid-compact
 ) {
-  margin-bottom: -26px;
+  margin-bottom: -12px;
 }
 
 
