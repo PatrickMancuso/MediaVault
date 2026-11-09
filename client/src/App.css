@@ -22317,3 +22317,45 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+/* =========================================
+   COMPACT DASHBOARD - CATEGORY DIVIDERS
+   ========================================= */
+
+.collection-dashboard
+.dashboard-category-grid-compact
+> .dashboard-category-card:not(:last-child) {
+  border-right: 2px solid rgba(195, 160, 210, 0.48) !important;
+}
+
+/* Slight separation without a heavy border */
+
+.collection-dashboard
+.dashboard-category-grid-compact
+> .dashboard-category-card {
+  box-shadow: none !important;
+}
+
+
+.collection-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 38px;
+}
+
+
+
+/* =========================================
+   COMPACT DASHBOARD - SECTION SPACING
+   ========================================= */
+
+.collection-dashboard
+.dashboard-archives-section:has(
+  .dashboard-category-grid-compact
+) {
+  margin-bottom: -18px;
+}
+
+
+
