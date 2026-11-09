@@ -22372,7 +22372,7 @@ background: rgba(53, 38, 63, 0.75) !important;
 .collection-dashboard
 .dashboard-category-grid-compact
 > .dashboard-category-card:not(:last-child) {
-  border-right: 3px solid #000 !important;
+  border-right: 5px solid #000 !important;
 }
 
 /* Black outer border */
