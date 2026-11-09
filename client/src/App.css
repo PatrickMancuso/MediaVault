@@ -22306,7 +22306,7 @@ background: rgba(53, 38, 63, 0.75) !important;
   .dashboard-category-grid-compact
   > .dashboard-category-card:not(:last-child) {
     border-right:
-      1px solid rgba(218, 178, 230, 0.28) !important;
+      2px solid rgba(218, 178, 230, 0.28) !important;
   }
 
   .collection-dashboard
@@ -22326,7 +22326,7 @@ background: rgba(53, 38, 63, 0.75) !important;
 .collection-dashboard
 .dashboard-category-grid-compact
 > .dashboard-category-card:not(:last-child) {
-  border-right: 2px solid rgba(0, 0, 0, 0.48) !important;
+  border-right: 3px solid rgba(0, 0, 0, 0.48) !important;
 }
 
 /* Slight separation without a heavy border */
@@ -22354,7 +22354,7 @@ background: rgba(53, 38, 63, 0.75) !important;
 .dashboard-archives-section:has(
   .dashboard-category-grid-compact
 ) {
-  margin-bottom: -18px;
+  margin-bottom: -22px;
 }
 
 
