@@ -22277,7 +22277,7 @@ background: rgba(53, 38, 63, 0.75) !important;
     width: 100%;
     overflow: hidden;
 
-    border: 1px solid rgba(194, 145, 212, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 9px;
   }
 
@@ -22326,7 +22326,7 @@ background: rgba(53, 38, 63, 0.75) !important;
 .collection-dashboard
 .dashboard-category-grid-compact
 > .dashboard-category-card:not(:last-child) {
-  border-right: 2px solid rgba(195, 160, 210, 0.48) !important;
+  border-right: 2px solid rgba(0, 0, 0, 0.48) !important;
 }
 
 /* Slight separation without a heavy border */
