@@ -62,13 +62,16 @@ function RecentReviews({
               <div className="recent-review-content">
                 <strong>{item.title}</strong>
 
-                <small>
-                  {item.type === 'movie'
-                    ? 'Movie'
-                    : 'Game'}
-                  {' · '}
-                  {item.year}
-                </small>
+             <small>
+  {{
+    movie: 'Movie',
+    game: 'Game',
+    book: 'Book',
+    music: 'Music',
+  }[item.type]}
+  {' · '}
+  {item.year}
+</small>
 
                 <div className="recent-review-stars">
                   {item.personalRating != null ? (
