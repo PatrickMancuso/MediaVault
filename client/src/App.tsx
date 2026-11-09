@@ -432,6 +432,15 @@ function App() {
   const [activeView, setActiveView] =
     useState<View>('collection')
 
+  const [dashboardLayout, setDashboardLayout] =
+  useState<'standard' | 'compact'>(() => {
+    return localStorage.getItem(
+      'mediavault-dashboard-layout'
+    ) === 'compact'
+      ? 'compact'
+      : 'standard'
+  })
+
   const [openProfileEditor, setOpenProfileEditor] =
   useState(false)
 
@@ -520,6 +529,23 @@ const [
     authListener.subscription.unsubscribe()
   }
 }, [])
+
+
+  useEffect(() => {
+  const syncDashboardLayout = () => {
+    const saved = localStorage.getItem(
+      'mediavault-dashboard-layout'
+    )
+
+    setDashboardLayout(
+      saved === 'compact' ? 'compact' : 'standard'
+    )
+  }
+
+  if (activeView === 'collection') {
+    syncDashboardLayout()
+  }
+}, [activeView])
 
 useEffect(() => {
   let cancelled = false
@@ -1729,6 +1755,7 @@ const renderCollectionDashboard = () => (
     favorites={favorites}
     onSelect={handleSelect}
     onViewChange={setActiveView}
+    dashboardLayout={dashboardLayout}
   />
 )
 
