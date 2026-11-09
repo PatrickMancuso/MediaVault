@@ -22,6 +22,7 @@ import PublicProfilePage from './components/PublicProfilePage'
 import FeedPage from './components/FeedPage'
 import InboxPage from './components/InboxPage'
 import SettingsPage from './components/SettingsPage'
+import MediaLibrary from './components/MediaLibrary'
 
 import type { MediaItem } from './data/sampleMedia'
 import './App.css'
@@ -1936,10 +1937,8 @@ if (!user) {
   ) : (
     renderCollectionDashboard()
   )
-) : (
+) : activeView === 'favorites' ? (
   <div className="library">
-    {renderLibrarySearch()}
-
     <div className="bookcase">
       <div className="bookcase-top" />
 
@@ -1954,6 +1953,20 @@ if (!user) {
       <div className="bookcase-base" />
     </div>
   </div>
+) : (
+  <MediaLibrary
+    title={{
+      movies: 'Movie Library',
+      games: 'Game Library',
+      books: 'Book Library',
+      music: 'Music Library',
+    }[
+      activeView as
+        'movies' | 'games' | 'books' | 'music'
+    ]}
+    items={libraryItems}
+    onSelect={handleSelect}
+  />
 )}
 
       </main>
