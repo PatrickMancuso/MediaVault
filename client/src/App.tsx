@@ -1449,6 +1449,7 @@ if (!user) {
   </div>
 ) : (
   <MediaLibrary
+      key={activeView}
     title={{
       movies: 'Movie Library',
       games: 'Game Library',
