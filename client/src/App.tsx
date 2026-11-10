@@ -433,6 +433,23 @@ function App() {
   const [activeView, setActiveView] =
     useState<View>('collection')
 
+  
+/* =========================================
+   RESET SCROLL WHEN CHANGING PAGES
+   ========================================= */
+
+useEffect(() => {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'instant',
+  })
+
+  document.documentElement.scrollTop = 0
+  document.body.scrollTop = 0
+}, [activeView])
+
+
   /* =========================================
      DASHBOARD PERSONALIZATION
      ========================================= */
