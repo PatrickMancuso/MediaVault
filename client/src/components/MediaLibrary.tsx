@@ -6,7 +6,6 @@ import {
   useState,
 } from 'react'
 
-import MediaSpine from './MediaSpine'
 import type { MediaItem } from '../data/sampleMedia'
 
 
@@ -61,7 +60,7 @@ function MediaLibrary({
   const [sortMode, setSortMode] =
     useState<SortMode>('title-asc')
 
-  type DisplayMode = 'cover' | 'spine' | 'list'
+  type DisplayMode = 'cover' | 'list'
 
 const [displayMode, setDisplayMode] =
   useState<DisplayMode>('cover')
@@ -389,120 +388,133 @@ return (
 
     {/* STICKY SEARCH AND FILTER TOOLBAR */}
 
-    <div
-      className="media-library-toolbar"
-      ref={toolbarRef}
+   
+{/* COMPACT STICKY TOOLBAR */}
+
+<div
+  className="media-library-toolbar"
+  ref={toolbarRef}
+>
+  <div className="media-library-toolbar-line">
+
+    {/* SEARCH */}
+
+    <input
+      type="search"
+      className="media-library-search"
+      placeholder="Search collection..."
+      value={search}
+      onChange={(event) =>
+        setSearch(event.target.value)
+      }
+      aria-label="Search library"
+    />
+
+    {/* MULTI-SELECT FILTERS */}
+
+    {renderFilter(
+      'genre',
+      'Genre',
+      genreOptions,
+      genres,
+      setGenres
+    )}
+
+    {renderFilter(
+      'format',
+      'Format',
+      formatOptions,
+      formats,
+      setFormats
+    )}
+
+    {renderFilter(
+      'decade',
+      'Decade',
+      decadeOptions,
+      decades,
+      setDecades
+    )}
+
+    {/* SORT */}
+
+    <select
+      className="media-library-sort"
+      value={sortMode}
+      onChange={(event) =>
+        setSortMode(
+          event.target.value as SortMode
+        )
+      }
+      aria-label="Sort library"
     >
-      <div className="media-library-search-row">
-        <input
-          type="search"
-          className="media-library-search"
-          placeholder="Search titles, years, genres, or formats..."
-          value={search}
-          onChange={(event) =>
-            setSearch(event.target.value)
-          }
-          aria-label="Search library"
-        />
+      <option value="title-asc">Title A-Z</option>
+      <option value="title-desc">Title Z-A</option>
+      <option value="year-new">Newest First</option>
+      <option value="year-old">Oldest First</option>
+    </select>
 
-        <span className="media-library-count">
-          {filteredItems.length} / {items.length}
-        </span>
-      </div>
+    {/* COVER / LIST TOGGLE */}
 
-      <div className="media-library-filter-row">
-        {renderFilter(
-          'genre',
-          'Genre',
-          genreOptions,
-          genres,
-          setGenres
-        )}
+    <div
+      className="media-library-view-toggle"
+      role="group"
+      aria-label="Library display mode"
+    >
+      <button
+        type="button"
+        className={
+          displayMode === 'cover'
+            ? 'active'
+            : ''
+        }
+        aria-pressed={displayMode === 'cover'}
+        onClick={() =>
+          setDisplayMode('cover')
+        }
+      >
+        Covers
+      </button>
 
-        {renderFilter(
-          'format',
-          'Format',
-          formatOptions,
-          formats,
-          setFormats
-        )}
-
-        {renderFilter(
-          'decade',
-          'Decade',
-          decadeOptions,
-          decades,
-          setDecades
-        )}
-
-        <select
-          className="media-library-sort"
-          value={sortMode}
-          onChange={(event) =>
-            setSortMode(
-              event.target.value as SortMode
-            )
-          }
-          aria-label="Sort library"
-        >
-          <option value="title-asc">Title A-Z</option>
-          <option value="title-desc">Title Z-A</option>
-          <option value="year-new">Newest First</option>
-          <option value="year-old">Oldest First</option>
-        </select>
-
-        <button
-          type="button"
-          className="media-library-clear"
-          onClick={clearFilters}
-          disabled={
-            !search &&
-            activeFilterCount === 0 &&
-            sortMode === 'title-asc'
-          }
-        >
-          Clear
-        </button>
-      </div>
-
-      {/* DISPLAY MODE TOGGLE */}
-
-      <div className="media-library-view-row">
-        <div
-          className="media-library-view-toggle"
-          role="group"
-          aria-label="Library display mode"
-        >
-          {(
-            [
-              ['cover', 'Covers'],
-              ['spine', 'Spines'],
-              ['list', 'List'],
-            ] as const
-          ).map(([mode, label]) => (
-            <button
-              key={mode}
-              type="button"
-              className={
-                displayMode === mode
-                  ? 'active'
-                  : ''
-              }
-              aria-pressed={displayMode === mode}
-              onClick={() =>
-                setDisplayMode(mode)
-              }
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-
-        <span className="media-library-results">
-          {filteredItems.length} titles
-        </span>
-      </div>
+      <button
+        type="button"
+        className={
+          displayMode === 'list'
+            ? 'active'
+            : ''
+        }
+        aria-pressed={displayMode === 'list'}
+        onClick={() =>
+          setDisplayMode('list')
+        }
+      >
+        List
+      </button>
     </div>
+
+    {/* CLEAR FILTERS */}
+
+    <button
+      type="button"
+      className="media-library-clear"
+      onClick={clearFilters}
+      disabled={
+        !search &&
+        activeFilterCount === 0 &&
+        sortMode === 'title-asc'
+      }
+    >
+      Clear
+    </button>
+
+    {/* DYNAMIC COUNT */}
+
+    <span className="media-library-count">
+      {filteredItems.length}/{items.length}
+    </span>
+
+  </div>
+</div>
 
     {/* COVER VIEW */}
 
@@ -545,25 +557,6 @@ return (
             </button>
           )
         })}
-      </div>
-    )}
-
-    {/* SPINE VIEW */}
-
-    {displayMode === 'spine' && (
-      <div className="media-library-spine-grid">
-        {filteredItems.map((item) => (
-          <div
-            key={item.id}
-            className="media-library-spine-item"
-          >
-            <MediaSpine
-              media={item}
-              onClick={onSelect}
-              displayMode="spine"
-            />
-          </div>
-        ))}
       </div>
     )}
 
