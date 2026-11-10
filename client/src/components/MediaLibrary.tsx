@@ -1,5 +1,5 @@
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import type { MediaItem } from '../data/sampleMedia'
 
 interface MediaLibraryProps {
@@ -8,50 +8,285 @@ interface MediaLibraryProps {
   onSelect: (media: MediaItem) => void
 }
 
+type SortMode =
+  | 'title-asc'
+  | 'title-desc'
+  | 'year-new'
+  | 'year-old'
+
+type FilterName = 'genre' | 'format' | 'decade'
+
+const formatLabels: Record<string, string> = {
+  vhs: 'VHS',
+  dvd: 'DVD',
+  bluray: 'Blu-ray',
+  'blu-ray': 'Blu-ray',
+  laserdisc: 'LaserDisc',
+  vinyl: 'Vinyl',
+  cd: 'CD',
+  cassette: 'Cassette',
+  hardcover: 'Hardcover',
+  paperback: 'Paperback',
+  ps1: 'PS1',
+  ps2: 'PS2',
+  ps3: 'PS3',
+  ps4: 'PS4',
+  ps5: 'PS5',
+  nes: 'NES',
+  snes: 'SNES',
+  n64: 'Nintendo 64',
+  switch: 'Nintendo Switch',
+  xbox360: 'Xbox 360',
+}
+
+const displayFormat = (format: string) =>
+  formatLabels[format.toLowerCase()] ?? format
+
 function MediaLibrary({
   title,
   items,
   onSelect,
 }: MediaLibraryProps) {
+  const [search, setSearch] = useState('')
+  const [genres, setGenres] = useState<string[]>([])
+  const [formats, setFormats] = useState<string[]>([])
+  const [decades, setDecades] = useState<string[]>([])
+  const [sortMode, setSortMode] =
+    useState<SortMode>('title-asc')
+
+  const mediaType = items[0]?.type
+
+  const isMusic = mediaType === 'music'
 
   /* =========================================
-     SORT COLLECTION ALPHABETICALLY
+     AVAILABLE FILTER OPTIONS
      ========================================= */
 
-  const sortedItems = useMemo(() => {
-    return [...items].sort((a, b) =>
-      a.title.localeCompare(b.title)
+  const genreOptions = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          items.flatMap((item) =>
+            item.genres?.length
+              ? item.genres
+              : item.genre
+                ? [item.genre]
+                : []
+          ).filter(Boolean)
+        )
+      ).sort((a, b) => a.localeCompare(b)),
+    [items]
+  )
+
+  const formatOptions = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          items.flatMap((item) =>
+            item.formats?.length
+              ? item.formats
+              : item.format
+                ? [item.format]
+                : []
+          ).filter(Boolean)
+        )
+      ).sort((a, b) => a.localeCompare(b)),
+    [items]
+  )
+
+  const decadeOptions = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          items
+            .filter((item) =>
+              Number.isFinite(item.year) &&
+              item.year > 0
+            )
+            .map((item) =>
+              String(
+                Math.floor(item.year / 10) * 10
+              )
+            )
+        )
+      ).sort((a, b) => Number(b) - Number(a)),
+    [items]
+  )
+
+  /* =========================================
+     MULTI-SELECT HANDLER
+     ========================================= */
+
+  const toggleFilter = (
+    value: string,
+    selected: string[],
+    setter: (values: string[]) => void
+  ) => {
+    setter(
+      selected.includes(value)
+        ? selected.filter((entry) => entry !== value)
+        : [...selected, value]
     )
-  }, [items])
-
-  /* =========================================
-     FORMAT DISPLAY LABELS
-     ========================================= */
-
-  const formatLabels: Record<string, string> = {
-    vhs: 'VHS',
-    dvd: 'DVD',
-    bluray: 'Blu-ray',
-    laserdisc: 'LaserDisc',
-    vinyl: 'Vinyl',
-    cd: 'CD',
-    cassette: 'Cassette',
-    hardcover: 'Hardcover',
-    paperback: 'Paperback',
   }
 
-  const getFormatLabel = (format: string) =>
-    formatLabels[format.toLowerCase()] ?? format
+  const clearFilters = () => {
+    setSearch('')
+    setGenres([])
+    setFormats([])
+    setDecades([])
+    setSortMode('title-asc')
+  }
+
+  const activeFilterCount =
+    genres.length + formats.length + decades.length
 
   /* =========================================
-     LIBRARY
+     FILTER AND SORT COLLECTION
+     ========================================= */
+
+  const filteredItems = useMemo(() => {
+    const query = search.trim().toLowerCase()
+
+    return items
+      .filter((item) => {
+        const itemGenres =
+          item.genres?.length
+            ? item.genres
+            : item.genre
+              ? [item.genre]
+              : []
+
+        const itemFormats =
+          item.formats?.length
+            ? item.formats
+            : item.format
+              ? [item.format]
+              : []
+
+        const searchable = [
+          item.title,
+          String(item.year),
+          ...itemGenres,
+          ...itemFormats,
+        ].join(' ').toLowerCase()
+
+        const matchesSearch =
+          !query || searchable.includes(query)
+
+        const matchesGenre =
+          genres.length === 0 ||
+          genres.some((genre) =>
+            itemGenres.includes(genre)
+          )
+
+        const matchesFormat =
+          formats.length === 0 ||
+          formats.some((format) =>
+            itemFormats.includes(format)
+          )
+
+        const decade =
+          String(Math.floor(item.year / 10) * 10)
+
+        const matchesDecade =
+          decades.length === 0 ||
+          decades.includes(decade)
+
+        return (
+          matchesSearch &&
+          matchesGenre &&
+          matchesFormat &&
+          matchesDecade
+        )
+      })
+      .sort((a, b) => {
+        switch (sortMode) {
+          case 'title-desc':
+            return b.title.localeCompare(a.title)
+
+          case 'year-new':
+            return b.year - a.year ||
+              a.title.localeCompare(b.title)
+
+          case 'year-old':
+            return a.year - b.year ||
+              a.title.localeCompare(b.title)
+
+          default:
+            return a.title.localeCompare(b.title)
+        }
+      })
+  }, [items, search, genres, formats, decades, sortMode])
+
+  /* =========================================
+     FILTER DROPDOWN
+     ========================================= */
+
+  const renderFilter = (
+    name: FilterName,
+    label: string,
+    options: string[],
+    selected: string[],
+    setter: (values: string[]) => void
+  ) => (
+    <details
+      className="media-library-filter"
+      key={name}
+    >
+      <summary>
+        <span>
+          {label}
+          {selected.length > 0 &&
+            ` (${selected.length})`}
+        </span>
+        <span aria-hidden="true">⌄</span>
+      </summary>
+
+      <div className="media-library-filter-menu">
+        {options.length === 0 ? (
+          <p>No options available.</p>
+        ) : (
+          options.map((option) => (
+            <label
+              key={option}
+              className="media-library-filter-option"
+            >
+              <input
+                type="checkbox"
+                checked={selected.includes(option)}
+                onChange={() =>
+                  toggleFilter(
+                    option,
+                    selected,
+                    setter
+                  )
+                }
+              />
+
+              <span>
+                {name === 'decade'
+                  ? `${option}s`
+                  : name === 'format'
+                    ? displayFormat(option)
+                    : option}
+              </span>
+            </label>
+          ))
+        )}
+      </div>
+    </details>
+  )
+
+  /* =========================================
+     LIBRARY DISPLAY
      ========================================= */
 
   return (
-    <section className="media-library">
-
-      {/* HEADER */}
-
+    <section
+      className={`media-library ${
+        isMusic ? 'media-library-music' : ''
+      }`}
+    >
       <div className="media-library-header">
         <div>
           <h1>{title}</h1>
@@ -59,14 +294,84 @@ function MediaLibrary({
         </div>
 
         <span className="media-library-count">
-          {sortedItems.length} titles
+          {filteredItems.length} of {items.length} titles
         </span>
+      </div>
+
+      {/* SEARCH AND FILTERS */}
+
+      <div className="media-library-toolbar">
+        <input
+          type="search"
+          className="media-library-search"
+          placeholder="Search titles, years, genres, or formats..."
+          value={search}
+          onChange={(event) =>
+            setSearch(event.target.value)
+          }
+          aria-label="Search library"
+        />
+
+        <div className="media-library-filter-row">
+          {renderFilter(
+            'genre',
+            'Genre',
+            genreOptions,
+            genres,
+            setGenres
+          )}
+
+          {renderFilter(
+            'format',
+            'Format',
+            formatOptions,
+            formats,
+            setFormats
+          )}
+
+          {renderFilter(
+            'decade',
+            'Decade',
+            decadeOptions,
+            decades,
+            setDecades
+          )}
+
+          <select
+            className="media-library-sort"
+            value={sortMode}
+            onChange={(event) =>
+              setSortMode(
+                event.target.value as SortMode
+              )
+            }
+            aria-label="Sort library"
+          >
+            <option value="title-asc">Title A–Z</option>
+            <option value="title-desc">Title Z–A</option>
+            <option value="year-new">Newest First</option>
+            <option value="year-old">Oldest First</option>
+          </select>
+
+          <button
+            type="button"
+            className="media-library-clear"
+            onClick={clearFilters}
+            disabled={
+              !search &&
+              activeFilterCount === 0 &&
+              sortMode === 'title-asc'
+            }
+          >
+            Clear Filters
+          </button>
+        </div>
       </div>
 
       {/* COLLECTION GRID */}
 
       <div className="media-library-grid">
-        {sortedItems.map((item) => {
+        {filteredItems.map((item) => {
           const artwork =
             item.coverImage ?? item.spineImage
 
@@ -90,12 +395,14 @@ function MediaLibrary({
               </div>
 
               <div className="media-library-card-info">
-                <strong>{item.title}</strong>
+                <strong title={item.title}>
+                  {item.title}
+                </strong>
 
                 <span>
                   {item.year}
                   {' · '}
-                  {getFormatLabel(item.format)}
+                  {displayFormat(item.format)}
                 </span>
               </div>
             </button>
@@ -103,14 +410,18 @@ function MediaLibrary({
         })}
       </div>
 
-      {/* EMPTY COLLECTION */}
-
-      {sortedItems.length === 0 && (
+      {filteredItems.length === 0 && (
         <div className="media-library-empty">
-          No titles in this collection yet.
+          <h3>No matching titles found</h3>
+          <p>Try adjusting your search or filters.</p>
+          <button
+            type="button"
+            onClick={clearFilters}
+          >
+            Clear Filters
+          </button>
         </div>
       )}
-
     </section>
   )
 }
