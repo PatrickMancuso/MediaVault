@@ -454,31 +454,17 @@ function App() {
 const [selectedCollectorId, setSelectedCollectorId] =
   useState<string | null>(null)
 
-    const [librarySearch, setLibrarySearch] =
-  useState('')
 
-const [libraryGenre, setLibraryGenre] =
-  useState('all')
 
-const [libraryFormat, setLibraryFormat] =
-  useState('all')
 
-  const [libraryDecade, setLibraryDecade] =
-  useState('all')
 
-const [librarySort, setLibrarySort] =
-  useState<'title-asc' | 'title-desc' | 'year-new' | 'year-old'>(
-    'title-asc',
-  )
 
-  /* =========================================================
-   LIBRARY DISPLAY MODE
+  
+/* =========================================================
+   AUTHENTICATION STATE
    ========================================================= */
 
-const [libraryDisplayMode, setLibraryDisplayMode] =
-  useState<'cover' | 'spine'>('cover')
-
-    const [user, setUser] =
+const [user, setUser] =
   useState<User | null>(null)
 
 const [isAuthModalOpen, setIsAuthModalOpen] =
@@ -487,10 +473,14 @@ const [isAuthModalOpen, setIsAuthModalOpen] =
 const [authLoading, setAuthLoading] =
   useState(true)
 
-   const [isPasswordRecovery, setIsPasswordRecovery] =
+const [isPasswordRecovery, setIsPasswordRecovery] =
   useState(
     window.location.pathname === '/reset-password'
   )
+
+/* =========================================================
+   COLLECTION STATE
+   ========================================================= */
 
 const [collection, setCollection] =
   useState<MediaItem[]>([])
@@ -500,139 +490,107 @@ const [
   setCollectionLoading,
 ] = useState(true)
 
-  useEffect(() => {
+/* =========================================================
+   LOAD AUTHENTICATION SESSION
+   ========================================================= */
+
+useEffect(() => {
   let mounted = true
 
   supabase.auth.getSession().then(
     ({ data }) => {
-      if (!mounted) {
-        return
-      }
+      if (!mounted) return
 
       setUser(data.session?.user ?? null)
       setAuthLoading(false)
-    },
+    }
   )
 
-
- 
-
-  const {
-    data: authListener,
-  } =
+  const { data: authListener } =
     supabase.auth.onAuthStateChange(
       (_event, session) => {
-        setUser(
-          session?.user ?? null,
-        )
-
+        setUser(session?.user ?? null)
         setAuthLoading(false)
-      },
+      }
     )
 
   return () => {
     mounted = false
-
     authListener.subscription.unsubscribe()
   }
 }, [])
 
-
-  useEffect(() => {
-  const syncDashboardLayout = () => {
-    const saved = localStorage.getItem(
-      'mediavault-dashboard-layout'
-    )
-
-    setDashboardLayout(
-      saved === 'compact' ? 'compact' : 'standard'
-    )
-  }
-
-  if (activeView === 'collection') {
-    syncDashboardLayout()
-  }
-}, [activeView])
+/* =========================================================
+   LOAD COLLECTION
+   ========================================================= */
 
 useEffect(() => {
   let cancelled = false
 
-  const loadCollection =
-    async () => {
-      if (authLoading) {
-        return
-      }
+  const loadCollection = async () => {
+    if (authLoading) return
 
-      if (!user) {
-        setCollection([])
-        setCollectionLoading(false)
-
-        return
-      }
-
-      setCollectionLoading(true)
-
-      const {
-        data,
-        error,
-      } = await supabase
-        .from('media_items')
-        .select('*')
-        .order(
-          'created_at',
-          {
-            ascending: true,
-          },
-        )
-
-      if (cancelled) {
-        return
-      }
-
-      if (error) {
-        console.error(
-          'Failed to load collection from Supabase:',
-          error,
-        )
-
-        setCollection([])
-        setCollectionLoading(false)
-
-        return
-      }
-
-      const items =
-        (data ?? []).map(
-          (row) =>
-            rowToMediaItem(
-              row as MediaItemRow,
-            ),
-        )
-
-      setCollection(items)
+    if (!user) {
+      setCollection([])
       setCollectionLoading(false)
+      return
     }
+
+    setCollectionLoading(true)
+
+    const { data, error } = await supabase
+      .from('media_items')
+      .select('*')
+      .order('created_at', {
+        ascending: true,
+      })
+
+    if (cancelled) return
+
+    if (error) {
+      console.error(
+        'Failed to load collection from Supabase:',
+        error
+      )
+
+      setCollection([])
+      setCollectionLoading(false)
+      return
+    }
+
+    const items = (data ?? []).map(
+      (row) =>
+        rowToMediaItem(row as MediaItemRow)
+    )
+
+    setCollection(items)
+    setCollectionLoading(false)
+  }
 
   void loadCollection()
 
   return () => {
     cancelled = true
   }
-}, [
-  user,
-  authLoading,
-])
+}, [user, authLoading])
 
-  const [selectedMedia, setSelectedMedia] =
-    useState<MediaItem | null>(null)
+/* =========================================================
+   MEDIA STATE
+   ========================================================= */
 
-  const [isAddMediaOpen, setIsAddMediaOpen] =
-    useState(false)
-
-    const [editingMedia, setEditingMedia] =
+const [selectedMedia, setSelectedMedia] =
   useState<MediaItem | null>(null)
 
-  
+const [isAddMediaOpen, setIsAddMediaOpen] =
+  useState(false)
+
+const [editingMedia, setEditingMedia] =
+  useState<MediaItem | null>(null)
+
+/* =========================================================
+   CUSTOM LIBRARY OPTIONS
+   ========================================================= */
+
 const [customMovieGenres, setCustomMovieGenres] =
   useState<CustomOption[]>([])
 
@@ -644,6 +602,7 @@ const [customMovieFormats, setCustomMovieFormats] =
 
 const [customGameFormats, setCustomGameFormats] =
   useState<CustomOption[]>([])
+
 
 
 /* =========================================================
@@ -841,138 +800,6 @@ const libraryItems =
           ? music
           : []
 
-
-const libraryGenreOptions = Array.from(
-  new Set(
-    libraryItems.flatMap((item) =>
-      item.genres?.length
-        ? item.genres
-        : [item.genre],
-    ),
-  ),
-).sort((a, b) => a.localeCompare(b))
-
-const libraryFormatOptions = Array.from(
-  new Set(
-    libraryItems.flatMap((item) =>
-      item.formats?.length
-        ? item.formats
-        : [item.format],
-    ),
-  ),
-).sort((a, b) => a.localeCompare(b))
-
-
-
-/* =====================================================
-   LIBRARY - AVAILABLE DECADES
-   ===================================================== */
-
-const libraryDecadeOptions = Array.from(
-  new Set(
-    libraryItems
-      .filter(
-        (item) =>
-          Number.isFinite(item.year) &&
-          item.year > 0
-      )
-      .map(
-        (item) =>
-          Math.floor(item.year / 10) * 10
-      )
-  )
-).sort((a, b) => b - a)
-
-
-
-/* =====================================================
-   LIBRARY - FILTER AND SORT
-   ===================================================== */
-
-const isLibraryFiltered =
-  librarySearch.trim() !== '' ||
-  libraryGenre !== 'all' ||
-  libraryFormat !== 'all' ||
-  libraryDecade !== 'all'
-
-const filteredLibraryItems = libraryItems
-  .filter((item) => {
-    const search =
-      librarySearch.trim().toLowerCase()
-
-    const itemGenres =
-      item.genres?.length
-        ? item.genres
-        : [item.genre]
-
-    const itemFormats =
-      item.formats?.length
-        ? item.formats
-        : [item.format]
-
-    const searchableValues = [
-      item.title,
-      String(item.year),
-      ...itemGenres,
-      ...itemFormats,
-    ]
-
-    const matchesSearch =
-      search === '' ||
-      searchableValues.some((value) =>
-        value.toLowerCase().includes(search)
-      )
-
-    const matchesGenre =
-      libraryGenre === 'all' ||
-      itemGenres.includes(libraryGenre)
-
-    const matchesFormat =
-      libraryFormat === 'all' ||
-      itemFormats.includes(libraryFormat)
-
-    const matchesDecade =
-      libraryDecade === 'all' ||
-      Math.floor(item.year / 10) * 10 ===
-        Number(libraryDecade)
-
-    return (
-      matchesSearch &&
-      matchesGenre &&
-      matchesFormat &&
-      matchesDecade
-    )
-  })
-  .sort((a, b) => {
-    switch (librarySort) {
-      case 'title-desc':
-        return b.title.localeCompare(a.title)
-
-      case 'year-new':
-        return (
-          b.year - a.year ||
-          a.title.localeCompare(b.title)
-        )
-
-      case 'year-old':
-        return (
-          a.year - b.year ||
-          a.title.localeCompare(b.title)
-        )
-
-      default:
-        return a.title.localeCompare(b.title)
-    }
-  })
-
-
-const clearLibraryFilters = () => {
-  setLibrarySearch('')
-  setLibraryGenre('all')
-  setLibraryFormat('all')
-  setLibraryDecade('all')
-  setLibrarySort('title-asc')
-}
 
   /* =========================================================
      HANDLERS
@@ -1393,178 +1220,40 @@ const handleAddCustomFormat = async (
   return savedOption
 }
 
+/* =========================================================
+   RENDER FAVORITES
+   ========================================================= */
 
-
-/* =====================================================
-   LIBRARY - FORMAT DISPLAY LABELS
-   ===================================================== */
-
-const getFormatDisplayName = (format: string) => {
-  const labels: Record<string, string> = {
-    nes: 'NES',
-    snes: 'SNES',
-    n64: 'Nintendo 64',
-    gamecube: 'GameCube',
-    wii: 'Wii',
-    wiiu: 'Wii U',
-    switch: 'Nintendo Switch',
-
-    ps1: 'PS1',
-    ps2: 'PS2',
-    ps3: 'PS3',
-    ps4: 'PS4',
-    ps5: 'PS5',
-
-    xbox: 'Xbox',
-    xbox360: 'Xbox 360',
-    xboxone: 'Xbox One',
-    xboxseries: 'Xbox Series X/S',
-
-    pc: 'PC',
-    steam: 'Steam',
-
-    vhs: 'VHS',
-    dvd: 'DVD',
-    bluray: 'Blu-ray',
-    'blu-ray': 'Blu-ray',
-    laserdisc: 'LaserDisc',
+const renderRows = () => {
+  if (activeView !== 'favorites') {
+    return null
   }
 
   return (
-    labels[format.toLowerCase()] ??
-    format
-  )
-}
+    <>
+      <MediaRow
+        title="Favorites"
+        items={favorites}
+        onSelect={handleSelect}
+      />
 
-
-
-
-  
-/* =========================================================
-   RENDER ROWS - FILTERED AND SORTED
-   ========================================================= */
-
-
-const renderRows = () => {
-  if (
-    activeView === 'movies' ||
-    activeView === 'games' ||
-    activeView === 'books' ||
-    activeView === 'music'
-  ) {
-    const currentType =
-      activeView === 'movies'
-        ? 'movie'
-        : activeView === 'games'
-          ? 'game'
-          : activeView === 'books'
-            ? 'book'
-            : 'music'
-
-
-    const items = filteredLibraryItems.filter(
-      (item) => item.type === currentType
-    )
-
-    if (items.length === 0) {
-      return (
-        <div className="library-no-results">
-          <h3>No matching titles found</h3>
-          <p>
-            Try another search or adjust your filters.
-          </p>
-        </div>
-      )
-    }
-
-    // Keep Recently Added separate from genre shelves.
-    // Only show it when no search/filter is active.
-
-    const showRecentlyAdded = !isLibraryFiltered
-
-    // Build genre shelves from the already
-    // filtered and sorted library items.
-
-    const genreMap = new Map<
-      string,
-      typeof items
-    >()
-
-    items.forEach((item) => {
-      const genres =
-        item.genres?.length
-          ? item.genres
-          : [item.genre]
-
-      genres.forEach((genre) => {
-        if (!genre) return
-
-        const existing =
-          genreMap.get(genre) ?? []
-
-        existing.push(item)
-        genreMap.set(genre, existing)
-      })
-    })
-
-    const genreRows = [...genreMap.entries()]
-      .sort(([a], [b]) => a.localeCompare(b))
-
-    return (
-      <>
-        {showRecentlyAdded && (
-          <MediaRow
-            title="Recently Added"
-            items={recentlyAdded.filter(
-              (item) => item.type === currentType
-            )}
-            onSelect={handleSelect}
-            displayMode={libraryDisplayMode}
-          />
+      <MediaRow
+        title="Favorite Movies"
+        items={favorites.filter(
+          (item) => item.type === 'movie'
         )}
+        onSelect={handleSelect}
+      />
 
-        {genreRows.map(([genre, genreItems]) => (
-          <MediaRow
-            key={genre}
-            title={genre}
-            items={genreItems}
-            onSelect={handleSelect}
-            displayMode={libraryDisplayMode}
-          />
-        ))}
-      </>
-    )
-  }
-
-  if (activeView === 'favorites') {
-    return (
-      <>
-        <MediaRow
-          title="Favorites"
-          items={favorites}
-          onSelect={handleSelect}
-        />
-
-        <MediaRow
-          title="Favorite Movies"
-          items={favorites.filter(
-            (item) => item.type === 'movie'
-          )}
-          onSelect={handleSelect}
-        />
-
-        <MediaRow
-          title="Favorite Games"
-          items={favorites.filter(
-            (item) => item.type === 'game'
-          )}
-          onSelect={handleSelect}
-        />
-      </>
-    )
-  }
-
-  return null
+      <MediaRow
+        title="Favorite Games"
+        items={favorites.filter(
+          (item) => item.type === 'game'
+        )}
+        onSelect={handleSelect}
+      />
+    </>
+  )
 }
 
 
