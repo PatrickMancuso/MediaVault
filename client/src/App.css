@@ -23191,3 +23191,144 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+/* =========================================
+   MEDIA LIBRARY - SINGLE ROW TOOLBAR
+   ========================================= */
+
+.media-library .media-library-toolbar {
+  position: sticky;
+  top: 80px;
+  z-index: 100;
+
+  display: block;
+
+  padding: 12px 14px;
+  margin: -12px -12px 18px;
+
+  background: rgba(19, 15, 24, 0.97);
+  border: 1px solid rgba(175, 132, 193, 0.24);
+  border-radius: 7px;
+
+  backdrop-filter: blur(14px);
+}
+
+/* MAIN HORIZONTAL LAYOUT */
+
+.media-library-toolbar-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 9px;
+  width: 100%;
+}
+
+/* SEARCH - LARGEST CONTROL */
+
+.media-library-toolbar-line
+.media-library-search {
+  flex: 2 1 260px;
+  min-width: 150px;
+  width: auto;
+  height: 38px;
+}
+
+/* MULTI-SELECT FILTERS */
+
+.media-library-toolbar-line
+.media-library-filter {
+  flex: 1 1 125px;
+  min-width: 85px;
+}
+
+.media-library-toolbar-line
+.media-library-filter-trigger {
+  height: 38px;
+}
+
+/* SORT DROPDOWN */
+
+.media-library-toolbar-line
+.media-library-sort {
+  flex: 1 1 130px;
+  min-width: 110px;
+  height: 38px;
+}
+
+/* COVER / LIST TOGGLE */
+
+.media-library-toolbar-line
+.media-library-view-toggle {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.media-library-toolbar-line
+.media-library-view-toggle button {
+  padding: 8px 12px;
+}
+
+/* CLEAR BUTTON */
+
+.media-library-toolbar-line
+.media-library-clear {
+  flex: 0 0 auto;
+  height: 38px;
+  padding: 0 12px;
+}
+
+/* DYNAMIC COUNT */
+
+.media-library-toolbar-line
+.media-library-count {
+  flex: 0 0 auto;
+  min-width: 64px;
+
+  text-align: right;
+  white-space: nowrap;
+
+  color: #cba1d9;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* RESPONSIVE - WRAP ON SMALLER SCREENS */
+
+@media (max-width: 1200px) {
+  .media-library-toolbar-line {
+    flex-wrap: wrap;
+  }
+
+  .media-library-toolbar-line
+  .media-library-search {
+    flex: 1 1 100%;
+  }
+
+  .media-library-toolbar-line
+  .media-library-filter {
+    flex: 1 1 110px;
+  }
+}
+
+@media (max-width: 650px) {
+  .media-library .media-library-toolbar {
+    top: 70px;
+    padding: 10px;
+  }
+
+  .media-library-toolbar-line {
+    gap: 7px;
+  }
+
+  .media-library-toolbar-line
+  .media-library-filter {
+    flex: 1 1 40%;
+  }
+
+  .media-library-toolbar-line
+  .media-library-sort {
+    flex: 1 1 40%;
+  }
+}
+
+
