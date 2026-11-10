@@ -1,7 +1,14 @@
 
-import { useMemo, useState } from 'react'
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
+
 import MediaSpine from './MediaSpine'
 import type { MediaItem } from '../data/sampleMedia'
+
 
 interface MediaLibraryProps {
   title: string
@@ -44,7 +51,6 @@ const displayFormat = (format: string) =>
   formatLabels[format.toLowerCase()] ?? format
 
 function MediaLibrary({
-  title,
   items,
   onSelect,
 }: MediaLibraryProps) {
