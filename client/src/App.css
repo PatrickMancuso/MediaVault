@@ -23332,3 +23332,85 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+
+
+
+/* =========================================
+   MEDIA LIBRARY - TOOLBAR REFINEMENTS
+   ========================================= */
+
+/* Slightly reduce search width */
+
+.media-library-toolbar-line
+.media-library-search {
+  flex: 1.45 1 200px;
+  min-width: 140px;
+}
+
+/* Give the Clear Filters button more room */
+
+.media-library-toolbar-line
+.media-library-clear {
+  flex: 0 0 auto;
+
+  min-width: 100px;
+  height: 38px;
+
+  padding: 0 14px;
+
+  white-space: nowrap;
+}
+
+/* Keep display toggle compact */
+
+.media-library-toolbar-line
+.media-library-view-toggle {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Reduce unnecessary space around title count */
+
+.media-library-toolbar-line
+.media-library-count {
+  flex: 0 0 auto;
+  min-width: auto;
+
+  margin-left: 4px;
+  padding-right: 2px;
+
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Slightly tighten toolbar spacing */
+
+.media-library-toolbar-line {
+  gap: 8px;
+}
+
+
+
+
+/* =========================================
+   MEDIA LIBRARY - STICKY POSITION FIX
+   ========================================= */
+
+@media (min-width: 701px) {
+  .media-library .media-library-toolbar {
+    position: sticky;
+    top: 104px !important;
+    z-index: 100;
+  }
+}
+
+@media (max-width: 700px) {
+  .media-library .media-library-toolbar {
+    top: 80px !important;
+  }
+}
+
+
+
