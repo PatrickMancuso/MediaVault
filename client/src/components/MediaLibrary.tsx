@@ -454,6 +454,20 @@ return (
       <option value="year-old">Oldest First</option>
     </select>
 
+    {/* CLEAR FILTERS */}
+
+<button
+  type="button"
+  className="media-library-clear"
+  onClick={clearFilters}
+  disabled={
+    !search &&
+    activeFilterCount === 0 &&
+    sortMode === 'title-asc'
+  }
+>
+  Clear Filters
+</button>
     {/* COVER / LIST TOGGLE */}
 
     <div
@@ -491,21 +505,6 @@ return (
         List
       </button>
     </div>
-
-    {/* CLEAR FILTERS */}
-
-    <button
-      type="button"
-      className="media-library-clear"
-      onClick={clearFilters}
-      disabled={
-        !search &&
-        activeFilterCount === 0 &&
-        sortMode === 'title-asc'
-      }
-    >
-      Clear
-    </button>
 
     {/* DYNAMIC COUNT */}
 
