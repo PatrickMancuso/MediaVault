@@ -895,6 +895,119 @@ app.get("/api/media/search/book", async (req, res) => {
 });
 
 
+
+
+/* =====================================================
+   OPEN LIBRARY - DETAILED BOOK LOOKUP
+   ===================================================== */
+
+app.get("/api/media/book/:id", async (req, res) => {
+  try {
+    const workId = String(req.params.id ?? "").trim();
+
+    if (!/^OL\d+W$/.test(workId)) {
+      return res.status(400).json({
+        error: "Invalid Open Library Work ID.",
+      });
+    }
+
+    const base = "https://openlibrary.org";
+
+    const fetchJson = async (url: string) => {
+      const response = await fetch(url, {
+        headers: {
+          Accept: "application/json",
+        },
+        signal: AbortSignal.timeout(12000),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Open Library request failed: ${response.status}`
+        );
+      }
+
+      return response.json();
+    };
+
+    const work = await fetchJson(
+      `${base}/works/${workId}.json`
+    );
+
+    const description =
+      typeof work.description === "string"
+        ? work.description
+        : work.description?.value ?? "";
+
+    const subjects: string[] = Array.isArray(work.subjects)
+      ? work.subjects.filter(
+          (subject: unknown): subject is string =>
+            typeof subject === "string"
+        )
+      : [];
+
+    const editionsResponse = await fetch(
+      `${base}/works/${workId}/editions.json?limit=20`,
+      {
+        headers: {
+          Accept: "application/json",
+        },
+        signal: AbortSignal.timeout(12000),
+      }
+    );
+
+    let editions: any[] = [];
+
+    if (editionsResponse.ok) {
+      const editionData = await editionsResponse.json();
+
+      editions = Array.isArray(editionData.entries)
+        ? editionData.entries.map((edition: any) => ({
+            id: edition.key?.split("/").pop() ?? "",
+            title: edition.title ?? work.title ?? "",
+            publishers: edition.publishers ?? [],
+            publishDate: edition.publish_date ?? null,
+            pageCount: edition.number_of_pages ?? null,
+            isbn10: edition.isbn_10?.[0] ?? null,
+            isbn13: edition.isbn_13?.[0] ?? null,
+            languages:
+              edition.languages
+                ?.map((language: any) =>
+                  language.key?.split("/").pop()
+                )
+                .filter(Boolean) ?? [],
+            coverImage: edition.covers?.[0]
+              ? `https://covers.openlibrary.org/b/id/${edition.covers[0]}-L.jpg`
+              : null,
+          }))
+        : [];
+    }
+
+    const coverImage = work.covers?.[0]
+      ? `https://covers.openlibrary.org/b/id/${work.covers[0]}-L.jpg`
+      : null;
+
+    return res.json({
+      source: "openlibrary",
+      externalId: `/works/${workId}`,
+      openLibraryWorkId: `/works/${workId}`,
+      title: work.title ?? "",
+      description,
+      coverImage,
+      subjects,
+      genres: subjects,
+      editions,
+    });
+  } catch (error) {
+    console.error("Open Library detail error:", error);
+
+    return res.status(502).json({
+      error: "Unable to retrieve detailed book information.",
+    });
+  }
+});
+
+
 /* =====================================================
    MUSICBRAINZ - ALBUM SEARCH
    ===================================================== */
