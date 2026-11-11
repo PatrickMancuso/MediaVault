@@ -36,13 +36,19 @@ onAdd: (media: MediaItem) => Promise<boolean>
   customMovieFormats: CustomOption[]
   customGameFormats: CustomOption[]
 
+    customBookGenres: CustomOption[]
+  customMusicGenres: CustomOption[]
+
+  customBookFormats: CustomOption[]
+  customMusicFormats: CustomOption[]
+
   onAddCustomGenre: (
-  type: 'movie' | 'game',
-  option: CustomOption,
+type: MediaType,
+    option: CustomOption,
 ) => Promise<CustomOption | null>
 
 onAddCustomFormat: (
-  type: 'movie' | 'game',
+type: MediaType,
   option: CustomOption,
 ) => Promise<CustomOption | null>
 }
@@ -384,6 +390,11 @@ function AddMediaModal({
   customGameGenres,
   customMovieFormats,
   customGameFormats,
+
+  customBookGenres,
+customMusicGenres,
+customBookFormats,
+customMusicFormats,
   onAddCustomGenre,
   onAddCustomFormat,
 }: AddMediaModalProps) {
@@ -586,29 +597,42 @@ const [
      ========================================================= */
 
 
-const formatOptions = useMemo(() => {
-  const builtins =
-    MEDIA_FORMAT_OPTIONS[mediaType]
 
-  const custom =
-    mediaType === 'movie'
-      ? customMovieFormats
-      : mediaType === 'game'
-        ? customGameFormats
-        : []
+const formatOptions = useMemo(() => {
+  const builtins = MEDIA_FORMAT_OPTIONS[mediaType]
+
+  const customByType = {
+    movie: customMovieFormats,
+    game: customGameFormats,
+    book: customBookFormats,
+    music: customMusicFormats,
+  }
+
+  const custom = customByType[mediaType]
 
   return [
     ...builtins,
-    ...custom.map((item) => ({
-      value: item.label,
-      label: item.label,
-    })),
+    ...custom
+      .filter((option) =>
+        !builtins.some(
+          (builtin) =>
+            builtin.label.toLowerCase() ===
+            option.label.toLowerCase()
+        )
+      )
+      .map((option) => ({
+        value: option.label,
+        label: option.label,
+      })),
   ]
 }, [
   mediaType,
   customMovieFormats,
   customGameFormats,
+  customBookFormats,
+  customMusicFormats,
 ])
+
 
 
   /* =========================================================
@@ -616,26 +640,40 @@ const formatOptions = useMemo(() => {
      ========================================================= */
 
 
-const genreOptions = useMemo(() => {
-  const builtins =
-    MEDIA_GENRE_OPTIONS[mediaType]
 
-  const custom =
-    mediaType === 'movie'
-      ? customMovieGenres
-      : mediaType === 'game'
-        ? customGameGenres
-        : []
+const genreOptions = useMemo(() => {
+  const builtins = MEDIA_GENRE_OPTIONS[mediaType]
+
+  const customByType = {
+    movie: customMovieGenres,
+    game: customGameGenres,
+    book: customBookGenres,
+    music: customMusicGenres,
+  }
+
+  const custom = customByType[mediaType]
 
   return [
     ...builtins,
-    ...custom.map((item) => item.label),
+    ...custom
+      .map((option) => option.label)
+      .filter(
+        (label) =>
+          !builtins.some(
+            (builtin) =>
+              builtin.toLowerCase() ===
+              label.toLowerCase()
+          )
+      ),
   ]
 }, [
   mediaType,
   customMovieGenres,
   customGameGenres,
+  customBookGenres,
+  customMusicGenres,
 ])
+
 
 
 /* =========================================================
@@ -970,9 +1008,7 @@ setMusicTrackCount('')
      ========================================================= */
 
 const addCustomGenre = async () => {
-  if (mediaType !== 'movie' && mediaType !== 'game') {
-    return
-  }
+
 
   const label = newGenre.trim()
 
@@ -1013,9 +1049,7 @@ setShowNewGenre(false)
      ========================================================= */
 
 const addCustomFormat = async () => {
-  if (mediaType !== 'movie' && mediaType !== 'game') {
-    return
-  }
+
 
   const label = newFormat.trim()
 
@@ -1046,6 +1080,7 @@ const addCustomFormat = async () => {
   if (!savedOption) return
 
   setManualFormat(savedOption.label)
+  addSelectedFormat(savedOption.label)
   setNewFormat('')
   setShowNewFormat(false)
 }
@@ -1163,10 +1198,16 @@ setManualGenre(matchingGenres[0] ?? '')
       // Work-level search metadata may describe
       // different editions. Leave edition-specific
       // fields for the user to confirm.
-      setBookPublisher('')
-      setBookPageCount('')
-      setBookLanguage('')
-      setBookEdition('')
+     setBookPublisher(result.bookPublisher ?? '')
+
+setBookPageCount(
+  result.pageCount != null
+    ? String(result.pageCount)
+    : ''
+)
+
+setBookLanguage(result.bookLanguage ?? '')
+setBookEdition('')
 
       setManualGenres([])
       setManualGenre('')
@@ -2203,10 +2244,6 @@ if (saved) {
 <button
   type="button"
   className="field-add-button"
-  disabled={
-    mediaType === 'book' ||
-    mediaType === 'music'
-  }
   onClick={() =>
     setShowNewGenre((current) => !current)
   }
@@ -2306,10 +2343,7 @@ if (saved) {
 <button
   type="button"
   className="field-add-button"
-  disabled={
-    mediaType === 'book' ||
-    mediaType === 'music'
-  }
+
   onClick={() =>
     setShowNewFormat((current) => !current)
   }
