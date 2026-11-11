@@ -113,6 +113,26 @@ interface ApiSearchResult {
 }
 
 
+
+interface ApiBookEdition {
+  id: string
+  title: string
+  publishers: string[]
+  publishDate: string | null
+  pageCount: number | null
+  isbn10: string | null
+  isbn13: string | null
+  languages: string[]
+  coverImage: string | null
+}
+
+interface ApiBookDetails extends ApiSearchResult {
+  source: 'openlibrary'
+  subjects: string[]
+  editions: ApiBookEdition[]
+}
+
+
 interface ApiMovieDetails extends ApiSearchResult {
   source: 'tmdb'
 
@@ -468,7 +488,7 @@ const [
   importedMetadata,
   setImportedMetadata,
 ] = useState<
-  ApiSearchResult | ApiMovieDetails | null
+  ApiSearchResult | ApiMovieDetails | ApiBookDetails | null
 >(null)
 
 
@@ -1179,41 +1199,141 @@ setManualGenre(matchingGenres[0] ?? '')
        BOOK - OPEN LIBRARY
        ===================================================== */
 
-    if (mediaType === 'book') {
-      setManualTitle(result.title ?? '')
-      setManualYear(
-        result.year ? String(result.year) : ''
-      )
-      setManualDescription(result.description ?? '')
-      setCoverImage(result.coverImage ?? undefined)
 
-      setBookAuthors(
-        (result.authors ?? []).join(', ')
-      )
+if (mediaType === 'book') {
+  setIsLoadingDetails(true)
 
-      setBookIsbn(
-        result.isbn13 ?? result.isbn10 ?? ''
-      )
+  try {
+    const workId = (
+      result.openLibraryWorkId ??
+      String(result.externalId)
+    ).split('/').pop()
 
-      // Work-level search metadata may describe
-      // different editions. Leave edition-specific
-      // fields for the user to confirm.
-     setBookPublisher(result.bookPublisher ?? '')
-
-setBookPageCount(
-  result.pageCount != null
-    ? String(result.pageCount)
-    : ''
-)
-
-setBookLanguage(result.bookLanguage ?? '')
-setBookEdition('')
-
-      setManualGenres([])
-      setManualGenre('')
-
-      return
+    if (!workId) {
+      throw new Error('Missing Open Library Work ID')
     }
+
+    const response = await fetch(
+      `${API_BASE_URL}/api/media/book/${encodeURIComponent(workId)}`
+    )
+
+    if (!response.ok) {
+      throw new Error(
+        `Book details failed: ${response.status}`
+      )
+    }
+
+    const details: ApiBookDetails =
+      await response.json()
+
+    const combinedMetadata = {
+      ...result,
+      ...details,
+      openLibraryEditionId:
+        result.openLibraryEditionId ?? null,
+    }
+
+    setImportedMetadata(combinedMetadata)
+
+    setManualTitle(details.title || result.title)
+
+    setManualYear(
+      result.year ? String(result.year) : ''
+    )
+
+    setManualDescription(
+      details.description || result.description || ''
+    )
+
+    setCoverImage(
+      details.coverImage ??
+      result.coverImage ??
+      undefined
+    )
+
+    setBookAuthors(
+      (result.authors ?? []).join(', ')
+    )
+
+    // Keep edition-specific values as suggestions
+    // from the original search result.
+    setBookIsbn(
+      result.isbn13 ?? result.isbn10 ?? ''
+    )
+
+    setBookPublisher(result.bookPublisher ?? '')
+
+    setBookPageCount(
+      result.pageCount != null
+        ? String(result.pageCount)
+        : ''
+    )
+
+    setBookLanguage(result.bookLanguage ?? '')
+    setBookEdition('')
+
+    // Match subjects to the existing genre options.
+    const matchingGenres = (
+      details.subjects ?? []
+    )
+      .map((subject) =>
+        genreOptions.find(
+          (option) =>
+            option.toLowerCase() ===
+            subject.toLowerCase()
+        )
+      )
+      .filter(
+        (genre): genre is string =>
+          Boolean(genre)
+      )
+
+    const uniqueGenres = [
+      ...new Set(matchingGenres),
+    ]
+
+    setManualGenres(uniqueGenres)
+    setManualGenre(uniqueGenres[0] ?? '')
+
+  } catch (error) {
+    console.error(
+      'Open Library detail lookup failed:',
+      error
+    )
+
+    // Keep the original search result usable
+    // if the detailed request fails.
+    setImportedMetadata(result)
+
+    setManualTitle(result.title ?? '')
+    setManualYear(
+      result.year ? String(result.year) : ''
+    )
+    setManualDescription(result.description ?? '')
+    setCoverImage(result.coverImage ?? undefined)
+    setBookAuthors((result.authors ?? []).join(', '))
+    setBookIsbn(result.isbn13 ?? result.isbn10 ?? '')
+    setBookPublisher(result.bookPublisher ?? '')
+    setBookPageCount(
+      result.pageCount != null
+        ? String(result.pageCount)
+        : ''
+    )
+    setBookLanguage(result.bookLanguage ?? '')
+    setBookEdition('')
+    setManualGenres([])
+    setManualGenre('')
+
+    setAutomaticError(
+      'Detailed book information could not be loaded. Basic information is still available.'
+    )
+  } finally {
+    setIsLoadingDetails(false)
+  }
+
+  return
+}
+
 
     /* =====================================================
        MUSIC - MUSICBRAINZ
