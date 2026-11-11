@@ -24,8 +24,11 @@ import InboxPage from './components/InboxPage'
 import SettingsPage from './components/SettingsPage'
 import MediaLibrary from './components/MediaLibrary'
 
-import type { MediaItem } from './data/sampleMedia'
-import './App.css'
+import type {
+  MediaItem,
+  MediaType,
+} from './data/sampleMedia'
+  import './App.css'
 
 type View =
   | 'collection'
@@ -49,7 +52,7 @@ interface CustomOption {
 interface LibraryOptionRow {
   id: string
   user_id: string
-  media_type: 'movie' | 'game'
+media_type: MediaType
   option_type: 'genre' | 'format'
   label: string
   created_at: string
@@ -620,6 +623,18 @@ const [customMovieFormats, setCustomMovieFormats] =
 const [customGameFormats, setCustomGameFormats] =
   useState<CustomOption[]>([])
 
+  
+const [customBookGenres, setCustomBookGenres] =
+  useState<CustomOption[]>([])
+
+const [customMusicGenres, setCustomMusicGenres] =
+  useState<CustomOption[]>([])
+
+const [customBookFormats, setCustomBookFormats] =
+  useState<CustomOption[]>([])
+
+const [customMusicFormats, setCustomMusicFormats] =
+  useState<CustomOption[]>([])
 
 
 /* =========================================================
@@ -632,13 +647,18 @@ useEffect(() => {
   const loadLibraryOptions = async () => {
     if (authLoading) return
 
-    if (!user) {
-      setCustomMovieGenres([])
-      setCustomGameGenres([])
-      setCustomMovieFormats([])
-      setCustomGameFormats([])
-      return
-    }
+  if (!user) {
+  setCustomMovieGenres([])
+  setCustomGameGenres([])
+  setCustomBookGenres([])
+  setCustomMusicGenres([])
+
+  setCustomMovieFormats([])
+  setCustomGameFormats([])
+  setCustomBookFormats([])
+  setCustomMusicFormats([])
+  return
+}
 
     const { data, error } = await supabase
       .from('library_options')
@@ -660,7 +680,7 @@ useEffect(() => {
       (data ?? []) as LibraryOptionRow[]
 
     const extract = (
-      mediaType: 'movie' | 'game',
+mediaType: MediaType,
       optionType: 'genre' | 'format',
     ): CustomOption[] =>
       options
@@ -678,6 +698,12 @@ useEffect(() => {
     setCustomGameGenres(extract('game', 'genre'))
     setCustomMovieFormats(extract('movie', 'format'))
     setCustomGameFormats(extract('game', 'format'))
+
+    setCustomBookGenres(extract('book', 'genre'))
+setCustomMusicGenres(extract('music', 'genre'))
+
+setCustomBookFormats(extract('book', 'format'))
+setCustomMusicFormats(extract('music', 'format'))
   }
 
   void loadLibraryOptions()
@@ -1137,60 +1163,15 @@ const handleSaveReview = async (
 }
 
 
-const handleAddCustomGenre = async (
-  type: 'movie' | 'game',
-  option: CustomOption,
-) => {
-  if (!user) return null
 
-  const label = option.label.trim()
-  if (!label) return null
-
-  const { data, error } = await supabase
-    .from('library_options')
-    .insert({
-      user_id: user.id,
-      media_type: type,
-      option_type: 'genre',
-      label,
-    })
-    .select()
-    .single()
-
-  if (error) {
-    console.error('Failed to add genre:', error)
-    window.alert('Unable to save custom genre.')
-    return null
-  }
-
-  const savedOption: CustomOption = {
-    id: data.id,
-    label: data.label,
-  }
-
-  if (type === 'movie') {
-    setCustomMovieGenres((current) => [
-      ...current,
-      savedOption,
-    ])
-  } else {
-    setCustomGameGenres((current) => [
-      ...current,
-      savedOption,
-    ])
-  }
-
-  return savedOption
-}
-
-const handleAddCustomFormat = async (
-  type: 'movie' | 'game',
+const handleAddCustomOption = async (
+  type: MediaType,
+  optionType: 'genre' | 'format',
   option: CustomOption,
 ): Promise<CustomOption | null> => {
   if (!user) return null
 
   const label = option.label.trim()
-
   if (!label) return null
 
   const { data, error } = await supabase
@@ -1198,22 +1179,15 @@ const handleAddCustomFormat = async (
     .insert({
       user_id: user.id,
       media_type: type,
-      option_type: 'format',
+      option_type: optionType,
       label,
     })
     .select()
     .single()
 
   if (error) {
-    console.error(
-      'Failed to add format:',
-      error,
-    )
-
-    window.alert(
-      'Unable to save custom format.',
-    )
-
+    console.error('Failed to save custom option:', error)
+    window.alert(`Unable to save custom ${optionType}.`)
     return null
   }
 
@@ -1222,20 +1196,43 @@ const handleAddCustomFormat = async (
     label: data.label,
   }
 
-  if (type === 'movie') {
-    setCustomMovieFormats((current) => [
-      ...current,
-      savedOption,
-    ])
-  } else {
-    setCustomGameFormats((current) => [
-      ...current,
-      savedOption,
-    ])
+  const setters = {
+    movie: {
+      genre: setCustomMovieGenres,
+      format: setCustomMovieFormats,
+    },
+    game: {
+      genre: setCustomGameGenres,
+      format: setCustomGameFormats,
+    },
+    book: {
+      genre: setCustomBookGenres,
+      format: setCustomBookFormats,
+    },
+    music: {
+      genre: setCustomMusicGenres,
+      format: setCustomMusicFormats,
+    },
   }
+
+  setters[type][optionType]((current) => [
+    ...current,
+    savedOption,
+  ])
 
   return savedOption
 }
+
+const handleAddCustomGenre = (
+  type: MediaType,
+  option: CustomOption,
+) => handleAddCustomOption(type, 'genre', option)
+
+const handleAddCustomFormat = (
+  type: MediaType,
+  option: CustomOption,
+) => handleAddCustomOption(type, 'format', option)
+
 
 /* =========================================================
    RENDER FAVORITES
@@ -1530,6 +1527,12 @@ if (!user) {
           customGameFormats={
             customGameFormats
           }
+
+          customBookGenres={customBookGenres}
+customMusicGenres={customMusicGenres}
+
+customBookFormats={customBookFormats}
+customMusicFormats={customMusicFormats}
           onAddCustomGenre={
             handleAddCustomGenre
           }
