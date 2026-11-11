@@ -1480,6 +1480,29 @@ coverImage,
 
 
 
+/* =========================================
+   EXTERNAL BOOK / MUSIC IDENTIFIERS
+   ========================================= */
+
+...(mediaType === 'book' && {
+  openLibraryWorkId:
+    importedMetadata?.openLibraryWorkId ??
+    editingMedia?.openLibraryWorkId,
+
+  openLibraryEditionId:
+    importedMetadata?.openLibraryEditionId ??
+    editingMedia?.openLibraryEditionId,
+}),
+
+...(mediaType === 'music' && {
+  musicBrainzReleaseGroupId:
+    importedMetadata?.musicBrainzReleaseGroupId ??
+    editingMedia?.musicBrainzReleaseGroupId,
+}),
+
+
+
+  
 
 source:
   editingMedia?.source ??
