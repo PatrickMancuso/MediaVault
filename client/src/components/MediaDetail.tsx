@@ -795,9 +795,7 @@ backgroundRepeat: 'no-repeat',
                       </div>
                     </div>
                   )}
-              </div>
-            )}
-          </div>
+           
 
 
   
@@ -888,7 +886,9 @@ backgroundRepeat: 'no-repeat',
   </>
 )}
 
-  
+                </div>
+            )}
+          </div>
 
           {/* ===================================================
               ACTIONS
