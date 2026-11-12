@@ -532,6 +532,9 @@ const [mode, setMode] =
   const [mediaType, setMediaType] =
     useState<MediaType>('movie')
 
+  const [hasSelectedMediaType, setHasSelectedMediaType] =
+  useState(Boolean(editingMedia))
+
   /* =========================================================
      AUTOMATIC MODE
      ========================================================= */
@@ -1040,6 +1043,7 @@ setSearchResults(
 const switchMediaType = (
   type: MediaType,
 ) => {
+  setHasSelectedMediaType(true)
   setMediaType(type)
 
 setMode('automatic')
@@ -2105,11 +2109,12 @@ if (saved) {
     <button
       key={option.type}
       type="button"
-      className={
-        mediaType === option.type
-          ? 'active'
-          : ''
-      }
+   className={
+  hasSelectedMediaType &&
+  mediaType === option.type
+    ? 'active'
+    : ''
+}
       onClick={() =>
         switchMediaType(option.type)
       }
@@ -2276,12 +2281,13 @@ if (saved) {
 
 <div className="automatic-results">
 
-          {searchResults.map(
-            (result) => (
-              
-<button
-  key={result.externalId}
-  type="button"
+    {searchResults.map((result) => (
+  <div
+    key={result.externalId}
+    className="automatic-result-wrapper"
+  >
+    <button
+      type="button"
   className={`automatic-result ${
     selectedAutomaticResult?.externalId ===
     result.externalId
@@ -2354,8 +2360,42 @@ if (saved) {
                     : '＋'}
                 </span>
               </button>
-            ),
-          )}
+
+
+{selectedAutomaticResult?.externalId ===
+  result.externalId && (
+  <div className="automatic-result-expanded">
+    <div className="automatic-result-expanded-info">
+      <span className="automatic-result-expanded-label">
+        SELECTED MEDIA
+      </span>
+
+      <strong>{result.title}</strong>
+
+      <p>
+        {isLoadingDetails
+          ? 'Retrieving detailed metadata...'
+          : 'Ready to customize and add to your collection.'}
+      </p>
+    </div>
+
+    <button
+      type="button"
+      className="automatic-result-customize"
+      disabled={isLoadingDetails}
+      onClick={() =>
+        setIsCustomizingAutomatic(true)
+      }
+    >
+      {isLoadingDetails
+        ? 'Loading Details...'
+        : 'Customize & Add'}
+    </button>
+  </div>
+)}
+
+  </div>
+))}
 
           {isLoadingDetails && (
             <div className="empty-search">
