@@ -2362,34 +2362,28 @@ if (saved) {
 
 {selectedAutomaticResult?.externalId ===
   result.externalId && (
-  <div className="automatic-result-expanded">
-    <div className="automatic-result-expanded-info">
-      <span className="automatic-result-expanded-label">
-        SELECTED MEDIA
-      </span>
 
-      <strong>{result.title}</strong>
+<div className="automatic-result-expanded">
+  <span className="automatic-result-ready">
+    {isLoadingDetails
+      ? 'Loading album details...'
+      : 'Selected'}
+  </span>
 
-      <p>
-        {isLoadingDetails
-          ? 'Retrieving detailed metadata...'
-          : 'Ready to customize and add to your collection.'}
-      </p>
-    </div>
+  <button
+    type="button"
+    className="automatic-result-customize"
+    disabled={isLoadingDetails}
+    onClick={() =>
+      setIsCustomizingAutomatic(true)
+    }
+  >
+    {isLoadingDetails
+      ? 'Loading...'
+      : 'Customize & Add →'}
+  </button>
+</div>
 
-    <button
-      type="button"
-      className="automatic-result-customize"
-      disabled={isLoadingDetails}
-      onClick={() =>
-        setIsCustomizingAutomatic(true)
-      }
-    >
-      {isLoadingDetails
-        ? 'Loading Details...'
-        : 'Customize & Add'}
-    </button>
-  </div>
 )}
 
   </div>
