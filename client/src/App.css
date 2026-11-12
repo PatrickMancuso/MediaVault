@@ -23950,3 +23950,94 @@ background: rgba(53, 38, 63, 0.75) !important;
   border-color: #a67bc0 !important;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   DASHBOARD - COLLECTION SPACING AND ALIGNMENT
+   ===================================================== */
+
+.collection-dashboard {
+  --browse-to-recent-gap: 26px;
+  --browse-label-left: 18px;
+  --recent-panel-padding: 18px;
+}
+
+/* Align collection heading with browse containers */
+
+.collection-dashboard .dashboard-archives-section {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.collection-dashboard .dashboard-archives-section
+.dashboard-section-header {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Compact view - align category labels to the left */
+
+.collection-dashboard
+.dashboard-category-grid.compact
+.dashboard-category-card {
+  text-align: left;
+}
+
+.collection-dashboard
+.dashboard-category-grid.compact
+.dashboard-category-card .dashboard-category-content {
+  left: var(--browse-label-left);
+  right: auto;
+  text-align: left;
+  align-items: flex-start;
+}
+
+/* =====================================================
+   RECENTLY ADDED - SEPARATE CHARCOAL PANEL
+   ===================================================== */
+
+.collection-dashboard .dashboard-recently-added {
+  margin-top: var(--browse-to-recent-gap);
+  padding: var(--recent-panel-padding);
+
+  background: rgba(19, 17, 23, 0.88);
+  border: 1px solid rgba(115, 94, 127, 0.32);
+  border-radius: 10px;
+}
+
+/* Keep heading aligned with artwork */
+
+.collection-dashboard .dashboard-recently-added h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  padding: 0;
+  text-align: left;
+}
+
+/* Prevent extra spacing around the artwork */
+
+.collection-dashboard .dashboard-recently-added
+.media-row {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+
