@@ -2038,15 +2038,13 @@ if (saved) {
 
         <header className="add-media-header">
           <div>
-            <p className="add-media-eyebrow">
-              MEDIA LIBRARY
-            </p>
+          
 
 <h2>{isEditing ? 'Edit Media' : 'Add Media'}</h2>
           <p>
   {isEditing
     ? 'Update the details of your collection item.'
-    : 'Add something to your physical collection.'}
+    : 'Add something to your collection.'}
 </p>
           </div>
 
