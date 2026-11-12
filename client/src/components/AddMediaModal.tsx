@@ -112,6 +112,20 @@ interface ApiSearchResult {
   musicBrainzReleaseGroupId?: string
 }
 
+interface ApiMusicRelease {
+  id: string
+  title: string
+  date: string | null
+  country: string | null
+  formats: string[]
+  status: string | null
+}
+
+interface ApiMusicDetails extends ApiSearchResult {
+  source: 'musicbrainz'
+  releases: ApiMusicRelease[]
+}
+
 
 
 interface ApiBookEdition {
@@ -488,7 +502,11 @@ const [
   importedMetadata,
   setImportedMetadata,
 ] = useState<
-  ApiSearchResult | ApiMovieDetails | ApiBookDetails | null
+  | ApiSearchResult
+  | ApiMovieDetails
+  | ApiBookDetails
+  | ApiMusicDetails
+  | null
 >(null)
 
 
@@ -1339,28 +1357,136 @@ if (mediaType === 'book') {
        MUSIC - MUSICBRAINZ
        ===================================================== */
 
-    if (mediaType === 'music') {
-      setManualTitle(result.title ?? '')
-      setManualYear(
-        result.year ? String(result.year) : ''
+
+if (mediaType === 'music') {
+  setIsLoadingDetails(true)
+
+  try {
+    const releaseGroupId =
+      result.musicBrainzReleaseGroupId ??
+      String(result.externalId)
+
+    const response = await fetch(
+      `${API_BASE_URL}/api/media/music/${encodeURIComponent(
+        releaseGroupId
+      )}`
+    )
+
+    if (!response.ok) {
+      throw new Error(
+        `Music details failed: ${response.status}`
       )
-      setManualDescription(result.description ?? '')
-      setCoverImage(result.coverImage ?? undefined)
-
-      setMusicArtists(
-        (result.artists ?? []).join(', ')
-      )
-
-      setMusicAlbumType(result.albumType ?? 'Album')
-      setMusicRecordLabel('')
-      setMusicCatalogNumber('')
-      setMusicTrackCount('')
-
-      setManualGenres([])
-      setManualGenre('')
-
-      return
     }
+
+    const details: ApiMusicDetails =
+      await response.json()
+
+    setImportedMetadata({
+      ...result,
+      ...details,
+    })
+
+    setManualTitle(details.title ?? result.title)
+
+    setManualYear(
+      details.year != null
+        ? String(details.year)
+        : result.year != null
+          ? String(result.year)
+          : ''
+    )
+
+    setManualDescription(
+      details.description ??
+      result.description ??
+      ''
+    )
+
+    setCoverImage(
+      details.coverImage ??
+      result.coverImage ??
+      undefined
+    )
+
+    setMusicArtists(
+      (details.artists ?? result.artists ?? [])
+        .join(', ')
+    )
+
+    setMusicAlbumType(
+      details.albumType ?? 'Album'
+    )
+
+    // These require a specific release.
+    setMusicRecordLabel('')
+    setMusicCatalogNumber('')
+    setMusicTrackCount('')
+
+    // Match MusicBrainz genres to MediaVault genres.
+    const matchingGenres = (
+      details.genres ?? []
+    )
+      .map((genre) =>
+        genreOptions.find(
+          (option) =>
+            option.toLowerCase() ===
+            genre.toLowerCase()
+        )
+      )
+      .filter(
+        (genre): genre is string =>
+          Boolean(genre)
+      )
+
+    const uniqueGenres = [
+      ...new Set(matchingGenres),
+    ]
+
+    setManualGenres(uniqueGenres)
+    setManualGenre(uniqueGenres[0] ?? '')
+
+  } catch (error) {
+    console.error(
+      'MusicBrainz detail lookup failed:',
+      error
+    )
+
+    // Preserve the basic search result.
+    setImportedMetadata(result)
+
+    setManualTitle(result.title ?? '')
+  setManualYear(
+  result.year != null
+    ? String(result.year)
+    : ''
+)
+    setManualDescription(result.description ?? '')
+    setCoverImage(result.coverImage ?? undefined)
+
+    setMusicArtists(
+      (result.artists ?? []).join(', ')
+    )
+
+    setMusicAlbumType(
+      result.albumType ?? 'Album'
+    )
+
+    setMusicRecordLabel('')
+    setMusicCatalogNumber('')
+    setMusicTrackCount('')
+    setManualGenres([])
+    setManualGenre('')
+
+    setAutomaticError(
+      'Detailed album information could not be loaded. Basic information is still available.'
+    )
+  } finally {
+    setIsLoadingDetails(false)
+  }
+
+  return
+}
+
 
 
 
@@ -2064,21 +2190,22 @@ if (saved) {
 
           {searchResults.map(
             (result) => (
-              <button
-                key={result.externalId}
-                type="button"
-                className={`automatic-result ${
-                  selectedAutomaticResult?.externalId ===
-                  result.externalId
-                    ? 'selected'
-                    : ''
-                }`}
-                onClick={() =>
-                  void handleAutomaticSelect(
-                    result,
-                  )
-                }
-              >
+              
+<button
+  key={result.externalId}
+  type="button"
+  className={`automatic-result ${
+    selectedAutomaticResult?.externalId ===
+    result.externalId
+      ? 'selected'
+      : ''
+  }`}
+  onClick={() =>
+    void handleAutomaticSelect(result)
+  }
+  disabled={isLoadingDetails}
+>
+
                 <span
   className="result-cover"
   style={
@@ -2221,15 +2348,16 @@ if (saved) {
               </p>
 
               <button
-                type="button"
-                onClick={() =>
-                  setIsCustomizingAutomatic(
-                    true,
-                  )
-                }
-              >
-                Customize &amp; Add
-              </button>
+  type="button"
+  onClick={() =>
+    setIsCustomizingAutomatic(true)
+  }
+  disabled={isLoadingDetails}
+>
+  {isLoadingDetails
+    ? 'Loading Details...'
+    : 'Customize & Add'}
+</button>
             </div>
           </div>
         )}
