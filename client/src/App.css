@@ -23622,3 +23622,331 @@ background: rgba(53, 38, 63, 0.75) !important;
   color: #ffffff;
 }
 
+
+
+
+
+/* =========================================
+   ADD MEDIA - COMPACT SELECTED RESULT
+   ========================================= */
+
+.add-media-modal .automatic-result-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 8px;
+}
+
+.add-media-modal .automatic-result-wrapper > .automatic-result {
+  width: 100%;
+  margin: 0;
+}
+
+.add-media-modal .automatic-result-wrapper:has(
+  .automatic-result-expanded
+) > .automatic-result {
+  border-radius: 7px 7px 0 0;
+  border-bottom-color: #79528f !important;
+}
+
+.add-media-modal .automatic-result-expanded {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+
+  margin: 0;
+  padding: 10px 14px;
+
+  background: #19151e !important;
+  border: 1px solid #79528f !important;
+  border-top: 0 !important;
+  border-radius: 0 0 7px 7px;
+}
+
+.add-media-modal .automatic-result-ready {
+  color: #c7b4d3;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.add-media-modal .automatic-result-customize {
+  flex-shrink: 0;
+  width: auto;
+  padding: 9px 14px;
+  margin: 0;
+
+  background: #79528f !important;
+  border: 1px solid #a67bc0 !important;
+  border-radius: 5px;
+
+  color: #ffffff !important;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.add-media-modal .automatic-result-customize:hover:not(:disabled) {
+  background: #9565b1 !important;
+}
+
+.add-media-modal .automatic-result-customize:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+@media (max-width: 480px) {
+  .add-media-modal .automatic-result-expanded {
+    flex-wrap: wrap;
+  }
+
+  .add-media-modal .automatic-result-customize {
+    width: 100%;
+  }
+}
+
+
+
+/* =========================================
+   MEDIA DETAIL - CHARCOAL / PURPLE THEME
+   ========================================= */
+
+/* Main modal */
+
+.detail-backdrop .media-detail {
+  background: #141218 !important;
+  border: 1px solid #51465d !important;
+  color: #f2edf5;
+}
+
+/* Artwork panel */
+
+.media-detail .detail-cover {
+  background-color: #0d0c11 !important;
+}
+
+/* Main scrolling content */
+
+.media-detail .detail-info {
+  background: #18151d !important;
+  color: #f2edf5;
+}
+
+/* Media category label */
+
+.media-detail .detail-eyebrow {
+  color: #b986db !important;
+}
+
+/* Title */
+
+.media-detail .detail-info > h2 {
+  color: #f4eff6;
+}
+
+/* Metadata cards */
+
+.media-detail .detail-rating,
+.media-detail .detail-primary-item,
+.media-detail .detail-facts > div {
+  background: #25212c !important;
+  border: 1px solid #4b4054 !important;
+  border-radius: 6px;
+}
+
+/* Metadata labels */
+
+.media-detail .detail-rating > span,
+.media-detail .detail-primary-item > span,
+.media-detail .detail-facts > div > span {
+  color: #a995b5 !important;
+}
+
+/* Metadata values */
+
+.media-detail .detail-primary-item strong,
+.media-detail .detail-facts strong {
+  color: #f0eaf3 !important;
+}
+
+/* External ratings */
+
+.media-detail .detail-rating strong {
+  color: #c18fdf !important;
+}
+
+/* Dividers */
+
+.media-detail .detail-divider {
+  background: #403747 !important;
+  border-color: #403747 !important;
+}
+
+/* Description */
+
+.media-detail .detail-description {
+  color: #c7bdcb !important;
+}
+
+.media-detail .detail-description p {
+  color: #c7bdcb !important;
+}
+
+/* Personal review container */
+
+.media-detail .detail-personal-review {
+  background: #211b28 !important;
+  border: 1px solid #51405e !important;
+  border-radius: 9px;
+}
+
+/* Review headings */
+
+.media-detail .detail-review-eyebrow {
+  color: #b986db !important;
+}
+
+.media-detail .detail-review-heading h3 {
+  color: #f3edf6 !important;
+}
+
+/* Rating stars */
+
+.media-detail .review-star {
+  color: #605766 !important;
+}
+
+.media-detail .review-star:hover,
+.media-detail .review-star.active {
+  color: #b986db !important;
+}
+
+/* Rating value */
+
+.media-detail .review-rating-value {
+  color: #c9b5d5 !important;
+}
+
+/* Review textarea */
+
+.media-detail .detail-review-text textarea {
+  background: #121016 !important;
+  border: 1px solid #4b4054 !important;
+  color: #f1ebf4 !important;
+}
+
+.media-detail .detail-review-text textarea:focus {
+  outline: none;
+  border-color: #a675c0 !important;
+  box-shadow: 0 0 0 2px rgba(166, 117, 192, 0.15);
+}
+
+/* Save Review button */
+
+.media-detail .detail-review-save {
+  background: linear-gradient(
+    180deg,
+    #79528f,
+    #563667
+  ) !important;
+
+  border: 1px solid #a67bc0 !important;
+  color: #ffffff !important;
+}
+
+.media-detail .detail-review-save:hover:not(:disabled) {
+  background: #9565b1 !important;
+}
+
+/* More Details */
+
+.media-detail .detail-more {
+  border-top: 1px solid #403747 !important;
+}
+
+.media-detail .detail-more-toggle {
+  background: transparent !important;
+  color: #d5c5dd !important;
+}
+
+.media-detail .detail-more-toggle:hover {
+  color: #d8a7f0 !important;
+}
+
+.media-detail .detail-more-arrow {
+  color: #b986db !important;
+}
+
+.media-detail .detail-more-content {
+  background: #1d1923 !important;
+  border: 1px solid #403747;
+  border-radius: 6px;
+}
+
+/* Expanded metadata */
+
+.media-detail .detail-more-group {
+  color: #e9e1ed;
+}
+
+.media-detail .detail-more-group > span {
+  color: #ad98ba !important;
+}
+
+/* Footer */
+
+.media-detail .detail-footer {
+  background: #151219 !important;
+  border-top: 1px solid #51405e !important;
+}
+
+.media-detail .detail-footer-label strong {
+  color: #f2edf5 !important;
+}
+
+.media-detail .detail-footer-label span {
+  color: #a99eaf !important;
+}
+
+/* Edit Media */
+
+.media-detail .detail-edit-button {
+  background: #563667 !important;
+  border: 1px solid #9c6ab8 !important;
+  color: #ffffff !important;
+}
+
+.media-detail .detail-edit-button:hover {
+  background: #79528f !important;
+  border-color: #b986db !important;
+}
+
+/* Remove */
+
+.media-detail .detail-remove-button {
+  background: #24202b !important;
+  border: 1px solid #59475f !important;
+  color: #cbbdd1 !important;
+}
+
+.media-detail .detail-remove-button:hover {
+  background: #40252f !important;
+  border-color: #a46a7d !important;
+  color: #f2d5dc !important;
+}
+
+/* Close button */
+
+.media-detail .detail-close {
+  background: #211b28 !important;
+  border: 1px solid #51405e !important;
+  color: #e2d5e9 !important;
+}
+
+.media-detail .detail-close:hover {
+  background: #382747 !important;
+  border-color: #a67bc0 !important;
+}
+
