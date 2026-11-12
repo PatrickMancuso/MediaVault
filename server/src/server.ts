@@ -1101,6 +1101,166 @@ app.get("/api/media/search/music", async (req, res) => {
 });
 
 
+/* =====================================================
+   MUSICBRAINZ - ALBUM DETAILS
+   ===================================================== */
+
+app.get("/api/media/music/:id", async (req, res) => {
+  try {
+    const id = String(req.params.id ?? "").trim();
+
+    // MusicBrainz identifiers are UUIDs.
+    const uuidPattern =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+    if (!uuidPattern.test(id)) {
+      return res.status(400).json({
+        error: "Invalid MusicBrainz release group ID.",
+      });
+    }
+
+    const url = new URL(
+      `https://musicbrainz.org/ws/2/release-group/${id}`
+    );
+
+    url.searchParams.set("fmt", "json");
+    url.searchParams.set(
+      "inc",
+      "artists+genres+tags"
+    );
+
+    const response = await musicBrainzFetch(url);
+
+    if (!response.ok) {
+      return res.status(502).json({
+        error: "Unable to retrieve album details.",
+      });
+    }
+
+    const album = await response.json();
+
+    const artists: string[] =
+      album["artist-credit"]
+        ?.filter((entry: any) => entry.artist)
+        ?.map((entry: any) => entry.artist.name) ?? [];
+
+    // Prefer curated genres, then fall back to tags.
+    const genreEntries =
+      Array.isArray(album.genres) &&
+      album.genres.length > 0
+        ? album.genres
+        : album.tags ?? [];
+
+    const genres: string[] = genreEntries
+      .filter(
+        (entry: any) =>
+          typeof entry.name === "string" &&
+          (entry.count ?? 1) > 0
+      )
+      .sort(
+        (a: any, b: any) =>
+          (b.count ?? 0) - (a.count ?? 0)
+      )
+      .slice(0, 12)
+      .map((entry: any) => entry.name);
+
+    const releaseDate =
+      album["first-release-date"] ?? "";
+
+    // Retrieve a limited set of available releases.
+    const releasesUrl = new URL(
+      "https://musicbrainz.org/ws/2/release/"
+    );
+
+    releasesUrl.searchParams.set(
+      "release-group",
+      id
+    );
+    releasesUrl.searchParams.set("fmt", "json");
+    releasesUrl.searchParams.set("limit", "25");
+
+    let releases: {
+      id: string;
+      title: string;
+      date: string | null;
+      country: string | null;
+      formats: string[];
+      status: string | null;
+    }[] = [];
+
+    try {
+      const releasesResponse =
+        await musicBrainzFetch(releasesUrl);
+
+      if (releasesResponse.ok) {
+        const releasesData =
+          await releasesResponse.json();
+
+        releases = (
+          releasesData.releases ?? []
+        ).map((release: any) => ({
+          id: release.id,
+          title: release.title ?? album.title,
+          date: release.date ?? null,
+          country: release.country ?? null,
+          formats: [
+            ...new Set<string>(
+              (release["media"] ?? [])
+                .map((medium: any) => medium.format)
+                .filter(
+                  (format: unknown): format is string =>
+                    typeof format === "string"
+                )
+            ),
+          ],
+          status: release.status ?? null,
+        }));
+      }
+    } catch (error) {
+      console.warn(
+        "Unable to retrieve available releases:",
+        error
+      );
+    }
+
+    return res.json({
+      source: "musicbrainz",
+      externalId: album.id,
+      musicBrainzReleaseGroupId: album.id,
+
+      title: album.title ?? "",
+      artists,
+
+      year: releaseDate
+        ? Number(releaseDate.slice(0, 4))
+        : null,
+
+      releaseDate,
+
+      albumType:
+        album["primary-type"] ?? "Album",
+
+      genres,
+
+      coverImage:
+        `https://coverartarchive.org/release-group/${id}/front-500`,
+
+      releases,
+    });
+  } catch (error) {
+    console.error(
+      "MusicBrainz album detail error:",
+      error
+    );
+
+    return res.status(502).json({
+      error: "Unable to retrieve album metadata.",
+    });
+  }
+});
+
+
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(
     `MediaLibrary API running on port ${PORT}`,
