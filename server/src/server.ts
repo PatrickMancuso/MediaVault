@@ -1064,8 +1064,9 @@ app.get("/api/media/search/music", async (req, res) => {
                 ) ?? [];
 
             return {
-              externalId: album.id,
-              title: album.title ?? "",
+  externalId: album.id,
+  title: album.title ?? "",
+  score: album.score ?? 0,
               year: releaseDate
                 ? Number(releaseDate.slice(0, 4))
                 : null,
