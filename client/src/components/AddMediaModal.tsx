@@ -79,6 +79,8 @@ interface ApiSearchResult {
   backdropImage?: string | null
   coverImage?: string | null
 
+score?: number
+  
   genres?: string[]
   platforms?: string[]
   slug?: string | null
@@ -247,6 +249,90 @@ function rankGameSearchResults(
     }
 
     return a.title.localeCompare(b.title)
+  })
+}
+
+
+
+/* =====================================================
+   MUSIC SEARCH - RELEVANCE RANKING
+   ===================================================== */
+
+function rankMusicSearchResults(
+  results: ApiSearchResult[],
+  searchTerm: string,
+): ApiSearchResult[] {
+  const normalize = (value: string) =>
+    value
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim()
+      .replace(/\s+/g, ' ')
+
+  const query = normalize(searchTerm)
+
+  const getScore = (result: ApiSearchResult) => {
+    const title = normalize(result.title)
+    const artists = normalize(
+      (result.artists ?? []).join(' ')
+    )
+
+    let score = 0
+
+    // Exact album title gets the strongest boost.
+    if (title === query) {
+      score += 1000
+    } else if (
+      title.startsWith(query + ' ')
+    ) {
+      score += 500
+    } else if (title.includes(query)) {
+      score += 250
+    }
+
+    // Support searches such as:
+    // "Kind of Blue Miles Davis"
+    if (
+      artists &&
+      query.includes(artists)
+    ) {
+      score += 400
+    }
+
+    // Prefer album releases slightly.
+    if (
+      result.albumType?.toLowerCase() === 'album'
+    ) {
+      score += 75
+    }
+
+    // Retain MusicBrainz's relevance signal.
+    score += Math.min(
+      Math.max(result.score ?? 0, 0),
+      100
+    )
+
+    return score
+  }
+
+  return [...results].sort((a, b) => {
+    const difference =
+      getScore(b) - getScore(a)
+
+    if (difference !== 0) {
+      return difference
+    }
+
+    // Earlier original releases first for ties.
+    const yearA = a.year ?? 9999
+    const yearB = b.year ?? 9999
+
+    return (
+      yearA - yearB ||
+      a.title.localeCompare(b.title)
+    )
   })
 }
 
@@ -925,7 +1011,9 @@ const results: ApiSearchResult[] =
 setSearchResults(
   mediaType === 'game'
     ? rankGameSearchResults(results, query)
-    : results
+    : mediaType === 'music'
+      ? rankMusicSearchResults(results, query)
+      : results
 )
 
     } catch (error) {
