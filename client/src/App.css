@@ -24041,3 +24041,102 @@ background: rgba(53, 38, 63, 0.75) !important;
 }
 
 
+
+
+/* =====================================================
+   DASHBOARD - FINAL SPACING AND ALIGNMENT
+   ===================================================== */
+
+.collection-dashboard {
+  --browse-recent-gap: 26px;
+  --compact-label-left: 18px;
+  --recent-panel-padding: 18px;
+
+  row-gap: 16px;
+}
+
+/* =====================================================
+   COLLECTION HEADER ALIGNMENT
+   ===================================================== */
+
+.collection-dashboard
+.dashboard-archives-section
+.dashboard-section-header {
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* =====================================================
+   COMPACT BROWSE LABEL ALIGNMENT
+   ===================================================== */
+
+.collection-dashboard
+.dashboard-category-grid-compact
+.category-content {
+  left: var(--compact-label-left);
+  right: auto;
+
+  width: auto;
+  max-width: calc(100% - 36px);
+
+  align-items: flex-start;
+  text-align: left;
+}
+
+.collection-dashboard
+.dashboard-category-grid-compact
+.category-content strong,
+.collection-dashboard
+.dashboard-category-grid-compact
+.category-content em {
+  text-align: left;
+}
+
+/* =====================================================
+   RECENTLY ADDED PANEL
+   ===================================================== */
+
+/* Target the first dashboard section after browse */
+
+.collection-dashboard
+.dashboard-archives-section + .dashboard-section {
+  margin-top: calc(
+    var(--browse-recent-gap) - 16px
+  );
+
+  padding: var(--recent-panel-padding);
+
+  background: rgba(18, 16, 23, 0.82);
+
+  border: 1px solid rgba(118, 93, 134, 0.3);
+  border-radius: 9px;
+}
+
+/* Recently Added heading */
+
+.collection-dashboard
+.dashboard-archives-section + .dashboard-section
+.dashboard-section-header {
+  padding: 0;
+  margin: 0;
+}
+
+/* Artwork track */
+
+.collection-dashboard
+.dashboard-archives-section + .dashboard-section
+.recent-media-track {
+  margin-top: 0;
+}
+
+/* Keep section sizing predictable */
+
+.collection-dashboard
+.dashboard-archives-section + .dashboard-section {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+
