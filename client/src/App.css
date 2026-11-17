@@ -24094,49 +24094,80 @@ background: rgba(53, 38, 63, 0.75) !important;
   text-align: left;
 }
 
+
 /* =====================================================
-   RECENTLY ADDED PANEL
+   DASHBOARD - SUBTLE RECENTLY ADDED SECTION
    ===================================================== */
 
-/* Target the first dashboard section after browse */
+.collection-dashboard {
+  --browse-recent-gap: 24px;
+  --recent-panel-padding: 14px;
+}
+
+/* Recently Added - blend into dashboard */
 
 .collection-dashboard
 .dashboard-archives-section + .dashboard-section {
-  margin-top: calc(
-    var(--browse-recent-gap) - 16px
+  margin-top: calc(var(--browse-recent-gap) - 16px);
+
+  padding: 14px 0;
+
+  background: linear-gradient(
+    180deg,
+    rgba(30, 25, 36, 0.28),
+    rgba(18, 16, 23, 0.12)
   );
 
-  padding: var(--recent-panel-padding);
+  border: none;
+  border-radius: 7px;
 
-  background: rgba(18, 16, 23, 0.82);
-
-  border: 1px solid rgba(118, 93, 134, 0.3);
-  border-radius: 9px;
+  box-shadow: none;
 }
 
-/* Recently Added heading */
+/* Align Recently Added title with other headings */
 
 .collection-dashboard
 .dashboard-archives-section + .dashboard-section
 .dashboard-section-header {
-  padding: 0;
+  padding-left: 0;
+  padding-right: 0;
   margin: 0;
 }
 
-/* Artwork track */
+/* Keep artwork aligned with heading */
 
 .collection-dashboard
 .dashboard-archives-section + .dashboard-section
 .recent-media-track {
+  padding-left: 0;
+  padding-right: 0;
   margin-top: 0;
 }
 
-/* Keep section sizing predictable */
+/* Collection header alignment */
 
 .collection-dashboard
-.dashboard-archives-section + .dashboard-section {
-  box-sizing: border-box;
-  min-width: 0;
+.dashboard-archives-section
+.dashboard-section-header {
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
+/* Collection subtitle alignment */
+
+.collection-dashboard
+.dashboard-archives-section
+.dashboard-section-header > div {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.collection-dashboard
+.dashboard-archives-section
+.dashboard-section-header span {
+  margin-left: 0;
+  padding-left: 0;
+}
 
