@@ -24190,7 +24190,7 @@ background: rgba(53, 38, 63, 0.75) !important;
 */
 
 .collection-dashboard {
-  --browse-header-gap: 14px;
+  --browse-header-gap: 18px;
 }
 
 .collection-dashboard
@@ -24218,7 +24218,7 @@ background: rgba(53, 38, 63, 0.75) !important;
 */
 
 .collection-dashboard {
-  --recent-music-size: 190px;
+  --recent-music-size: 205px;
 }
 
 /* Target music items in Recently Added */
