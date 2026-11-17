@@ -24190,7 +24190,7 @@ background: rgba(53, 38, 63, 0.75) !important;
 */
 
 .collection-dashboard {
-  --browse-header-gap: 22px;
+  --browse-header-gap: 25px;
 }
 
 .collection-dashboard
@@ -24199,49 +24199,6 @@ background: rgba(53, 38, 63, 0.75) !important;
   margin-top: var(--browse-header-gap);
 }
 
-
-
-
-/* =====================================================
-   RECENTLY ADDED - MUSIC ARTWORK SIZE
-   ===================================================== */
-
-/*
-   ADJUST THIS VALUE:
-   Controls the width AND height of Music artwork.
-
-   Suggested: 190px
-   Smaller:   175px
-   Larger:    205px
-
-   Music artwork remains square.
-*/
-
-.collection-dashboard {
-  --recent-music-size: 205px;
-}
-
-/* Target music items in Recently Added */
-
-.collection-dashboard
-.dashboard-archives-section + .dashboard-section
-.recent-media-track
-.media-card[data-type="music"] {
-  width: var(--recent-music-size);
-  flex: 0 0 var(--recent-music-size);
-}
-
-/* Keep album artwork square */
-
-.collection-dashboard
-.dashboard-archives-section + .dashboard-section
-.recent-media-track
-.media-card[data-type="music"] img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  height: auto;
-  object-fit: cover;
-}
 
 
 
