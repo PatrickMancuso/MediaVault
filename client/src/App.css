@@ -24242,3 +24242,64 @@ background: rgba(53, 38, 63, 0.75) !important;
   height: auto;
   object-fit: cover;
 }
+
+
+
+
+
+/* =====================================================
+   RECENTLY ADDED - ADJUSTABLE MUSIC SIZE
+   ===================================================== */
+
+/*
+   CHANGE THIS VALUE TO RESIZE MUSIC CARDS
+
+   225px = previous size
+   235px = slightly larger
+   245px = recommended
+   255px = noticeably larger
+
+   Width and artwork height remain equal.
+*/
+
+.collection-dashboard {
+  --recent-music-size: 245px;
+}
+
+/* Music card width */
+
+.collection-dashboard
+.recent-media-track
+.recent-media-card-music {
+  flex: 0 0 var(--recent-music-size);
+  width: var(--recent-music-size);
+  min-width: var(--recent-music-size);
+  max-width: var(--recent-music-size);
+}
+
+/* Square album artwork */
+
+.collection-dashboard
+.recent-media-card-music
+.recent-media-art {
+  width: 100%;
+  height: var(--recent-music-size);
+  min-height: 0;
+  max-height: none;
+
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
+}
+
+/* Album image */
+
+.collection-dashboard
+.recent-media-card-music
+.recent-media-image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+}
+
