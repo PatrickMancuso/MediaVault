@@ -487,6 +487,13 @@ const [selectedCollectorId, setSelectedCollectorId] =
 const [user, setUser] =
   useState<User | null>(null)
 
+  /* =====================================================
+   INBOX - UNREAD NOTIFICATION COUNT
+   ===================================================== */
+
+const [inboxUnreadCount, setInboxUnreadCount] =
+  useState(0)
+
 const [isAuthModalOpen, setIsAuthModalOpen] =
   useState(false)
 
@@ -539,6 +546,51 @@ useEffect(() => {
     authListener.subscription.unsubscribe()
   }
 }, [])
+
+  
+/* =====================================================
+   INBOX - LOAD UNREAD NOTIFICATIONS
+   ===================================================== */
+
+useEffect(() => {
+  if (!user) {
+    setInboxUnreadCount(0)
+    return
+  }
+
+  let cancelled = false
+
+  const loadUnreadCount = async () => {
+    const { data, error } = await supabase.rpc(
+      'get_inbox_unread_count'
+    )
+
+    if (error) {
+      console.error(
+        'Unable to load inbox unread count:',
+        error
+      )
+      return
+    }
+
+    if (!cancelled) {
+      setInboxUnreadCount(Number(data ?? 0))
+    }
+  }
+
+  void loadUnreadCount()
+
+  const interval = window.setInterval(
+    () => void loadUnreadCount(),
+    30000
+  )
+
+  return () => {
+    cancelled = true
+    window.clearInterval(interval)
+  }
+}, [user?.id])
+
 
 /* =========================================================
    LOAD COLLECTION
@@ -1428,6 +1480,7 @@ if (!user) {
       setIsAuthModalOpen(true)
     }
   }}
+  inboxUnreadCount={inboxUnreadCount}
   userEmail={user?.email ?? null}
 />
 
