@@ -18,6 +18,7 @@ interface ActivityItem {
   personal_rating: number | null
   personal_review: string | null
   activity_at: string
+  post_id: string
 }
 
 
@@ -28,6 +29,7 @@ interface AdditionGroup {
   displayName: string | null
   items: ActivityItem[]
   activityAt: string
+  postId: string
 }
 
 interface ReviewEntry {
@@ -52,14 +54,14 @@ const groupActivity = (
   const groups = new Map<string, AdditionGroup>()
 
   for (const item of additions) {
-    const day = item.activity_at.slice(0, 10)
-    const key = `${item.user_id}-${day}`
+    const key = item.post_id
 
     let group = groups.get(key)
 
     if (!group) {
       group = {
         kind: 'additions',
+        postId: item.post_id,
         userId: item.user_id,
         username: item.username,
         displayName: item.display_name,
