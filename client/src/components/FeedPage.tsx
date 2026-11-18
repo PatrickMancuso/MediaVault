@@ -151,6 +151,25 @@ function FeedPage({
   const [refreshing, setRefreshing] = useState(false)
   const [error, setError] = useState('')
 
+
+
+/* =====================================================
+   ACTIVITY - LIKES
+   ===================================================== */
+
+interface PostSummary {
+  like_count: number
+  comment_count: number
+  liked_by_me: boolean
+}
+
+const [postSummaries, setPostSummaries] =
+  useState<Record<string, PostSummary>>({})
+
+const [likingPosts, setLikingPosts] =
+  useState<string[]>([])
+                   
+
   /* =====================================================
      LOAD FRIEND ACTIVITY
      ===================================================== */
@@ -203,6 +222,144 @@ function FeedPage({
     void loadActivity()
   }, [loadActivity])
 
+
+useEffect(() => {
+  if (loading || error) return
+
+  void loadPostSummaries(
+    activities.map((item) => item.post_id)
+  )
+}, [
+  activities,
+  loading,
+  error,
+  loadPostSummaries,
+])
+
+/* =====================================================
+   LOAD ACTIVITY INTERACTION SUMMARIES
+   ===================================================== */
+
+const loadPostSummaries = useCallback(
+  async (postIds: string[]) => {
+    const uniqueIds = [...new Set(postIds)]
+
+    if (uniqueIds.length === 0) {
+      setPostSummaries({})
+      return
+    }
+
+    const results = await Promise.all(
+      uniqueIds.map(async (postId) => {
+        const { data, error } = await supabase.rpc(
+          'get_activity_post_summary',
+          {
+            p_post_id: postId,
+          }
+        )
+
+        if (error) {
+          console.error(
+            'Failed to load post summary:',
+            error
+          )
+          return null
+        }
+
+        const summary = data?.[0]
+
+        if (!summary) return null
+
+        return {
+          postId,
+          summary: {
+            like_count: Number(summary.like_count),
+            comment_count: Number(summary.comment_count),
+            liked_by_me: Boolean(summary.liked_by_me),
+          },
+        }
+      })
+    )
+
+    const next: Record<string, PostSummary> = {}
+
+    for (const result of results) {
+      if (result) {
+        next[result.postId] = result.summary
+      }
+    }
+
+    setPostSummaries(next)
+  },
+  []
+)
+
+
+
+/* =====================================================
+   TOGGLE ACTIVITY LIKE
+   ===================================================== */
+
+const handleToggleLike = async (
+  postId: string
+) => {
+  if (likingPosts.includes(postId)) return
+
+  setLikingPosts((current) => [
+    ...current,
+    postId,
+  ])
+
+  try {
+    const { data, error } = await supabase.rpc(
+      'toggle_activity_like',
+      {
+        p_post_id: postId,
+      }
+    )
+
+    if (error) throw error
+
+    const liked = Boolean(data)
+
+    setPostSummaries((current) => {
+      const previous = current[postId] ?? {
+        like_count: 0,
+        comment_count: 0,
+        liked_by_me: false,
+      }
+
+      return {
+        ...current,
+        [postId]: {
+          ...previous,
+          liked_by_me: liked,
+          like_count: Math.max(
+            0,
+            previous.like_count +
+              (liked ? 1 : -1)
+          ),
+        },
+      }
+    })
+  } catch (error) {
+    console.error(
+      'Unable to toggle activity like:',
+      error
+    )
+
+    window.alert(
+      'Unable to update like. Please try again.'
+    )
+  } finally {
+    setLikingPosts((current) =>
+      current.filter((id) => id !== postId)
+    )
+  }
+}
+
+                   
+                   
   /* =====================================================
      FILTER ACTIVITY
      ===================================================== */
@@ -413,6 +570,42 @@ function FeedPage({
 
             </div>
 
+
+
+{/* ACTIVITY INTERACTIONS */}
+
+<div className="feed-post-actions">
+  <button
+    type="button"
+    className={`feed-like-button ${
+      postSummaries[entry.postId]?.liked_by_me
+        ? 'liked'
+        : ''
+    }`}
+    disabled={likingPosts.includes(entry.postId)}
+    onClick={() =>
+      void handleToggleLike(entry.postId)
+    }
+    aria-pressed={
+      postSummaries[entry.postId]?.liked_by_me ??
+      false
+    }
+  >
+    <span aria-hidden="true">♥</span>
+
+    <span>
+      {postSummaries[entry.postId]?.liked_by_me
+        ? 'Liked'
+        : 'Like'}
+    </span>
+
+    <small>
+      {postSummaries[entry.postId]?.like_count ?? 0}
+    </small>
+  </button>
+</div>
+
+            
           </article>
         )
       }
@@ -509,6 +702,42 @@ function FeedPage({
             </div>
 
             </button>
+
+
+{/* REVIEW INTERACTIONS */}
+
+<div className="feed-post-actions">
+  <button
+    type="button"
+    className={`feed-like-button ${
+      postSummaries[item.post_id]?.liked_by_me
+        ? 'liked'
+        : ''
+    }`}
+    disabled={likingPosts.includes(item.post_id)}
+    onClick={() =>
+      void handleToggleLike(item.post_id)
+    }
+    aria-pressed={
+      postSummaries[item.post_id]?.liked_by_me ??
+      false
+    }
+  >
+    <span aria-hidden="true">♥</span>
+
+    <span>
+      {postSummaries[item.post_id]?.liked_by_me
+        ? 'Liked'
+        : 'Like'}
+    </span>
+
+    <small>
+      {postSummaries[item.post_id]?.like_count ?? 0}
+    </small>
+  </button>
+</div>
+
+          
 
         </article>
       )
