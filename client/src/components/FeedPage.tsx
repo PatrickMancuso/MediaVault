@@ -1,6 +1,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import ActivityComments from './ActivityComments'
 
 type ActivityFilter = 'all' | 'addition' | 'review'
 
@@ -136,6 +137,16 @@ interface PostSummary {
   liked_by_me: boolean
 }
 
+interface ActivityComment {
+  id: string
+  post_id: string
+  user_id: string
+  username: string | null
+  display_name: string | null
+  body: string
+  created_at: string
+}
+
 interface FeedPageProps {
   onFindCollectors: () => void
   onOpenMedia: (
@@ -159,6 +170,16 @@ function FeedPage({
 
 
 
+const [currentUserId, setCurrentUserId] =
+  useState<string | null>(null)
+
+useEffect(() => {
+  void supabase.auth.getUser().then(({ data }) => {
+    setCurrentUserId(data.user?.id ?? null)
+  })
+}, [])
+                   
+
 /* =====================================================
    ACTIVITY - LIKES
    ===================================================== */
@@ -172,6 +193,24 @@ const [likingPosts, setLikingPosts] =
   useState<string[]>([])
                    
 
+const [openComments, setOpenComments] =
+  useState<string[]>([])
+
+const [postComments, setPostComments] =
+  useState<Record<string, ActivityComment[]>>({})
+
+const [commentDrafts, setCommentDrafts] =
+  useState<Record<string, string>>({})
+
+const [loadingComments, setLoadingComments] =
+  useState<string[]>([])
+
+const [submittingComments, setSubmittingComments] =
+  useState<string[]>([])
+
+const [deletingComments, setDeletingComments] =
+  useState<string[]>([])
+                   
   /* =====================================================
      LOAD FRIEND ACTIVITY
      ===================================================== */
@@ -365,6 +404,139 @@ const handleToggleLike = async (
     )
   }
 }
+
+
+
+/* =====================================================
+   ACTIVITY - COMMENTS
+   ===================================================== */
+
+const loadComments = async (postId: string) => {
+  setLoadingComments((current) => [...current, postId])
+
+  try {
+    const { data, error } = await supabase.rpc(
+      'get_activity_comments',
+      { p_post_id: postId }
+    )
+
+    if (error) throw error
+
+    setPostComments((current) => ({
+      ...current,
+      [postId]: (data ?? []) as ActivityComment[],
+    }))
+  } catch (error) {
+    console.error('Unable to load comments:', error)
+    window.alert('Unable to load comments.')
+  } finally {
+    setLoadingComments((current) =>
+      current.filter((id) => id !== postId)
+    )
+  }
+}
+
+const toggleComments = (postId: string) => {
+  const isOpen = openComments.includes(postId)
+
+  if (isOpen) {
+    setOpenComments((current) =>
+      current.filter((id) => id !== postId)
+    )
+  } else {
+    setOpenComments((current) => [...current, postId])
+    void loadComments(postId)
+  }
+}
+
+const handleSubmitComment = async (postId: string) => {
+  const body = (commentDrafts[postId] ?? '').trim()
+
+  if (!body || body.length > 1000) return
+  if (submittingComments.includes(postId)) return
+
+  setSubmittingComments((current) => [...current, postId])
+
+  try {
+    const { error } = await supabase
+      .from('activity_comments')
+      .insert({
+        post_id: postId,
+        body,
+        user_id: (await supabase.auth.getUser()).data.user?.id,
+      })
+
+    if (error) throw error
+
+    setCommentDrafts((current) => ({
+      ...current,
+      [postId]: '',
+    }))
+
+    await loadComments(postId)
+
+    setPostSummaries((current) => ({
+      ...current,
+      [postId]: {
+        like_count: current[postId]?.like_count ?? 0,
+        liked_by_me: current[postId]?.liked_by_me ?? false,
+        comment_count:
+          (current[postId]?.comment_count ?? 0) + 1,
+      },
+    }))
+  } catch (error) {
+    console.error('Unable to post comment:', error)
+    window.alert('Unable to post comment.')
+  } finally {
+    setSubmittingComments((current) =>
+      current.filter((id) => id !== postId)
+    )
+  }
+}
+
+const handleDeleteComment = async (
+  postId: string,
+  commentId: string
+) => {
+  if (deletingComments.includes(commentId)) return
+
+  setDeletingComments((current) => [
+    ...current,
+    commentId,
+  ])
+
+  try {
+    const { error } = await supabase
+      .from('activity_comments')
+      .delete()
+      .eq('id', commentId)
+
+    if (error) throw error
+
+    await loadComments(postId)
+
+    setPostSummaries((current) => ({
+      ...current,
+      [postId]: {
+        like_count: current[postId]?.like_count ?? 0,
+        liked_by_me: current[postId]?.liked_by_me ?? false,
+        comment_count: Math.max(
+          0,
+          (current[postId]?.comment_count ?? 0) - 1
+        ),
+      },
+    }))
+  } catch (error) {
+    console.error('Unable to delete comment:', error)
+    window.alert('Unable to delete comment.')
+  } finally {
+    setDeletingComments((current) =>
+      current.filter((id) => id !== commentId)
+    )
+  }
+}
+
+                   
 
                    
                    
@@ -611,7 +783,46 @@ const handleToggleLike = async (
       {postSummaries[entry.postId]?.like_count ?? 0}
     </small>
   </button>
+
+
+  <button
+  type="button"
+  className="feed-comment-button"
+  onClick={() => toggleComments(entry.postId)}
+  aria-expanded={openComments.includes(entry.postId)}
+>
+  <span aria-hidden="true">◯</span>
+  <span>Comments</span>
+  <small>
+    {postSummaries[entry.postId]?.comment_count ?? 0}
+  </small>
+</button>
 </div>
+
+
+            
+{openComments.includes(entry.postId) && (
+  <ActivityComments
+    comments={postComments[entry.postId] ?? []}
+    currentUserId={currentUserId}
+    draft={commentDrafts[entry.postId] ?? ''}
+    loading={loadingComments.includes(entry.postId)}
+    submitting={submittingComments.includes(entry.postId)}
+    deletingComments={deletingComments}
+    onDraftChange={(value) =>
+      setCommentDrafts((current) => ({
+        ...current,
+        [entry.postId]: value,
+      }))
+    }
+    onSubmit={() =>
+      void handleSubmitComment(entry.postId)
+    }
+    onDelete={(commentId) =>
+      void handleDeleteComment(entry.postId, commentId)
+    }
+  />
+)}
 
             
           </article>
