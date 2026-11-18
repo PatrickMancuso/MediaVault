@@ -303,15 +303,6 @@ useEffect(() => {
   loadPostSummaries,
 ])
 
-/* =====================================================
-   TOGGLE ACTIVITY LIKE
-   ===================================================== */
-
-const handleToggleLike = async (
-  postId: string
-) => {
-
-
 
 /* =====================================================
    TOGGLE ACTIVITY LIKE
