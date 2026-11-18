@@ -24818,3 +24818,131 @@ background: rgba(53, 38, 63, 0.75) !important;
   cursor: wait;
 }
 
+
+
+
+
+/* =====================================================
+   ACTIVITY - COMMENTS
+   ===================================================== */
+
+.feed-page .feed-comment-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #b9aebe;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.feed-page .feed-comment-button:hover {
+  background: #302438;
+  border-color: #6e507c;
+  color: #e3c2f5;
+}
+
+.feed-page .feed-comments-panel {
+  margin-top: 12px;
+  padding: 16px;
+  background: #19151e;
+  border: 1px solid #44394c;
+  border-radius: 7px;
+}
+
+.feed-page .feed-comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.feed-page .feed-comment {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  background: #25202d;
+  border-radius: 6px;
+}
+
+.feed-page .feed-comment-content strong {
+  color: #d7b4ea;
+  font-size: 12px;
+}
+
+.feed-page .feed-comment-content p {
+  margin: 6px 0;
+  color: #e0d7e5;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.feed-page .feed-comment-content small {
+  color: #998ca3;
+  font-size: 10px;
+}
+
+.feed-page .feed-comment-delete {
+  align-self: flex-start;
+  background: transparent;
+  border: none;
+  color: #a99cac;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.feed-page .feed-comment-delete:hover {
+  color: #e2a5b7;
+}
+
+.feed-page .feed-comment-compose {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feed-page .feed-comment-compose textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  background: #111015;
+  border: 1px solid #51405e;
+  border-radius: 6px;
+  color: #f2edf5;
+  font: inherit;
+  font-size: 13px;
+  resize: vertical;
+}
+
+.feed-page .feed-comment-compose textarea:focus {
+  outline: none;
+  border-color: #b986db;
+}
+
+.feed-page .feed-comment-compose button {
+  align-self: flex-end;
+  padding: 10px 16px;
+  background: #563667;
+  border: 1px solid #9c6ab8;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.feed-page .feed-comment-compose button:hover:not(:disabled) {
+  background: #79528f;
+}
+
+.feed-page .feed-comment-compose button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
