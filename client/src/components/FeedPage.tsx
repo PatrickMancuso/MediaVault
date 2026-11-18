@@ -130,10 +130,15 @@ const formatActivityDate = (date: string) =>
 
 interface FeedPageProps {
   onFindCollectors: () => void
+  onOpenMedia: (
+    mediaId: string,
+    collectorId: string
+  ) => void
 }
 
 function FeedPage({
   onFindCollectors,
+  onOpenMedia,
 }: FeedPageProps) {  const [activities, setActivities] =
     useState<ActivityItem[]>([])
 
@@ -371,10 +376,15 @@ function FeedPage({
             <div className="feed-addition-track">
 
               {entry.items.map((item) => (
-                <div
-                  key={item.media_id}
-                  className="feed-addition-item"
-                >
+             <button
+  key={item.media_id}
+  type="button"
+  className="feed-addition-item"
+  onClick={() =>
+    onOpenMedia(item.media_id, item.user_id)
+  }
+  aria-label={`View details for ${item.title}`}
+>
                   <div className="feed-addition-art">
                     {item.cover_image ? (
                       <img
@@ -438,8 +448,14 @@ function FeedPage({
             </div>
           </div>
 
-          <div className="feed-activity-media">
-
+<button
+  type="button"
+  className="feed-activity-media"
+  onClick={() =>
+    onOpenMedia(item.media_id, item.user_id)
+  }
+  aria-label={`View details for ${item.title}`}
+>
             <div className="feed-activity-art">
               {item.cover_image ? (
                 <img
