@@ -24379,33 +24379,35 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 
 
+
 /* =====================================================
-   ACTIVITY - COMPACT MEDIA ENTRIES
+   ACTIVITY - HORIZONTAL MEDIA CAROUSEL
    ===================================================== */
 
 .feed-page {
   /*
-    ADJUST THESE VALUES:
+    ADJUSTABLE VALUES
 
-    --feed-card-width:
-      Width of each media entry.
-      Suggested: 140px
-      Smaller:   120px
-      Larger:    160px
+    Card width:       145px
+    Artwork height:   195px
+    Gap between cards: 14px
 
-    --feed-card-gap:
-      Space between media entries.
+    Increase card width for larger artwork.
+    Decrease for more visible titles.
   */
 
-  --feed-card-width: 140px;
+  --feed-card-width: 145px;
+  --feed-art-height: 195px;
   --feed-card-gap: 14px;
 }
 
-/* Grouped additions */
+/* Single-row horizontal scrolling */
 
 .feed-page .feed-addition-track {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
   align-items: flex-start;
   justify-content: flex-start;
 
@@ -24413,16 +24415,25 @@ background: rgba(53, 38, 63, 0.75) !important;
 
   width: 100%;
   min-width: 0;
-  overflow: visible;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 4px 2px 12px;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    #6e507c
+    rgba(255, 255, 255, 0.05);
 }
 
-/* Individual media entries */
+/* Individual media cards */
 
 .feed-page .feed-addition-item {
   flex: 0 0 var(--feed-card-width);
 
   width: var(--feed-card-width);
-  min-width: 0;
+  min-width: var(--feed-card-width);
   max-width: var(--feed-card-width);
 
   display: flex;
@@ -24436,7 +24447,7 @@ background: rgba(53, 38, 63, 0.75) !important;
 
 .feed-page .feed-addition-art {
   width: 100%;
-  height: 190px;
+  height: var(--feed-art-height);
 
   display: flex;
   align-items: center;
@@ -24447,13 +24458,14 @@ background: rgba(53, 38, 63, 0.75) !important;
   background: #111015;
   border: 1px solid #44394c;
   border-radius: 6px;
+
+  box-sizing: border-box;
 }
 
-/* Artwork */
+/* Artwork images */
 
 .feed-page .feed-addition-art img {
   display: block;
-
   width: 100%;
   height: 100%;
 
@@ -24461,7 +24473,7 @@ background: rgba(53, 38, 63, 0.75) !important;
   object-position: center;
 }
 
-/* Titles */
+/* Title */
 
 .feed-page .feed-addition-item strong {
   color: #f1ebf4;
@@ -24481,16 +24493,97 @@ background: rgba(53, 38, 63, 0.75) !important;
   line-height: 1.4;
 }
 
+/* Scrollbar */
+
+.feed-page .feed-addition-track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.feed-page .feed-addition-track::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.feed-page .feed-addition-track::-webkit-scrollbar-thumb {
+  background: #6e507c;
+  border-radius: 10px;
+}
+
+.feed-page .feed-addition-track::-webkit-scrollbar-thumb:hover {
+  background: #9c6ab8;
+}
+
 /* Responsive */
 
 @media (max-width: 650px) {
   .feed-page {
-    --feed-card-width: 110px;
+    --feed-card-width: 115px;
+    --feed-art-height: 155px;
     --feed-card-gap: 10px;
   }
+}
 
-  .feed-page .feed-addition-art {
-    height: 150px;
+
+
+/* =====================================================
+   ACTIVITY - REFINED POST CONTAINERS
+   ===================================================== */
+
+.feed-page .feed-activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feed-page .feed-activity-card {
+  padding: 20px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(37, 31, 43, 0.92),
+    rgba(23, 21, 28, 0.96)
+  );
+
+  border: 1px solid #483b50;
+  border-radius: 9px;
+
+  box-shadow: none;
+}
+
+/* Collector information */
+
+.feed-page .feed-activity-user {
+  margin-bottom: 16px;
+}
+
+/* Prevent addition cards from becoming too tall */
+
+.feed-page .feed-addition-group {
+  min-height: 0;
+  height: auto;
+}
+
+/* Keep the carousel inside the card */
+
+.feed-page .feed-addition-group .feed-addition-track {
+  max-width: 100%;
+}
+
+/* Hover */
+
+.feed-page .feed-activity-card:hover {
+  border-color: #67516f;
+}
+
+/* Smaller spacing on mobile */
+
+@media (max-width: 650px) {
+  .feed-page .feed-activity-card {
+    padding: 14px;
+  }
+
+  .feed-page .feed-activity-user {
+    margin-bottom: 12px;
   }
 }
 
