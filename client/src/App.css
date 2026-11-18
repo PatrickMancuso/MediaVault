@@ -24706,3 +24706,45 @@ background: rgba(53, 38, 63, 0.75) !important;
   font-style: italic;
 }
 
+
+/* =====================================================
+   ACTIVITY MEDIA - LOADING AND ERROR
+   ===================================================== */
+
+.activity-media-status {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.activity-media-status-card {
+  min-width: 260px;
+  max-width: 420px;
+  padding: 24px;
+
+  background: #211e27;
+  border: 1px solid #79528f;
+  border-radius: 9px;
+
+  color: #f2edf5;
+  text-align: center;
+}
+
+.activity-media-status-card button {
+  margin-top: 16px;
+  padding: 10px 18px;
+
+  background: #563667;
+  border: 1px solid #9c6ab8;
+  border-radius: 5px;
+
+  color: #fff;
+  cursor: pointer;
+}
+
