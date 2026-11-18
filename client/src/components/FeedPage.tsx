@@ -230,16 +230,11 @@ function FeedPage({
 
       <div className="feed-header feed-header-expanded">
         <div>
-          <span className="feed-eyebrow">
-            YOUR CONNECTIONS
-          </span>
+       
 
-          <h1>Activity</h1>
+          <h1>Your Connections</h1>
 
-          <p>
-            Recent additions and reviews from
-            your friends on MediaVault.
-          </p>
+       
         </div>
 
         <button
