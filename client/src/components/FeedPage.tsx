@@ -130,6 +130,12 @@ const formatActivityDate = (date: string) =>
     year: 'numeric',
   })
 
+interface PostSummary {
+  like_count: number
+  comment_count: number
+  liked_by_me: boolean
+}
+
 interface FeedPageProps {
   onFindCollectors: () => void
   onOpenMedia: (
@@ -157,11 +163,7 @@ function FeedPage({
    ACTIVITY - LIKES
    ===================================================== */
 
-interface PostSummary {
-  like_count: number
-  comment_count: number
-  liked_by_me: boolean
-}
+
 
 const [postSummaries, setPostSummaries] =
   useState<Record<string, PostSummary>>({})
@@ -223,18 +225,7 @@ const [likingPosts, setLikingPosts] =
   }, [loadActivity])
 
 
-useEffect(() => {
-  if (loading || error) return
 
-  void loadPostSummaries(
-    activities.map((item) => item.post_id)
-  )
-}, [
-  activities,
-  loading,
-  error,
-  loadPostSummaries,
-])
 
 /* =====================================================
    LOAD ACTIVITY INTERACTION SUMMARIES
@@ -289,10 +280,36 @@ const loadPostSummaries = useCallback(
       }
     }
 
+
     setPostSummaries(next)
   },
   []
 )
+
+/* =====================================================
+   LOAD SUMMARIES WHEN ACTIVITY CHANGES
+   ===================================================== */
+
+useEffect(() => {
+  if (loading || error) return
+
+  void loadPostSummaries(
+    activities.map((item) => item.post_id)
+  )
+}, [
+  activities,
+  loading,
+  error,
+  loadPostSummaries,
+])
+
+/* =====================================================
+   TOGGLE ACTIVITY LIKE
+   ===================================================== */
+
+const handleToggleLike = async (
+  postId: string
+) => {
 
 
 
