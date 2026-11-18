@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import ActivityNotifications from './ActivityNotifications'
 
 type InboxTab =
   | 'all'
@@ -195,26 +196,12 @@ function InboxPage() {
      EMPTY STATE CONTENT
      ===================================================== */
 
-  const emptyTitle =
-    activeTab === 'requests'
-      ? 'No friend requests'
-      : activeTab === 'updates'
-        ? 'No new updates'
-        : activeTab === 'community'
-          ? 'No community announcements'
-          : "You're all caught up"
-
-  const emptyDescription =
-    activeTab === 'requests'
-      ? 'Incoming friend requests will appear here.'
-      : activeTab === 'updates'
-        ? 'Comments, likes, and optional friend updates will appear here.'
-        : activeTab === 'community'
-          ? 'MediaVault news and announcements will appear here.'
-          : 'Your notifications and friend requests will appear here.'
 
   const showRequests =
     activeTab === 'all' || activeTab === 'requests'
+
+  const showNotifications =
+  activeTab === 'all' || activeTab === 'updates'
 
   return (
     <section className="inbox-page">
@@ -267,109 +254,125 @@ function InboxPage() {
         ))}
       </div>
 
-      {/* CONTENT */}
+ 
+{/* CONTENT */}
 
-      <div className="inbox-content">
+<div className="inbox-content">
 
-        {loading && showRequests ? (
-          <div className="inbox-empty">
-            <h2>Loading requests...</h2>
-          </div>
-        ) : error && showRequests ? (
-          <div className="inbox-empty">
-            <h2>Unable to load requests</h2>
-            <p role="alert">{error}</p>
-          </div>
-        ) : showRequests && requests.length > 0 ? (
+  {showRequests && (
+    <div className="inbox-content-section">
+      {activeTab === 'all' && (
+        <h2 className="inbox-section-title">
+          Friend Requests
+        </h2>
+      )}
 
-          <div className="inbox-request-list">
-
-            {requests.map((request) => (
-              <div
-                key={request.id}
-                className="inbox-request-card"
-              >
-                <div className="inbox-request-avatar">
-                  {request.display_name
-                    .charAt(0)
-                    .toUpperCase()}
-                </div>
-
-                <div className="inbox-request-info">
-                  <strong>
-                    {request.display_name}
-                  </strong>
-
-                  {request.username && (
-                    <span className="inbox-request-username">
-                      @{request.username}
-                    </span>
-                  )}
-
-                  <p>
-                    Sent you a friend request.
-                  </p>
-
-                  <small>
-                    {new Date(
-                      request.created_at
-                    ).toLocaleDateString()}
-                  </small>
-                </div>
-
-                <div className="inbox-request-actions">
-
-                  <button
-                    type="button"
-                    className="inbox-accept-button"
-                    disabled={processingId !== null}
-                    onClick={() =>
-                      void handleRequestResponse(
-                        request.id,
-                        'accepted'
-                      )
-                    }
-                  >
-                    {processingId === request.id
-                      ? 'Processing...'
-                      : 'Accept'}
-                  </button>
-
-                  <button
-                    type="button"
-                    className="inbox-decline-button"
-                    disabled={processingId !== null}
-                    onClick={() =>
-                      void handleRequestResponse(
-                        request.id,
-                        'declined'
-                      )
-                    }
-                  >
-                    Decline
-                  </button>
-
-                </div>
-              </div>
-            ))}
-
-          </div>
-
-        ) : (
-          <div className="inbox-empty">
-            <span
-              className="inbox-empty-icon"
-              aria-hidden="true"
+      {loading ? (
+        <div className="inbox-empty">
+          <h2>Loading requests...</h2>
+        </div>
+      ) : error ? (
+        <div className="inbox-empty">
+          <h2>Unable to load requests</h2>
+          <p role="alert">{error}</p>
+        </div>
+      ) : requests.length > 0 ? (
+        <div className="inbox-request-list">
+          {requests.map((request) => (
+            <div
+              key={request.id}
+              className="inbox-request-card"
             >
-              ◇
-            </span>
+              <div className="inbox-request-avatar">
+                {request.display_name
+                  .charAt(0)
+                  .toUpperCase()}
+              </div>
 
-            <h2>{emptyTitle}</h2>
-            <p>{emptyDescription}</p>
-          </div>
-        )}
+              <div className="inbox-request-info">
+                <strong>{request.display_name}</strong>
 
-      </div>
+                {request.username && (
+                  <span className="inbox-request-username">
+                    @{request.username}
+                  </span>
+                )}
+
+                <p>Sent you a friend request.</p>
+
+                <small>
+                  {new Date(
+                    request.created_at
+                  ).toLocaleDateString()}
+                </small>
+              </div>
+
+              <div className="inbox-request-actions">
+                <button
+                  type="button"
+                  className="inbox-accept-button"
+                  disabled={processingId !== null}
+                  onClick={() =>
+                    void handleRequestResponse(
+                      request.id,
+                      'accepted'
+                    )
+                  }
+                >
+                  {processingId === request.id
+                    ? 'Processing...'
+                    : 'Accept'}
+                </button>
+
+                <button
+                  type="button"
+                  className="inbox-decline-button"
+                  disabled={processingId !== null}
+                  onClick={() =>
+                    void handleRequestResponse(
+                      request.id,
+                      'declined'
+                    )
+                  }
+                >
+                  Decline
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="inbox-empty">
+          <p>No pending friend requests.</p>
+        </div>
+      )}
+    </div>
+  )}
+
+  {showNotifications && (
+    <div className="inbox-content-section">
+      {activeTab === 'all' && (
+        <h2 className="inbox-section-title">
+          Recent Interactions
+        </h2>
+      )}
+
+      <ActivityNotifications />
+    </div>
+  )}
+
+  {activeTab === 'community' && (
+    <div className="inbox-empty">
+      <h2>No community announcements</h2>
+      <p>
+        MediaVault news and announcements
+        will appear here.
+      </p>
+    </div>
+  )}
+
+</div>
+
     </section>
   )
 }
