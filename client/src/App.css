@@ -24631,3 +24631,31 @@ background: rgba(53, 38, 63, 0.75) !important;
   margin-top: 18px;
 }
 
+
+
+/* ACTIVITY - CLICKABLE MEDIA */
+
+.feed-page button.feed-addition-item,
+.feed-page button.feed-activity-media {
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.feed-page button.feed-addition-item:hover
+.feed-addition-art,
+.feed-page button.feed-activity-media:hover
+.feed-activity-art {
+  border-color: #b986db;
+}
+
+.feed-page button.feed-addition-item:focus-visible,
+.feed-page button.feed-activity-media:focus-visible {
+  outline: 2px solid #b986db;
+  outline-offset: 4px;
+}
