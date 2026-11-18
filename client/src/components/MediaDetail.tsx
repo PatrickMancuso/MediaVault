@@ -6,11 +6,13 @@ import {
 
 import type { MediaItem } from '../data/sampleMedia'
 
+
 interface MediaDetailProps {
   media: MediaItem
   onClose: () => void
   onRemove: (media: MediaItem) => void
   onEdit: (media: MediaItem) => void
+  readOnly?: boolean
 
   onSaveReview: (
     media: MediaItem,
@@ -18,6 +20,7 @@ interface MediaDetailProps {
     review: string
   ) => Promise<void>
 }
+
 
 
 
@@ -57,7 +60,8 @@ function MediaDetail({
   onClose,
   onRemove,
   onEdit,
-    onSaveReview,
+  onSaveReview,
+  readOnly = false,
 }: MediaDetailProps) {
   const [showMoreDetails, setShowMoreDetails] =
     useState(false)
@@ -429,6 +433,42 @@ backgroundRepeat: 'no-repeat',
 
 <div className="detail-personal-review">
 
+  {readOnly ? (
+  <div className="detail-readonly-review">
+    <div className="detail-review-heading">
+      <div>
+        <span className="detail-review-eyebrow">
+          COLLECTOR REVIEW
+        </span>
+        <h3>Review</h3>
+      </div>
+    </div>
+
+    {media.personalRating != null && (
+      <div className="detail-readonly-stars">
+        {'★'.repeat(
+          Math.max(
+            0,
+            Math.min(5, Math.round(media.personalRating))
+          )
+        )}
+        <span>{media.personalRating} / 5</span>
+      </div>
+    )}
+
+    {media.personalReview?.trim() ? (
+      <p className="detail-readonly-text">
+        {media.personalReview}
+      </p>
+    ) : (
+      <p className="detail-readonly-empty">
+        No written review.
+      </p>
+    )}
+  </div>
+) : (
+  <>
+
   <div className="detail-review-heading">
     <div>
       <span className="detail-review-eyebrow">
@@ -511,6 +551,9 @@ backgroundRepeat: 'no-repeat',
     </button>
   </div>
 
+  </>
+)}
+    
 </div>
 
 
@@ -911,6 +954,8 @@ backgroundRepeat: 'no-repeat',
     </span>
   </div>
 
+
+{!readOnly && (
   <div className="detail-actions">
     <button
       type="button"
@@ -928,6 +973,8 @@ backgroundRepeat: 'no-repeat',
       Remove
     </button>
   </div>
+)}
+
 </div>
       </div>
     </div>
