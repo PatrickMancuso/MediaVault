@@ -406,7 +406,7 @@ function FeedPage({
                     {' · '}
                     {getFormatName(item.media_format)}
                   </small>
-                </div>
+                </button>
               ))}
 
             </div>
