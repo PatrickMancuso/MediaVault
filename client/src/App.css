@@ -24748,3 +24748,73 @@ background: rgba(53, 38, 63, 0.75) !important;
   cursor: pointer;
 }
 
+
+
+
+
+/* =====================================================
+   ACTIVITY - LIKE BUTTONS
+   ===================================================== */
+
+.feed-page .feed-post-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: 16px;
+  padding-top: 13px;
+
+  border-top: 1px solid #403648;
+}
+
+.feed-page .feed-like-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 12px;
+
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+
+  color: #b9aebe;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease;
+}
+
+.feed-page .feed-like-button > span:first-child {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.feed-page .feed-like-button small {
+  color: inherit;
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.feed-page .feed-like-button:hover:not(:disabled) {
+  background: #302438;
+  border-color: #6e507c;
+  color: #e3c2f5;
+}
+
+.feed-page .feed-like-button.liked {
+  background: #382747;
+  border-color: #79528f;
+  color: #d5a4ef;
+}
+
+.feed-page .feed-like-button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
