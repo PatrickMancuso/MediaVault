@@ -506,7 +506,7 @@ function FeedPage({
               )}
             </div>
 
-          </div>
+            </button>
 
         </article>
       )
