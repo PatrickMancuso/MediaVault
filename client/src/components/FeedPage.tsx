@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import ActivityComments from './ActivityComments'
+import ActivityNotifications from './ActivityNotifications'
 
 type ActivityFilter = 'all' | 'addition' | 'review'
 
@@ -994,17 +995,14 @@ const handleDeleteComment = async (
         </div>
 
         <div className="feed-sidebar-card">
-          <span className="feed-sidebar-eyebrow">
-            COMING SOON
-          </span>
+  <span className="feed-sidebar-eyebrow">
+    YOUR ACTIVITY
+  </span>
 
-          <h2>Recent Interactions</h2>
+  <h2>Recent Interactions</h2>
 
-          <p>
-            Likes and comments from other collectors
-            will appear here.
-          </p>
-        </div>
+  <ActivityNotifications compact />
+</div>
       </aside>
 
     </div>
