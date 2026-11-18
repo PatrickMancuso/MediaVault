@@ -21,6 +21,7 @@ interface HeaderProps {
   onAddMedia: () => void
   onAccount: () => void
   userEmail?: string | null
+  inboxUnreadCount?: number
 
   availableMediaTypes: {
     movies: boolean
@@ -40,6 +41,7 @@ function Header({
   onAddMedia,
   onAccount,
   userEmail,
+  inboxUnreadCount = 0,
   availableMediaTypes,
   collectionLoading,
 }: HeaderProps) {
@@ -399,6 +401,7 @@ function Header({
 
 
                 
+
 {/* INBOX */}
 
 <button
@@ -407,8 +410,38 @@ function Header({
   role="menuitem"
   onClick={() => navigateTo('inbox')}
 >
-  <span>Inbox</span>
-  <span aria-hidden="true">›</span>
+  <span className="header-menu-item-content">
+    <span className="header-menu-item-icon">
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <rect x="3" y="4" width="18" height="16" rx="2" />
+        <path d="M3 13h5l2 3h4l2-3h5" />
+      </svg>
+    </span>
+
+    <span>Inbox</span>
+  </span>
+
+  <span className="header-menu-item-end">
+    {inboxUnreadCount > 0 && (
+      <span className="header-menu-unread">
+        {inboxUnreadCount > 99
+          ? '99+'
+          : inboxUnreadCount}
+      </span>
+    )}
+
+    <span aria-hidden="true">›</span>
+  </span>
 </button>
 
 
@@ -420,8 +453,28 @@ function Header({
                   role="menuitem"
                   onClick={() => navigateTo('profile')}
                 >
-                  <span>Profile</span>
-                  <span aria-hidden="true">›</span>
+                  <span className="header-menu-item-content">
+  <span className="header-menu-item-icon">
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21v-2a8 8 0 0 1 16 0v2" />
+    </svg>
+  </span>
+
+  <span>Profile</span>
+</span>
+
+<span aria-hidden="true">›</span>
                 </button>
 
                 {/* FIND COLLECTORS */}
@@ -432,8 +485,30 @@ function Header({
                   role="menuitem"
                   onClick={() => navigateTo('collectors')}
                 >
-                  <span>Find Collectors</span>
-                  <span aria-hidden="true">›</span>
+                <span className="header-menu-item-content">
+  <span className="header-menu-item-icon">
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3 20v-2a6 6 0 0 1 12 0v2" />
+      <path d="M16 5a3 3 0 0 1 0 6" />
+      <path d="M17 14a5 5 0 0 1 4 5v1" />
+    </svg>
+  </span>
+
+  <span>Find Collectors</span>
+</span>
+
+<span aria-hidden="true">›</span>
                 </button>
 
                 {/* SETTINGS */}
@@ -444,8 +519,28 @@ function Header({
   role="menuitem"
   onClick={() => navigateTo('settings')}
 >
+  <span className="header-menu-item-content">
+  <span className="header-menu-item-icon">
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="3" />
+      <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1" />
+    </svg>
+  </span>
+
   <span>Settings</span>
-  <span aria-hidden="true">›</span>
+</span>
+
+<span aria-hidden="true">›</span>
 </button>
 
               </div>
