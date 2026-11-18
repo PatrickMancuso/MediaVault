@@ -275,6 +275,9 @@ function FeedPage({
         ))}
       </div>
 
+      <div className="feed-layout">
+  <div className="feed-main">
+
       {/* CONTENT */}
 
       {loading ? (
@@ -458,9 +461,13 @@ function FeedPage({
               <h2>{item.title}</h2>
 
               <p className="feed-activity-meta">
-                {item.media_type === 'game'
-                  ? 'Game'
-                  : 'Movie'}
+                {({
+  movie: 'Movie',
+  game: 'Game',
+  book: 'Book',
+  music: 'Music',
+} as Record<string, string>)[item.media_type] ??
+  item.media_type}
                 {' · '}
                 {item.media_year}
                 {' · '}
@@ -495,11 +502,55 @@ function FeedPage({
 
     })}
 
+
   </div>
 )}
 
-    </section>
-  )
+      </div>
+
+      {/* ACTIVITY SIDEBAR */}
+
+      <aside className="feed-sidebar">
+        <div className="feed-sidebar-card">
+          <span className="feed-sidebar-eyebrow">
+            YOUR NETWORK
+          </span>
+
+          <h2>Discover Collectors</h2>
+
+          <p>
+            Find other collectors, explore their
+            libraries, and discover new favorites.
+          </p>
+
+          <button
+            type="button"
+            className="feed-sidebar-button"
+            onClick={onFindCollectors}
+          >
+            Find Collectors →
+          </button>
+        </div>
+
+        <div className="feed-sidebar-card">
+          <span className="feed-sidebar-eyebrow">
+            COMING SOON
+          </span>
+
+          <h2>Recent Interactions</h2>
+
+          <p>
+            Likes and comments from other collectors
+            will appear here.
+          </p>
+        </div>
+      </aside>
+
+    </div>
+
+  </section>
+)
+
 }
 
 export default FeedPage
