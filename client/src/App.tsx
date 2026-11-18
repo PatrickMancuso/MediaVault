@@ -1412,6 +1412,7 @@ if (!user) {
 
   <FeedPage
     onFindCollectors={() => {
+      onOpenMedia={handleOpenActivityMedia}
       setSelectedCollectorId(null)
       setActiveView('collectors')
     }}
