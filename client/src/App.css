@@ -24946,3 +24946,65 @@ background: rgba(53, 38, 63, 0.75) !important;
   opacity: 0.45;
   cursor: not-allowed;
 }
+
+
+
+
+/* =====================================================
+   HEADER DROPDOWN - ICONS AND UNREAD BADGE
+   ===================================================== */
+
+.account-menu .account-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.header-menu-item-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.header-menu-item-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 18px;
+
+  color: #c7a9d8;
+}
+
+.header-menu-item-end {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.header-menu-unread {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  box-sizing: border-box;
+
+  background: #8653a0;
+  border: 1px solid #b986db;
+  border-radius: 20px;
+
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.account-menu-item:hover .header-menu-item-icon {
+  color: #e2b8f5;
+}
+
