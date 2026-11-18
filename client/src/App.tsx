@@ -601,6 +601,19 @@ useEffect(() => {
 const [selectedMedia, setSelectedMedia] =
   useState<MediaItem | null>(null)
 
+/* =====================================================
+   ACTIVITY - SELECTED COLLECTOR MEDIA
+   ===================================================== */
+
+const [activityMedia, setActivityMedia] =
+  useState<MediaItem | null>(null)
+
+const [activityMediaLoading, setActivityMediaLoading] =
+  useState(false)
+
+const [activityMediaError, setActivityMediaError] =
+  useState('')  
+
 const [isAddMediaOpen, setIsAddMediaOpen] =
   useState(false)
 
@@ -865,6 +878,63 @@ const libraryItems =
   ) => {
     setSelectedMedia(item)
   }
+
+
+  
+/* =====================================================
+   ACTIVITY - OPEN COLLECTOR MEDIA
+   ===================================================== */
+
+const handleOpenActivityMedia = async (
+  mediaId: string,
+  collectorId: string
+) => {
+  if (!user) return
+
+  setActivityMedia(null)
+  setActivityMediaError('')
+  setActivityMediaLoading(true)
+
+  try {
+    const { data, error } = await supabase.rpc(
+      'get_activity_media_detail',
+      {
+        p_media_id: mediaId,
+        p_collector_id: collectorId,
+      }
+    )
+
+    if (error) {
+      throw error
+    }
+
+    const row = data?.[0] as
+      | MediaItemRow
+      | undefined
+
+    if (!row) {
+      throw new Error(
+        'This media entry is no longer available.'
+      )
+    }
+
+    setActivityMedia(rowToMediaItem(row))
+  } catch (error) {
+    console.error(
+      'Failed to open activity media:',
+      error
+    )
+
+    setActivityMediaError(
+      error instanceof Error
+        ? error.message
+        : 'Unable to load this media entry.'
+    )
+  } finally {
+    setActivityMediaLoading(false)
+  }
+}
+
 
 
 const handleAddMedia = async (
@@ -1410,13 +1480,15 @@ if (!user) {
 
 ) : activeView === 'feed' ? (
 
-  <FeedPage
-    onFindCollectors={() => {
-      onOpenMedia={handleOpenActivityMedia}
-      setSelectedCollectorId(null)
-      setActiveView('collectors')
-    }}
-  />
+ 
+<FeedPage
+  onFindCollectors={() => {
+    setSelectedCollectorId(null)
+    setActiveView('collectors')
+  }}
+  onOpenMedia={handleOpenActivityMedia}
+/>
+
 
 ) : activeView === 'profile' ? (
 
@@ -1494,6 +1566,53 @@ if (!user) {
     onSaveReview={handleSaveReview}
   />
 )}
+
+
+      
+{/* ACTIVITY MEDIA LOADING */}
+
+{activityMediaLoading && (
+  <div className="activity-media-status">
+    <div className="activity-media-status-card">
+      Loading media details...
+    </div>
+  </div>
+)}
+
+{/* ACTIVITY MEDIA ERROR */}
+
+{activityMediaError && (
+  <div className="activity-media-status">
+    <div className="activity-media-status-card">
+      <p>{activityMediaError}</p>
+
+      <button
+        type="button"
+        onClick={() => setActivityMediaError('')}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
+
+
+      
+{/* =====================================================
+    ACTIVITY MEDIA DETAIL - READ ONLY
+    ===================================================== */}
+
+{activityMedia && (
+  <MediaDetail
+    media={activityMedia}
+    readOnly
+    onClose={() => setActivityMedia(null)}
+    onRemove={handleRemoveMedia}
+    onEdit={handleEditMedia}
+    onSaveReview={handleSaveReview}
+  />
+)}
+
 
 
 {isAuthModalOpen && !authLoading && (
